@@ -6,13 +6,13 @@ function AuthOptions(): JSX.Element {
         <div className="flex space-x-4">
             {/* sign up */}
             <AuthButton
-                href='/signup'
+                href='/sign-up'
                 label='sign up'
             />
 
             {/* sign in */}
             <AuthButton
-                href='/signin'
+                href='/sign-in'
                 label='sign in'
             />
         </div>

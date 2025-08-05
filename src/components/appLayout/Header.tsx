@@ -1,7 +1,9 @@
 import { JSX } from "react";
+import { SignedIn, SignedOut } from '@clerk/nextjs';
 import Logo from "./header/Logo";
 import NavigationLinks from "./header/NavigationLinks";
 import AuthOptions from "./header/AuthOptions";
+import SignOutOption from "./header/SignOutOption";
 
 export default function Header(): JSX.Element {
   return (
@@ -10,11 +12,18 @@ export default function Header(): JSX.Element {
         {/* logo */}
         <Logo />
 
-        {/* navigation links */}
-        <NavigationLinks />
+        <SignedIn>
+          {/* navigation links */}
+          <NavigationLinks />
 
-        {/* auth options */}
-        <AuthOptions />
+          {/* sign out option */}
+          <SignOutOption />
+        </SignedIn>
+
+        <SignedOut>
+          {/* auth options */}
+          <AuthOptions />
+        </SignedOut>
       </div>
     </header>
   );
