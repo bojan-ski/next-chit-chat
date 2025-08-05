@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/appLayout/Header";
 import Footer from "@/components/appLayout/Footer";
+import { Toaster } from "react-hot-toast";
 
 const merriweather = Merriweather({
   variable: "--font-merriweather",
@@ -30,6 +31,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+
         <body className={`${merriweather.variable} ${inter.variable} antialiased`}>
           <Header />
 
@@ -39,6 +41,9 @@ export default function RootLayout({
 
           <Footer />
         </body>
+
+        <Toaster />
+        
       </html>
     </ClerkProvider>
   );

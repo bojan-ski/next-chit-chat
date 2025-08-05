@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { LuAlignLeft } from "react-icons/lu";
 
 type MobileLinksProps = {
-    memberNavigationLinks: NavigationLink[];
+    navigationLinks: NavigationLink[];
     pathname: string
 }
 
-function MobileLinks({ memberNavigationLinks, pathname }: MobileLinksProps): JSX.Element {
+function MobileNavLinks({ navigationLinks, pathname }: MobileLinksProps): JSX.Element {
     return (
         <div className="block md:hidden">
             <DropdownMenu>
@@ -24,9 +24,9 @@ function MobileLinks({ memberNavigationLinks, pathname }: MobileLinksProps): JSX
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent
-                    className="bg-white dark:bg-[#1f1f1f] border border-[#E5C6AC] dark:border-[#7C5C53] shadow-xl mt-2 w-44"
+                    className="bg-white border border-[#E5C6AC] shadow-xl mt-2 w-44"
                 >
-                    {memberNavigationLinks.map(({ href, label }) => (
+                    {navigationLinks.map(({ href, label }) => (
                         <DropdownMenuItem
                             key={href}
                             className="hover:bg-[#F6E7DA] focus:bg-[#F6E7DA] px-3 py-2 transition-colors"
@@ -45,4 +45,4 @@ function MobileLinks({ memberNavigationLinks, pathname }: MobileLinksProps): JSX
     )
 }
 
-export default MobileLinks
+export default MobileNavLinks

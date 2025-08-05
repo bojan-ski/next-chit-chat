@@ -3,19 +3,21 @@
 import { JSX } from "react";
 import { usePathname } from "next/navigation";
 import { memberNavigationLinks } from "@/utils/links";
-import DesktopLinks from "./DesktopLinks";
-import MobileLinks from "./MobileLinks";
+import { adminNavigationLinks } from "@/utils/links";
+import DesktopNavLinks from "./DesktopNavLinks";
+import MobileNavLinks from "./MobileNavLinks";
 
-function NavigationLinks(): JSX.Element {
+function NavigationLinks({ isAdmin }: { isAdmin: boolean }): JSX.Element {
     const pathname = usePathname();
+    const navigationLinks = isAdmin ? adminNavigationLinks : memberNavigationLinks;
 
     return (
         <>
             {/* desktop navigation links */}
-            <DesktopLinks memberNavigationLinks={memberNavigationLinks} pathname={pathname}/>
+            <DesktopNavLinks navigationLinks={navigationLinks} pathname={pathname} />
 
             {/* mobile navigation links */}
-            <MobileLinks memberNavigationLinks={memberNavigationLinks} pathname={pathname}/>
+            <MobileNavLinks navigationLinks={navigationLinks} pathname={pathname} />
         </>
 
     )

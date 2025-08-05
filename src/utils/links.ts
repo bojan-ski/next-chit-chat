@@ -5,3 +5,7 @@ export const memberNavigationLinks: NavigationLink[] = [
   { href: "/members", label: "members" },
   { href: "/conversation", label: "conversation" },
 ];
+
+export const adminNavigationLinks: NavigationLink[] = [
+  { href: "/forbidden-words", label: "forbidden words" },
+];

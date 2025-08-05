@@ -3,16 +3,16 @@ import Link from "next/link";
 import { NavigationLink } from "@/utils/types";
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
 
-type DesktopLinksProps = {
-    memberNavigationLinks: NavigationLink[];
+type NavLinksProps = {
+    navigationLinks: NavigationLink[];
     pathname: string
 }
 
-function DesktopLinks({ memberNavigationLinks, pathname }: DesktopLinksProps): JSX.Element {
+function DesktopNavLinks({ navigationLinks, pathname }: NavLinksProps): JSX.Element {
     return (
         <NavigationMenu className="hidden md:flex space-x-8">
             <NavigationMenuList>
-                {memberNavigationLinks.map(({ href, label }) => (
+                {navigationLinks.map(({ href, label }) => (
                     <NavigationMenuItem key={href} >
                         <NavigationMenuLink asChild className="text-lg">
                             <Link
@@ -29,4 +29,4 @@ function DesktopLinks({ memberNavigationLinks, pathname }: DesktopLinksProps): J
     )
 }
 
-export default DesktopLinks
+export default DesktopNavLinks
