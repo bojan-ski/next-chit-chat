@@ -1,28 +1,23 @@
+'use client'
+
 import { JSX } from "react";
-import Link from "next/link";
-import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
-import { memberLinks } from "@/utils/links";
+import { usePathname } from "next/navigation";
+import { memberNavigationLinks } from "@/utils/links";
+import DesktopLinks from "./DesktopLinks";
+import MobileLinks from "./MobileLinks";
 
 function NavigationLinks(): JSX.Element {
+    const pathname = usePathname();
+
     return (
-        <nav className="hidden md:flex space-x-8">
-            <NavigationMenu>
-                <NavigationMenuList>
-                    {memberLinks.map(({ href, label }) => (
-                        <NavigationMenuItem key={href} >
-                            <NavigationMenuLink asChild className="text-lg">
-                                <Link
-                                    href={href}
-                                    className="text-[#7B4B3A] dark:text-[#E8D3C4] hover:text-[#C05C41] dark:hover:text-[#D9997A] font-medium transition capitalize"
-                                >
-                                    {label}
-                                </Link>
-                            </NavigationMenuLink>
-                        </NavigationMenuItem>
-                    ))}
-                </NavigationMenuList>
-            </NavigationMenu>
-        </nav>
+        <>
+            {/* desktop navigation links */}
+            <DesktopLinks memberNavigationLinks={memberNavigationLinks} pathname={pathname}/>
+
+            {/* mobile navigation links */}
+            <MobileLinks memberNavigationLinks={memberNavigationLinks} pathname={pathname}/>
+        </>
+
     )
 }
 

@@ -1,9 +1,6 @@
-type Link = {
-  href: string;
-  label: string;
-};
+import { NavigationLink } from "./types";
 
-export const memberLinks: Link[] = [
+export const memberNavigationLinks: NavigationLink[] = [
   { href: "/suggestions", label: "suggestions" },
   { href: "/members", label: "members" },
   { href: "/conversation", label: "conversation" },
