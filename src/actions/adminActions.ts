@@ -1,9 +1,10 @@
 "use server";
 
-import { FormStatus } from "@/types/types";
-import { forbiddenWordSchema } from "@/utils/schemas";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { ForbiddenWord } from "@prisma/client";
+import { FormStatus } from "@/types/types";
+import { forbiddenWordSchema } from "@/utils/schemas";
 
 export async function addNewForbiddenWordAction(
   initialState: FormStatus,
@@ -14,7 +15,8 @@ export async function addNewForbiddenWordAction(
     const validatedFields = forbiddenWordSchema.safeParse(rawData);
 
     if (!validatedFields.success) {
-      const errorMessage = validatedFields.error.issues[0]?.message || "Validation failed";
+      const errorMessage =
+        validatedFields.error.issues[0]?.message || "Validation failed";
       return {
         status: "error",
         message: errorMessage,
@@ -40,3 +42,32 @@ export async function addNewForbiddenWordAction(
     revalidatePath("/forbidden-words");
   }
 }
+
+export const fetchForbiddenWordsAction = async (): Promise<
+  ForbiddenWord[] | null
+> => {
+  const forbiddenWords: ForbiddenWord[] | null =
+    await prisma.forbiddenWord.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+  return forbiddenWords;
+};
+
+export const deleteForbiddenWordAction = async (
+  wordId: string
+): Promise<void> => {
+  try {
+    await prisma.forbiddenWord.delete({
+      where: {
+        id: wordId,
+      },
+    });
+  } catch (error) {
+    throw error;
+  } finally {
+    revalidatePath("/forbidden-words");
+  }
+};

@@ -1,5 +1,6 @@
 import { JSX } from 'react';
 import AddForbiddenWord from '@/components/forbiddenWordsPage/AddForbiddenWord';
+import ForbiddenWordsList from '@/components/forbiddenWordsPage/ForbiddenWordsList';
 
 function ForbiddenWordsPage(): JSX.Element {
     return (
@@ -7,9 +8,7 @@ function ForbiddenWordsPage(): JSX.Element {
 
             <AddForbiddenWord />
 
-            <section className='forbidden-words-list mb-10'>
-
-            </section>
+            <ForbiddenWordsList />
 
         </div>
     )
