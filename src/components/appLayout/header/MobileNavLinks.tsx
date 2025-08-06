@@ -1,6 +1,6 @@
 import { JSX } from "react";
 import Link from "next/link";
-import { NavigationLink } from "@/utils/types";
+import { NavigationLink } from "@/types/types";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { LuAlignLeft } from "react-icons/lu";

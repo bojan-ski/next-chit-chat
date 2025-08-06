@@ -40,10 +40,10 @@ export default function RootLayout({
           </main>
 
           <Footer />
+
+          <Toaster />
         </body>
 
-        <Toaster />
-        
       </html>
     </ClerkProvider>
   );

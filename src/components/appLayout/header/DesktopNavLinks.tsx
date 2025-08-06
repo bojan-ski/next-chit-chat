@@ -1,6 +1,6 @@
 import { JSX } from "react";
 import Link from "next/link";
-import { NavigationLink } from "@/utils/types";
+import { NavigationLink } from "@/types/types";
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
 
 type NavLinksProps = {
@@ -12,7 +12,7 @@ function DesktopNavLinks({ navigationLinks, pathname }: NavLinksProps): JSX.Elem
     return (
         <NavigationMenu className="hidden md:flex space-x-8">
             <NavigationMenuList>
-                {navigationLinks.map(({ href, label }) => (
+                {navigationLinks.map(({ href, label }: NavigationLink) => (
                     <NavigationMenuItem key={href} >
                         <NavigationMenuLink asChild className="text-lg">
                             <Link
