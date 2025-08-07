@@ -2,9 +2,9 @@
 
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { ForbiddenWord } from "@prisma/client";
 import { FormStatus } from "@/types/types";
 import { forbiddenWordSchema } from "@/utils/schemas";
+import { ForbiddenWord } from "@prisma/client";
 
 export async function addNewForbiddenWordAction(
   initialState: FormStatus,
@@ -43,15 +43,12 @@ export async function addNewForbiddenWordAction(
   }
 }
 
-export const fetchForbiddenWordsAction = async (): Promise<
-  ForbiddenWord[] | null
-> => {
-  const forbiddenWords: ForbiddenWord[] | null =
-    await prisma.forbiddenWord.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+export const fetchForbiddenWordsAction = async (): Promise<ForbiddenWord[]> => {
+  const forbiddenWords: ForbiddenWord[] = await prisma.forbiddenWord.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   return forbiddenWords;
 };

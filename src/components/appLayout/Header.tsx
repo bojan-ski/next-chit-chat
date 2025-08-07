@@ -5,6 +5,7 @@ import Logo from "./header/Logo";
 import NavigationLinks from "./header/NavigationLinks";
 import AuthOptions from "./header/AuthOptions";
 import SignOutOption from "./header/SignOutOption";
+import UserIcon from "./header/UserIcon";
 
 export default async function Header(): Promise<JSX.Element> {
   const { userId } = await auth();
@@ -20,8 +21,14 @@ export default async function Header(): Promise<JSX.Element> {
           {/* navigation links */}
           <NavigationLinks isAdmin={isAdmin} />
 
-          {/* sign out option */}
-          <SignOutOption />
+
+          <div className="flex space-x-5 items-center">
+            {/* user icon - profile option */}
+            <UserIcon />
+
+            {/* sign out option */}
+            <SignOutOption />
+          </div>
         </SignedIn>
 
         <SignedOut>

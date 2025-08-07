@@ -9,7 +9,7 @@ function ForbiddenWordsPage(): JSX.Element {
             <AddForbiddenWord />
 
             <ForbiddenWordsList />
-
+            
         </div>
     )
 }
