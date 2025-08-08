@@ -7,12 +7,13 @@ type FormInputProps = {
   type: string;
   label?: boolean;
   labelText?: string;
+  value?: string;
   defaultValue?: string;
   placeholder?: string;
   required?: boolean
 };
 
-function FormInput({ name, type, label = false, labelText, defaultValue, placeholder, required }: FormInputProps): JSX.Element {
+function FormInput({ name, type, label = false, labelText, value, defaultValue, placeholder, required }: FormInputProps): JSX.Element {
   return (
     <div className="mb-2">
       {label && (
@@ -27,6 +28,7 @@ function FormInput({ name, type, label = false, labelText, defaultValue, placeho
         id={name}
         name={name}
         type={type}
+        value={value}
         defaultValue={defaultValue}
         placeholder={placeholder}
         required={required} 

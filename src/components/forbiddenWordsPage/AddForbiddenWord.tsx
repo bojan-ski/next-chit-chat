@@ -25,7 +25,7 @@ function AddForbiddenWord(): JSX.Element {
     }, [state]);
 
     return (
-        <section className='add-forbidden-word border-b border-[#E5C6AC] pb-5 my-10'>
+        <section className='add-forbidden-word border-b border-[#E5C6AC] pb-5 mb-10'>
             <form action={formAction}>
                 <div className='flex space-x-2'>
                     <FormInput
