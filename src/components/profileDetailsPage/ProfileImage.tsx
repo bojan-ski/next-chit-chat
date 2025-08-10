@@ -15,7 +15,7 @@ async function ProfileImage({ user }: { user: User | null }): Promise<JSX.Elemen
             />
 
             <p className="font-semibold text-center">
-                <span className="mr-2">
+                <span className="mr-1">
                     Email address:
                 </span>
                 <span>

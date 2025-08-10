@@ -1,29 +1,25 @@
-'use client';
-
 import { JSX } from "react";
-import { setProfileDataAction } from "@/actions/memberProfileActions";
+import { fetchProfileDataAction, setProfileDataAction } from "@/actions/memberProfileActions";
+import { Member } from "@prisma/client";
+import FormWrapper from "../FormWrapper";
 import FormInput from "../FormInput";
 import FormTextarea from "../FormTextarea";
-import FormWrapper from "../FormWrapper";
 
-async function SetProfileData({ userId }: { userId: string }): Promise<JSX.Element> {
+async function SetProfileData(): Promise<JSX.Element> {
+    const profileData: Member | null = await fetchProfileDataAction();
+
     return (
         <FormWrapper
             action={setProfileDataAction}
             buttonLabel='Update'
             pendingLabel='Updating...'
         >
-            <FormInput
-                type='hidden'
-                name='userId'
-                value={userId}
-            />
-
             {/* username */}
             <FormInput
                 type='text'
                 name='username'
                 placeholder='Enter username'
+                defaultValue={profileData?.username ? profileData?.username : ''}
                 required={true}
             />
 
@@ -32,6 +28,7 @@ async function SetProfileData({ userId }: { userId: string }): Promise<JSX.Eleme
                 type='text'
                 name='city'
                 placeholder='Enter city'
+                defaultValue={profileData?.city ? profileData?.city : ''}
                 required={true}
             />
 
@@ -40,6 +37,7 @@ async function SetProfileData({ userId }: { userId: string }): Promise<JSX.Eleme
                 type='text'
                 name='state'
                 placeholder='Enter state'
+                defaultValue={!!profileData?.state ? profileData?.state : ''}
                 required={true}
             />
 
@@ -47,6 +45,7 @@ async function SetProfileData({ userId }: { userId: string }): Promise<JSX.Eleme
             <FormTextarea
                 name='description'
                 placeholder='Describe yourself'
+                defaultValue={profileData?.description ? profileData?.description : ''}
                 required={true}
             />
         </FormWrapper>

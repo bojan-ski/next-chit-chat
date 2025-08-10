@@ -1,10 +1,10 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 import { FormStatus } from "@/types/types";
 import { memberProfileSchema } from "@/utils/schemas";
-import { auth } from "@clerk/nextjs/server";
-import { revalidatePath } from "next/cache";
 
 export async function checkIfMemberExistsAction({
   userId,
@@ -22,9 +22,8 @@ export async function setProfileDataAction(
   initialState: FormStatus,
   formData: FormData
 ): Promise<FormStatus> {
-  // extract clerk id
-  const userId = formData.get("userId") as string;
-
+  // get clerk id from clerk
+  const userId = (await auth()).userId;
   if (!userId) {
     return {
       status: "error",
@@ -36,12 +35,11 @@ export async function setProfileDataAction(
   try {
     // validate form data
     const rawData = Object.fromEntries(formData);
-    const { userId: _, ...dataToValidate } = rawData;
-    const validatedFields = memberProfileSchema.safeParse(dataToValidate);
+    const validatedFields = memberProfileSchema.safeParse(rawData);
 
     if (!validatedFields.success) {
-      const firstError =
-        validatedFields.error.issues[0]?.message || "Validation failed";
+      const firstError = validatedFields.error.issues[0]?.message || "Validation failed";
+
       return {
         status: "error",
         message: firstError,
@@ -55,7 +53,7 @@ export async function setProfileDataAction(
     const existingMember = await checkIfMemberExistsAction({ userId });
 
     if (existingMember) {
-      // update existing member profile data
+      // update existing member - profile data
       await prisma.member.update({
         where: {
           clerkId: userId,
@@ -95,9 +93,11 @@ export async function setProfileDataAction(
 }
 
 export const fetchProfileDataAction = async () => {
+  // get clerk id from clerk
   const userId = (await auth()).userId;
-  if (!userId) throw new Error("Error retrieving account data");
+  if (!userId) return null;
 
+  // if all good - run query
   try {
     return prisma.member.findFirst({
       where: {
@@ -105,6 +105,6 @@ export const fetchProfileDataAction = async () => {
       },
     });
   } catch (error) {
-    throw error;
+    return null;
   }
 };

@@ -8,14 +8,14 @@ async function ProfileData(): Promise<JSX.Element> {
     const user: User | null = await currentUser();
 
     return (
-        <section className='profile-details col-span-3 border p-5'>
+        <section className='profile-details col-span-3 border border-[#E5C6AC] rounded-lg p-5'>
             {!user ? (
                 <NoDataMessage message="There was an error fetching account data" />
             ) : (
                 <>
                     <ProfileImage user={user} />
 
-                    <SetProfileData userId={user?.id} />
+                    <SetProfileData />
                 </>
             )}
         </section>
