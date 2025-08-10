@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import { FormStatus } from "@/types/types";
 import { memberProfileSchema } from "@/utils/schemas";
+import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
 export async function checkIfMemberExistsAction({
@@ -92,3 +93,18 @@ export async function setProfileDataAction(
     revalidatePath("/profile-details");
   }
 }
+
+export const fetchProfileDataAction = async () => {
+  const userId = (await auth()).userId;
+  if (!userId) throw new Error("Error retrieving account data");
+
+  try {
+    return prisma.member.findFirst({
+      where: {
+        clerkId: userId,
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+};

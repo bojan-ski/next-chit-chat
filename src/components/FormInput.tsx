@@ -11,11 +11,12 @@ type FormInputProps = {
   defaultValue?: string;
   placeholder?: string;
   required?: boolean
+  additionInputClasses?: string
 };
 
-function FormInput({ name, type, label = false, labelText, value, defaultValue, placeholder, required }: FormInputProps): JSX.Element {
+function FormInput({ name, type, label = false, labelText, value, defaultValue, placeholder, required, additionInputClasses }: FormInputProps): JSX.Element {
   return (
-    <div className="mb-2">
+    <div className="mb-5">
       {label && (
         <Label
           htmlFor={name}
@@ -24,15 +25,15 @@ function FormInput({ name, type, label = false, labelText, value, defaultValue, 
         </Label>
       )}
       <Input
-        className="border border-[#E5C6AC] w-full min-w-[300px]"
+        className={`border border-[#E5C6AC] w-full ${additionInputClasses}`}
         id={name}
         name={name}
         type={type}
         value={value}
         defaultValue={defaultValue}
         placeholder={placeholder}
-        required={required} 
-        />
+        required={required}
+      />
     </div>
   )
 }

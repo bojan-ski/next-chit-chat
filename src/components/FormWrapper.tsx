@@ -1,0 +1,47 @@
+'use client';
+
+import { JSX, useActionState, useEffect } from "react";
+import { FormStatus } from "@/types/types";
+import { Button } from "./ui/button";
+import toast from "react-hot-toast";
+
+type FormWrapperProps = {
+    children: React.ReactNode,
+    action: any,
+    formCss?: string,
+    buttonLabel: string,
+    pendingLabel: string
+}
+
+function FormWrapper({ children, action, formCss, buttonLabel, pendingLabel }: FormWrapperProps): JSX.Element {
+    const initialState: FormStatus = {
+        status: '',
+        message: '',
+    }
+    const [state, formAction, pending] = useActionState(action, initialState);
+
+    useEffect(() => {
+        if (state.status == 'success') {
+            toast.success(state.message);
+        }
+
+        if (state.status == 'error') {
+            toast.error(state.message);
+        }
+    }, [state]);
+
+    return (
+        <form action={formAction} className={formCss}>
+            {children}
+
+            <Button
+                type='submit'
+                disabled={pending}
+                className='capitalize w-28 text-[#7B4B3A] border border-[#E5C6AC] hover:bg-[#C05C41] hover:text-white cursor-pointer'>
+                {pending ? pendingLabel : buttonLabel}
+            </Button>
+        </form>
+    )
+}
+
+export default FormWrapper
