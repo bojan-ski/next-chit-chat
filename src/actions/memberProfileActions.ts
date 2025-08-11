@@ -3,8 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
-import { FormStatus } from "@/types/types";
 import { memberProfileSchema } from "@/utils/schemas";
+import { FormStatus } from "@/types/types";
 
 export async function checkIfMemberExistsAction({
   userId,
@@ -13,7 +13,7 @@ export async function checkIfMemberExistsAction({
 }) {
   return prisma.member.findFirst({
     where: {
-      clerkId: userId,
+      id: userId,
     },
   });
 }
@@ -56,7 +56,7 @@ export async function setProfileDataAction(
       // update existing member - profile data
       await prisma.member.update({
         where: {
-          clerkId: userId,
+          id: userId,
         },
         data: {
           username,
@@ -69,7 +69,7 @@ export async function setProfileDataAction(
       // create member - profile data
       await prisma.member.create({
         data: {
-          clerkId: userId,
+          id: userId,
           username,
           city,
           state,
@@ -101,7 +101,7 @@ export const fetchProfileDataAction = async () => {
   try {
     return prisma.member.findFirst({
       where: {
-        clerkId: userId,
+        id: userId,
       },
     });
   } catch (error) {

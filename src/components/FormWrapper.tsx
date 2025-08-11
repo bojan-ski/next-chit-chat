@@ -11,9 +11,10 @@ type FormWrapperProps = {
     formCss?: string,
     buttonLabel: string,
     pendingLabel: string
+    encType: string
 }
 
-function FormWrapper({ children, action, formCss, buttonLabel, pendingLabel }: FormWrapperProps): JSX.Element {
+function FormWrapper({ children, action, formCss, buttonLabel, pendingLabel, encType }: FormWrapperProps): JSX.Element {
     const initialState: FormStatus = {
         status: '',
         message: '',
@@ -31,7 +32,11 @@ function FormWrapper({ children, action, formCss, buttonLabel, pendingLabel }: F
     }, [state]);
 
     return (
-        <form action={formAction} className={formCss}>
+        <form
+            action={formAction}
+            className={formCss}
+            encType={encType}
+        >
             {children}
 
             <Button

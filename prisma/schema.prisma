@@ -28,13 +28,25 @@ model ForbiddenWord {
 }
 
 model Member {
-  id           String  @id @default(uuid())
-  clerkId      String  @unique
-  username     String
-  city         String?
-  state        String?
-  description  String?
+  id            String  @id
+  username      String
+  city          String?
+  state         String?
+  description   String?
+  imagesGallery Image[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Image {
+  id         String  @id @default(uuid())
+  memberId   String
+  image      String
+  isApproved Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
 }
