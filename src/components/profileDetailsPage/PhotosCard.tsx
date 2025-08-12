@@ -1,12 +1,14 @@
 import { JSX } from "react";
 import Image from "next/image";
 import { Photo } from "@prisma/client";
-import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
+import DeletePhotoOption from "./DeletePhotoOption";
 
-function ProfileImageCard({ photo }: { photo: Photo }): JSX.Element {
+function PhotosCard({ photo }: { photo: Photo }): JSX.Element {
     return (
         <Dialog>
+            {/* Photo small display */}
             <DialogTrigger asChild>
                 <div className="relative w-full h-60 hover:scale-105 transition duration-700 cursor-pointer">
                     <Image
@@ -28,7 +30,8 @@ function ProfileImageCard({ photo }: { photo: Photo }): JSX.Element {
                 </div>
             </DialogTrigger>
 
-            <DialogContent className="max-w-4xl overflow-hidden bg-[#E5C6AC] p-4 text-[#C05C41]">
+            {/* Photo full display */}
+            <DialogContent className="max-w-4xl overflow-hidden bg-[#E5C6AC] p-7 text-[#C05C41]">
                 <VisuallyHidden>
                     <DialogTitle>
                         User image
@@ -44,9 +47,12 @@ function ProfileImageCard({ photo }: { photo: Photo }): JSX.Element {
                         sizes="100vw"
                     />
                 </div>
+
+                {/* delete photo option */}
+                <DeletePhotoOption photo={photo} />
             </DialogContent>
         </Dialog>
     );
 }
 
-export default ProfileImageCard;
+export default PhotosCard;

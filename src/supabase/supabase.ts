@@ -21,3 +21,11 @@ export const uploadImageToSupabase = async (image: File) => {
 
   return supabase.storage.from(bucket).getPublicUrl(newName).data.publicUrl;
 };
+
+export const deleteImageFromSupabase = (url: string) => {
+  const urlPath = url.split("/").pop();
+
+  if (!urlPath) throw new Error("Invalid URL");
+
+  return supabase.storage.from(bucket).remove([urlPath]);
+};

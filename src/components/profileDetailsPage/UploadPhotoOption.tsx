@@ -1,16 +1,16 @@
 import { JSX } from 'react';
-import { uploadImage } from '@/actions/imageActions';
+import { uploadPhotoAction } from '@/actions/photoActions';
 import FormWrapper from '../FormWrapper';
 import FormImageInput from '../FormImageInput';
 
-function UploadImageOption(): JSX.Element {
+function UploadPhotoOption(): JSX.Element {
     return (
         <div className='border-b border-[#E5C6AC] mb-5 pb-3'>
             <FormWrapper
-                action={uploadImage}
+                action={uploadPhotoAction}
                 encType="multipart/form-data"
                 formCss='flex space-x-2'
-                buttonLabel='Add Image'
+                buttonLabel='Add Photo'
                 pendingLabel='Adding...'
             >
                 <FormImageInput
@@ -22,4 +22,4 @@ function UploadImageOption(): JSX.Element {
     )
 }
 
-export default UploadImageOption
+export default UploadPhotoOption
