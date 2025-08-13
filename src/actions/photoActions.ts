@@ -9,7 +9,7 @@ import {
 import { imageSchema } from "@/utils/schemas";
 import { FormStatus } from "@/types/types";
 import { Member, Photo } from "@prisma/client";
-import { getUserId } from "./authActions";
+import { getUserIdAction, isAdminAction } from "./authActions";
 
 export const uploadPhotoAction = async (
   initialState: FormStatus,
@@ -17,7 +17,7 @@ export const uploadPhotoAction = async (
 ): Promise<FormStatus> => {
   try {
     // get user id
-    const userId: string = await getUserId();
+    const userId: string = await getUserIdAction();
 
     // extract form data & validate
     const rawData = formData.get("image");
@@ -58,7 +58,7 @@ export const uploadPhotoAction = async (
 
 export async function fetchPhotosByUserId(): Promise<Photo[]> {
   // get user id
-  const userId: string = await getUserId();
+  const userId: string = await getUserIdAction();
 
   const data = await prisma.member.findUnique({
     where: {
@@ -68,7 +68,6 @@ export async function fetchPhotosByUserId(): Promise<Photo[]> {
       photoGallery: {
         where: {
           memberId: userId,
-          // isApproved: true,
         },
       },
     },
@@ -98,12 +97,13 @@ async function getMemberByPhotoId(
 
 export async function deletePhotoAction(photo: Photo): Promise<void> {
   // get user id
-  const userId: string = await getUserId();
+  const userId: string = await getUserIdAction();
 
   // check if user is owner of the photo or if admin user
   const member: Member | undefined = await getMemberByPhotoId(photo.id);
-  if (member?.id !== userId && userId !== process.env.ADMIN_USER_ID) {
-    throw new Error("Delete photo error!");
+  const isAdmin = await isAdminAction();
+  if (member?.id !== userId && !isAdmin) {
+    throw new Error("Delete photo error");
   }
 
   // if all good - run query
@@ -121,5 +121,37 @@ export async function deletePhotoAction(photo: Photo): Promise<void> {
     throw error;
   } finally {
     revalidatePath("/profile-details");
+  }
+}
+
+export async function fetchAllPhotosAction(status: boolean): Promise<Photo[]> {
+  return await prisma.photo.findMany({
+    where: {
+      isApproved: status,
+    },
+  });
+}
+
+export async function approvePhotoAction(photoId: string): Promise<void> {
+  // check if admin user
+  const isAdmin: boolean = await isAdminAction();
+  if (!isAdmin) {
+    throw new Error("Unauthorized");
+  }
+
+  // if all good - run query
+  try {
+    await prisma.photo.update({
+      where: {
+        id: photoId,
+      },
+      data: {
+        isApproved: true,
+      },
+    });
+  } catch (error) {
+    throw error;
+  } finally {
+    revalidatePath("/all-photos");
   }
 }

@@ -1,14 +1,19 @@
 import { JSX } from "react";
 import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
 import { Photo } from "@prisma/client";
+import { isAdminAction } from "@/actions/authActions";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
-import DeletePhotoOption from "./DeletePhotoOption";
+import DeletePhotoOption from "./profileDetailsPage/DeletePhotoOption";
 
-function PhotosCard({ photo }: { photo: Photo }): JSX.Element {
+async function PhotoModal({ photo }: { photo: Photo }): Promise<JSX.Element> {
+    const userId = (await auth()).userId;
+    const isAdmin = await isAdminAction();
+
     return (
         <Dialog>
-            {/* Photo small display */}
+            {/* photo small display */}
             <DialogTrigger asChild>
                 <div className="relative w-full h-60 hover:scale-105 transition duration-700 cursor-pointer">
                     <Image
@@ -30,11 +35,11 @@ function PhotosCard({ photo }: { photo: Photo }): JSX.Element {
                 </div>
             </DialogTrigger>
 
-            {/* Photo full display */}
+            {/* photo full display */}
             <DialogContent className="max-w-4xl overflow-hidden bg-[#E5C6AC] p-7 text-[#C05C41]">
                 <VisuallyHidden>
                     <DialogTitle>
-                        User image
+                        User uploaded photo
                     </DialogTitle>
                 </VisuallyHidden>
 
@@ -49,10 +54,10 @@ function PhotosCard({ photo }: { photo: Photo }): JSX.Element {
                 </div>
 
                 {/* delete photo option */}
-                <DeletePhotoOption photo={photo} />
+                {(userId == photo.memberId || (isAdmin && photo.isApproved == true)) && <DeletePhotoOption photo={photo} />}
             </DialogContent>
         </Dialog>
-    );
+    )
 }
 
-export default PhotosCard;
+export default PhotoModal
