@@ -14,11 +14,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Test {
-  id   String @id @default(uuid())
-  name String
-}
-
 model ForbiddenWord {
   id   String @id @default(uuid())
   word String
@@ -30,6 +25,7 @@ model ForbiddenWord {
 model Member {
   id           String  @id
   username     String
+  profileImage String
   city         String
   state        String
   description  String

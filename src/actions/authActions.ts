@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser, User } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 export async function getUserIdAction(): Promise<string> {
@@ -9,6 +9,14 @@ export async function getUserIdAction(): Promise<string> {
   if (!userId) redirect("/");
 
   return userId;
+}
+
+export async function getUserDataAction(): Promise<User> {
+  const user = await currentUser();
+
+  if (!user) redirect("/");
+
+  return user;
 }
 
 export async function isAdminAction(): Promise<boolean> {

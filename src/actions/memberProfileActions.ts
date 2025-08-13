@@ -1,16 +1,18 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { auth } from "@clerk/nextjs/server";
+import { User } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
+import { Member, Photo } from "@prisma/client";
 import { memberProfileSchema } from "@/utils/schemas";
 import { FormStatus } from "@/types/types";
+import { getUserDataAction, getUserIdAction } from "./authActions";
 
 export async function checkIfMemberExistsAction({
   userId,
 }: {
   userId: string;
-}) {
+}): Promise<Member | null> {
   return prisma.member.findFirst({
     where: {
       id: userId,
@@ -22,14 +24,8 @@ export async function setProfileDataAction(
   initialState: FormStatus,
   formData: FormData
 ): Promise<FormStatus> {
-  // get clerk id from clerk
-  const userId = (await auth()).userId;
-  if (!userId) {
-    return {
-      status: "error",
-      message: "Account error",
-    };
-  }
+  // get user data
+  const user: User = await getUserDataAction();
 
   // if all good - run query
   try {
@@ -38,7 +34,8 @@ export async function setProfileDataAction(
     const validatedFields = memberProfileSchema.safeParse(rawData);
 
     if (!validatedFields.success) {
-      const firstError = validatedFields.error.issues[0]?.message || "Validation failed";
+      const firstError =
+        validatedFields.error.issues[0]?.message || "Validation failed";
 
       return {
         status: "error",
@@ -46,8 +43,10 @@ export async function setProfileDataAction(
       };
     }
 
-    // extract form data
+    // extract form data & user/clerk data
     const { username, city, state, description } = validatedFields.data;
+    const userId = user?.id;
+    const profileImage = user?.imageUrl;
 
     // check if user is member
     const existingMember = await checkIfMemberExistsAction({ userId });
@@ -60,6 +59,7 @@ export async function setProfileDataAction(
         },
         data: {
           username,
+          profileImage,
           city,
           state,
           description,
@@ -71,6 +71,7 @@ export async function setProfileDataAction(
         data: {
           id: userId,
           username,
+          profileImage,
           city,
           state,
           description,
@@ -92,10 +93,9 @@ export async function setProfileDataAction(
   }
 }
 
-export const fetchProfileDataAction = async () => {
-  // get clerk id from clerk
-  const userId = (await auth()).userId;
-  if (!userId) return null;
+export const fetchProfileDataAction = async (): Promise<Member | null> => {
+  // get user id
+  const userId: string = await getUserIdAction();
 
   // if all good - run query
   try {
@@ -108,3 +108,43 @@ export const fetchProfileDataAction = async () => {
     return null;
   }
 };
+
+export const fetchAllMembersAction = async () => {
+  // get user id
+  const userId: string = await getUserIdAction();
+
+  // get members
+  const members: Member[] = await prisma.member.findMany({
+    where: {
+      NOT: {
+        id: userId,
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return members;
+};
+
+export async function getSelectedMemberDataAction(
+  userId: string
+): Promise<(Member & { photoGallery: Photo[] }) | null> {
+  try {
+    return prisma.member.findFirst({
+      where: {
+        id: userId,
+      },
+      include: {
+        photoGallery: {
+          where: {
+            isApproved: true,
+          },
+        },
+      },
+    });
+  } catch (error) {
+    return null;
+  }
+}
