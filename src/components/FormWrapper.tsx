@@ -11,7 +11,7 @@ type FormWrapperProps = {
     formCss?: string,
     buttonLabel: string,
     pendingLabel: string
-    encType: string
+    encType?: string
 }
 
 function FormWrapper({ children, action, formCss, buttonLabel, pendingLabel, encType }: FormWrapperProps): JSX.Element {

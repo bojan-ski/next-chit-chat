@@ -129,12 +129,12 @@ export const fetchAllMembersAction = async () => {
 };
 
 export async function getSelectedMemberDataAction(
-  userId: string
-): Promise<(Member & { photoGallery: Photo[] }) | null> {
+  memberId: string
+): Promise<(Member & { photoGallery: Photo[] }) | null> {  
   try {
     return prisma.member.findFirst({
       where: {
-        id: userId,
+        id: memberId,
       },
       include: {
         photoGallery: {
