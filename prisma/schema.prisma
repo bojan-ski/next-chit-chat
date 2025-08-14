@@ -30,6 +30,8 @@ model Member {
   state        String
   description  String
   photoGallery Photo[]
+  sourceLikes  Like[]  @relation("source")
+  targetLikes  Like[]  @relation("target")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -45,4 +47,17 @@ model Photo {
   updatedAt DateTime @updatedAt
 
   member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+}
+
+model Like {
+  sourceMemberId String
+  sourceMember Member @relation("source", fields: [sourceMemberId], references: [id], onDelete: Cascade)
+
+  targetMemberId String
+  targetMember Member @relation("target", fields: [targetMemberId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([sourceMemberId, targetMemberId])
 }
