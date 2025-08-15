@@ -1,10 +1,16 @@
 import { JSX } from 'react';
+import { fetchMutualLikesAction } from '@/actions/likeActions';
+import { Member } from '@prisma/client';
+import MembersListContainer from '@/components/MembersListContainer';
 
-function LikesPage(): JSX.Element {
+async function LikesPage(): Promise<JSX.Element> {
+    const mutualLikes: Member[] = await fetchMutualLikesAction();
+
     return (
-        <div className='mutual-likes-page max-w-7xl mx-auto my-10 h-[80vh]'>
-            LikesPage
-        </div>
+        <MembersListContainer
+            noDataMessage='There are no mutual likes'
+            members={mutualLikes}
+        />
     )
 }
 

@@ -12,6 +12,7 @@ function PageNavOptions({ pageLinks }: { pageLinks: PageNavigationLink[] }): JSX
         <section className='mb-5 space-x-3'>
             {pageLinks.map(pageLink => {
                 return <PageNavLink
+                    key={pageLink.link}
                     link={pageLink.link}
                     label={pageLink.label}
                     pathname={pathname}

@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { getUserIdAction } from "./authActions";
+import { Member } from "@prisma/client";
 
 export async function toggleLikeMemberAction(
   targetMemberId: string,
@@ -51,7 +52,9 @@ export async function checkIfMemberIsLikedAction(
   }
 }
 
-async function fetchSourceLikesAction(userId: string) {
+export async function fetchSourceLikesAction(): Promise<Member[]> {
+  const userId: string = await getUserIdAction();
+
   const sourceLikes = await prisma.like.findMany({
     where: {
       sourceMemberId: userId,
@@ -61,10 +64,12 @@ async function fetchSourceLikesAction(userId: string) {
     },
   });
 
-  return sourceLikes.map((member) => member.targetMember);
+  return sourceLikes.map(({ targetMember }) => targetMember);
 }
 
-async function fetchTargetLikesAction(userId: string) {
+export async function fetchTargetLikesAction(): Promise<Member[]> {
+  const userId: string = await getUserIdAction();
+
   const targetLikes = await prisma.like.findMany({
     where: {
       targetMemberId: userId,
@@ -74,38 +79,27 @@ async function fetchTargetLikesAction(userId: string) {
     },
   });
 
-  return targetLikes.map((member) => member.sourceMember);
+  return targetLikes.map(({ sourceMember }) => sourceMember);
 }
 
-async function fetchMutualLikesAction(userId: string) {
-  const likedMembers = await prisma.like.findMany({
+export async function fetchMutualLikesAction(): Promise<Member[]> {
+  const userId = await getUserIdAction();
+
+  const mutualLikes = await prisma.member.findMany({
     where: {
-      sourceMemberId: userId,
-    },
-    select: {
-      targetMemberId: true,
+      id: {
+        in: (
+          await prisma.like.findMany({
+            where: { sourceMemberId: userId },
+            select: { targetMemberId: true },
+          })
+        ).map((like) => like.targetMemberId),
+      },
+      sourceLikes: {
+        some: { targetMemberId: userId },
+      },
     },
   });
 
-  const likedIds = likedMembers.map((user) => user.targetMemberId);
-
-  const mutualLikes = await prisma.like.findMany({
-    where: {
-      AND: [
-        {
-          targetMemberId: userId,
-        },
-        {
-          sourceMemberId: {
-            in: likedIds,
-          },
-        },
-      ],
-    },
-    select: {
-      sourceMember: true,
-    },
-  });
-
-  return mutualLikes.map((member) => member.sourceMember);
+  return mutualLikes;
 }
