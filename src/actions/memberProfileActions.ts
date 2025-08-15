@@ -31,11 +31,10 @@ export async function setProfileDataAction(
   try {
     // validate form data
     const rawData = Object.fromEntries(formData);
-    const validatedFields = memberProfileSchema.safeParse(rawData);
+    const validatedFields = memberProfileSchema.safeParse(rawData);    
 
     if (!validatedFields.success) {
-      const firstError =
-        validatedFields.error.issues[0]?.message || "Validation failed";
+      const firstError = validatedFields.error.issues[0]?.message || "Validation failed";
 
       return {
         status: "error",
@@ -44,7 +43,7 @@ export async function setProfileDataAction(
     }
 
     // extract form data & user/clerk data
-    const { username, city, state, description } = validatedFields.data;
+    const { username, gender, dateOfBirth, city, state, description } = validatedFields.data;
     const userId = user?.id;
     const profileImage = user?.imageUrl;
 
@@ -60,6 +59,8 @@ export async function setProfileDataAction(
         data: {
           username,
           profileImage,
+          gender,
+          dateOfBirth,
           city,
           state,
           description,
@@ -72,6 +73,8 @@ export async function setProfileDataAction(
           id: userId,
           username,
           profileImage,
+          gender,
+          dateOfBirth,
           city,
           state,
           description,
@@ -83,7 +86,7 @@ export async function setProfileDataAction(
       status: "success",
       message: "Profile updated successfully",
     };
-  } catch (error) {
+  } catch (error) {    
     return {
       status: "error",
       message: "There was an error updating your profile",
@@ -94,19 +97,13 @@ export async function setProfileDataAction(
 }
 
 export const fetchProfileDataAction = async (): Promise<Member | null> => {
-  // get user id
   const userId: string = await getUserIdAction();
 
-  // if all good - run query
-  try {
-    return prisma.member.findFirst({
-      where: {
-        id: userId,
-      },
-    });
-  } catch (error) {
-    return null;
-  }
+  return prisma.member.findFirst({
+    where: {
+      id: userId,
+    },
+  });
 };
 
 export const fetchAllMembersAction = async () => {
@@ -130,21 +127,17 @@ export const fetchAllMembersAction = async () => {
 
 export async function getSelectedMemberDataAction(
   memberId: string
-): Promise<(Member & { photoGallery: Photo[] }) | null> {  
-  try {
-    return prisma.member.findFirst({
-      where: {
-        id: memberId,
-      },
-      include: {
-        photoGallery: {
-          where: {
-            isApproved: true,
-          },
+): Promise<(Member & { photoGallery: Photo[] }) | null> {
+  return prisma.member.findFirst({
+    where: {
+      id: memberId,
+    },
+    include: {
+      photoGallery: {
+        where: {
+          isApproved: true,
         },
       },
-    });
-  } catch (error) {
-    return null;
-  }
+    },
+  });
 }

@@ -29,27 +29,23 @@ export async function toggleLikeMemberAction(
       });
     }
   } catch (error) {
-    throw error;
+    throw new Error("There was an error with Like toggle feature")
   }
 }
 
 export async function checkIfMemberIsLikedAction(
   targetMemberId: string
 ): Promise<boolean> {
-  try {
-    const userId: string = await getUserIdAction();
+  const userId: string = await getUserIdAction();
 
-    const isLiked = await prisma.like.findFirst({
-      where: {
-        sourceMemberId: userId,
-        targetMemberId,
-      },
-    });
+  const isLiked = await prisma.like.findFirst({
+    where: {
+      sourceMemberId: userId,
+      targetMemberId,
+    },
+  });
 
-    return isLiked ? true : false;
-  } catch (error) {
-    throw error;
-  }
+  return isLiked ? true : false;
 }
 
 export async function fetchSourceLikesAction(): Promise<Member[]> {

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { calculateMemberAge } from "./utils";
 
 export const forbiddenWordSchema = z.object({
   forbidden_word: z.string().min(2, {
@@ -15,6 +16,26 @@ export const memberProfileSchema = z.object({
     .max(40, {
       message: "Max length for username is 40 characters",
     }),
+  gender: z.enum(["male", "female"], {
+    message: "Gender must be either male or female",
+  }),
+  dateOfBirth: z
+    .string()
+    .min(1, {
+      message: "Date of birth is required",
+    })
+    .transform((dateString) => {
+      return new Date(dateString);
+    })
+    .refine(
+      (date) => {
+        const age = calculateMemberAge(date);
+        return age >= 18;
+      },
+      {
+        message: "You must be at least 18.",
+      }
+    ),
   city: z
     .string()
     .min(2, {

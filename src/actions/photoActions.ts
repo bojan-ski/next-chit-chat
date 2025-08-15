@@ -79,20 +79,16 @@ export async function fetchPhotosByUserId(): Promise<Photo[]> {
 async function getMemberByPhotoId(
   photoId: string
 ): Promise<Member | undefined> {
-  try {
-    const memberAndPhoto = await prisma.photo.findUnique({
-      where: {
-        id: photoId,
-      },
-      include: {
-        member: true,
-      },
-    });
+  const memberAndPhoto = await prisma.photo.findUnique({
+    where: {
+      id: photoId,
+    },
+    include: {
+      member: true,
+    },
+  });
 
-    return memberAndPhoto?.member;
-  } catch (error) {
-    throw error;
-  }
+  return memberAndPhoto?.member;
 }
 
 export async function deletePhotoAction(photo: Photo): Promise<void> {

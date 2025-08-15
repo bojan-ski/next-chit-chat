@@ -23,15 +23,17 @@ model ForbiddenWord {
 }
 
 model Member {
-  id           String  @id
+  id           String   @id
   username     String
   profileImage String
+  gender       String
+  dateOfBirth  DateTime
   city         String
   state        String
   description  String
   photoGallery Photo[]
-  sourceLikes  Like[]  @relation("source")
-  targetLikes  Like[]  @relation("target")
+  sourceLikes  Like[]   @relation("source")
+  targetLikes  Like[]   @relation("target")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -51,10 +53,10 @@ model Photo {
 
 model Like {
   sourceMemberId String
-  sourceMember Member @relation("source", fields: [sourceMemberId], references: [id], onDelete: Cascade)
+  sourceMember   Member @relation("source", fields: [sourceMemberId], references: [id], onDelete: Cascade)
 
   targetMemberId String
-  targetMember Member @relation("target", fields: [targetMemberId], references: [id], onDelete: Cascade)
+  targetMember   Member @relation("target", fields: [targetMemberId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
