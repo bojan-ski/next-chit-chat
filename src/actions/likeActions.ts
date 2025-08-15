@@ -50,3 +50,62 @@ export async function checkIfMemberIsLikedAction(
     throw error;
   }
 }
+
+async function fetchSourceLikesAction(userId: string) {
+  const sourceLikes = await prisma.like.findMany({
+    where: {
+      sourceMemberId: userId,
+    },
+    select: {
+      targetMember: true,
+    },
+  });
+
+  return sourceLikes.map((member) => member.targetMember);
+}
+
+async function fetchTargetLikesAction(userId: string) {
+  const targetLikes = await prisma.like.findMany({
+    where: {
+      targetMemberId: userId,
+    },
+    select: {
+      sourceMember: true,
+    },
+  });
+
+  return targetLikes.map((member) => member.sourceMember);
+}
+
+async function fetchMutualLikesAction(userId: string) {
+  const likedMembers = await prisma.like.findMany({
+    where: {
+      sourceMemberId: userId,
+    },
+    select: {
+      targetMemberId: true,
+    },
+  });
+
+  const likedIds = likedMembers.map((user) => user.targetMemberId);
+
+  const mutualLikes = await prisma.like.findMany({
+    where: {
+      AND: [
+        {
+          targetMemberId: userId,
+        },
+        {
+          sourceMemberId: {
+            in: likedIds,
+          },
+        },
+      ],
+    },
+    select: {
+      sourceMember: true,
+    },
+  });
+
+  return mutualLikes.map((member) => member.sourceMember);
+}
