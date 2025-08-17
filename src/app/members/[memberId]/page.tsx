@@ -1,5 +1,5 @@
 import { JSX } from 'react';
-import { getSelectedMemberDataAction } from '@/actions/memberProfileActions';
+import { getSelectedMemberDataAction } from '@/actions/memberActions';
 import { checkIfMemberIsLikedAction } from '@/actions/likeActions';
 import { Member, Photo } from '@prisma/client';
 import NoDataMessage from '@/components/NoDataMessage';

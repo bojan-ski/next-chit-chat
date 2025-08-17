@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { fetchAllMembersAction } from "@/actions/memberProfileActions";
+import { fetchAllMembersAction } from "@/actions/memberActions";
 import { Member } from "@prisma/client";
 import { MemberFilters, MembersSearchParams } from "@/types/types";
 import MembersListContainer from "../MembersListContainer";
