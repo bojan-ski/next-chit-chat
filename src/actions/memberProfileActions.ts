@@ -5,7 +5,7 @@ import { User } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 import { Member, Photo } from "@prisma/client";
 import { memberProfileSchema } from "@/utils/schemas";
-import { FormStatus } from "@/types/types";
+import { FormStatus, MemberFilters } from "@/types/types";
 import { getUserDataAction, getUserIdAction } from "./authActions";
 
 export async function checkIfMemberExistsAction({
@@ -31,10 +31,11 @@ export async function setProfileDataAction(
   try {
     // validate form data
     const rawData = Object.fromEntries(formData);
-    const validatedFields = memberProfileSchema.safeParse(rawData);    
+    const validatedFields = memberProfileSchema.safeParse(rawData);
 
     if (!validatedFields.success) {
-      const firstError = validatedFields.error.issues[0]?.message || "Validation failed";
+      const firstError =
+        validatedFields.error.issues[0]?.message || "Validation failed";
 
       return {
         status: "error",
@@ -43,7 +44,8 @@ export async function setProfileDataAction(
     }
 
     // extract form data & user/clerk data
-    const { username, gender, dateOfBirth, city, state, description } = validatedFields.data;
+    const { username, gender, dateOfBirth, city, state, description } =
+      validatedFields.data;
     const userId = user?.id;
     const profileImage = user?.imageUrl;
 
@@ -86,7 +88,7 @@ export async function setProfileDataAction(
       status: "success",
       message: "Profile updated successfully",
     };
-  } catch (error) {    
+  } catch (error) {
     return {
       status: "error",
       message: "There was an error updating your profile",
@@ -106,17 +108,49 @@ export const fetchProfileDataAction = async (): Promise<Member | null> => {
   });
 };
 
-export const fetchAllMembersAction = async () => {
+export const fetchAllMembersAction = async (filters?: MemberFilters) => {  
   // get user id
   const userId: string = await getUserIdAction();
 
+  // prisma parameters 
+  let prismaWhereParams: any = {
+    NOT: {
+      id: userId,
+    },
+  };
+  
+  // gender filter
+  if (filters?.gender !== undefined) {
+    prismaWhereParams.gender = filters.gender;
+  }
+
+  // age range filter
+  if (filters?.minAge !== undefined || filters?.maxAge !== undefined) {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+
+    // min member age
+    if (filters.minAge !== undefined) {
+      const maxBirthYear = new Date(currentYear - filters.minAge, 11, 31);
+      prismaWhereParams.dateOfBirth = {
+        ...prismaWhereParams.dateOfBirth,
+        lte: maxBirthYear,
+      };
+    }
+
+    // max member age
+    if (filters.maxAge !== undefined) {
+      const minBirthYear = new Date(currentYear - filters.maxAge - 1, 0, 1);
+      prismaWhereParams.dateOfBirth = {
+        ...prismaWhereParams.dateOfBirth,
+        gte: minBirthYear,
+      };
+    }
+  }
+
   // get members
   const members: Member[] = await prisma.member.findMany({
-    where: {
-      NOT: {
-        id: userId,
-      },
-    },
+    where: prismaWhereParams,
     orderBy: {
       createdAt: "desc",
     },

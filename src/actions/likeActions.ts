@@ -28,7 +28,7 @@ export async function toggleLikeMemberAction(
         },
       });
     }
-  } catch (error) {
+  } catch (error) {    
     throw new Error("There was an error with Like toggle feature")
   }
 }

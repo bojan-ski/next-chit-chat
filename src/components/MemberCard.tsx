@@ -2,6 +2,7 @@ import { JSX } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Member } from '@prisma/client';
+import { calculateMemberAge } from '@/utils/utils';
 
 function MemberCard({ member }: { member: Member }): JSX.Element {
     return (
@@ -25,7 +26,8 @@ function MemberCard({ member }: { member: Member }): JSX.Element {
             {/* info container */}
             <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
                 <p className="text-lg font-semibold truncate">
-                    {member.username}
+                    <span>{member.username}</span>
+                    <span>, {calculateMemberAge(member.dateOfBirth)}</span>
                 </p>
                 <p className="text-sm text-gray-200 flex items-center gap-1">
                     <span>{member.city}</span>
