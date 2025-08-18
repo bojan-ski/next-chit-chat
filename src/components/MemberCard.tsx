@@ -29,6 +29,9 @@ function MemberCard({ member }: { member: Member }): JSX.Element {
                     <span>{member.username}</span>
                     <span>, {calculateMemberAge(member.dateOfBirth)}</span>
                 </p>
+                <p className="text-sm text-gray-200 uppercase font-semibold">
+                    <span>{member.gender}</span>
+                </p>
                 <p className="text-sm text-gray-200 flex items-center gap-1">
                     <span>{member.city}</span>
                     <span>, {member.state}</span>

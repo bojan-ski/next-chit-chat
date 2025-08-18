@@ -13,7 +13,7 @@ function MembersListContainer({ noDataMessage, members }: MembersListContainerPr
         members.length == 0 ? (
             <NoDataMessage message={noDataMessage} />
         ) : (
-            <section className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <section className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10">
                 {members.map(member => <MemberCard key={member.id} member={member} />)}
             </section>
         )

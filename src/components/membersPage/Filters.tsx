@@ -1,11 +1,14 @@
-'use client';
-
-import { JSX, useState } from 'react';
+import { Dispatch, JSX, SetStateAction, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import GenderSelectOption from './GenderSelectOption';
 import AgeRangeOption from './AgeRangeOption';
 
-function Filters(): JSX.Element {
+type FiltersProps = {
+    setOffset: Dispatch<SetStateAction<number>>
+    loadMembers: (reset?: boolean) => Promise<void>
+}
+
+function Filters({ setOffset, loadMembers }: FiltersProps): JSX.Element {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -18,6 +21,8 @@ function Filters(): JSX.Element {
     ]);
 
     const handleFilterChange = (updatedGender: string[], updatedAgeRange: number[]) => {
+        setOffset(0);
+        loadMembers(true);
         setGender(updatedGender);
         setAgeRange(updatedAgeRange);
 
