@@ -1,7 +1,8 @@
 import { JSX } from "react";
-import { FaMale, FaFemale } from "react-icons/fa";
 import { Label } from "../ui/label";
 import { Checkbox } from '../ui/checkbox';
+import { FaMale, FaFemale } from "react-icons/fa";
+import { IoMdMale, IoMdFemale } from "react-icons/io";
 
 type GenderSelectOptionProps = {
     gender: string[];
@@ -28,6 +29,7 @@ function GenderSelectOption({ gender, ageRange, handleFilterChange }: GenderSele
                     onCheckedChange={() => toggleGender("male")}
                     className="hidden"
                 />
+                {/* <IoMdMale size={30}/> */}
                 <FaMale size={30} />
             </Label>
 
@@ -38,6 +40,7 @@ function GenderSelectOption({ gender, ageRange, handleFilterChange }: GenderSele
                     onCheckedChange={() => toggleGender("female")}
                     className="hidden"
                 />
+                {/* <IoMdFemale size={30}/> */}
                 <FaFemale size={30} />
             </Label>
         </div>

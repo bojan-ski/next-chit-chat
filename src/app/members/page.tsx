@@ -73,3 +73,50 @@ function MembersPage({ searchParams }: { searchParams: Promise<MembersSearchPara
 }
 
 export default MembersPage
+
+
+// 'use client';
+
+// import { JSX } from 'react';
+// import { MembersProvider, useMembers } from '@/context/membersProvider';
+// import { MembersSearchParams } from '@/types/types';
+// import Filters from '@/components/membersPage/Filters';
+// import MembersList from '@/components/membersPage/MembersList';
+// import LoadMoreMembersOption from '@/components/membersPage/LoadMoreMembersOption';
+
+// function MembersPage({ searchParams }: { searchParams: Promise<MembersSearchParams> }): JSX.Element {
+//   return (
+//     <MembersProvider searchParams={searchParams}>
+//       <MembersPageContent />
+//     </MembersProvider>
+//   );
+// }
+
+// function MembersPageContent(): JSX.Element {
+//   const { members, loadMembers, hasMore, setOffset, loading } = useMembers();
+
+//   return (
+//     <div className='members-page max-w-7xl mx-auto my-10 h-[80vh]'>
+
+//       {/* Filter feature */}
+//       <Filters
+//         setOffset={setOffset}
+//         loadMembers={loadMembers}
+//       />
+
+//       {/* Members list*/}
+//       <MembersList members={members} />
+
+//       {/* Pagination option */}
+//       {(members.length > 0 && hasMore) && (
+//         <LoadMoreMembersOption
+//           loadMembers={loadMembers}
+//           loading={loading}
+//         />
+//       )}
+
+//     </div>
+//   )
+// }
+
+// export default MembersPage

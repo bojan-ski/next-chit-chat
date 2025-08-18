@@ -11,7 +11,7 @@ type MemberPhotoGalleryProps = {
 
 function MemberPhotoGallery({ memberId, isLiked, photoGallery }: MemberPhotoGalleryProps): JSX.Element {
     return (
-        <section className='member-photo-gallery sm:col-span-7 md:col-span-8 lg:col-span-9 border border-[#E5C6AC] rounded-lg p-5 bg-gradient-to-b from-[#FFF9F5] to-[#FCEFE8]'>
+        <section className='member-photo-gallery sm:col-span-7 md:col-span-8 lg:col-span-9 border border-[#E5C6AC] rounded-lg p-5 bg-[#FFF9F5]'>
             {/* like/unlike member option */}
             <div className='mb-5 flex items-center justify-end'>
                 <LikeMemberOption targetMemberId={memberId} isLiked={isLiked} />

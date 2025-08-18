@@ -17,7 +17,7 @@ function AgeRangeOption({ ageRange, setAgeRange, gender, handleFilterChange, }: 
 
     return (
         <div className='set-age-range-option'>
-            <Label className="flex justify-center md:justify-start text-[#7B4B3A]">
+            <Label className="justify-center text-[#7B4B3A]">
                 Age Range: {ageRange[0]} - {ageRange[1]} years
             </Label>
 
