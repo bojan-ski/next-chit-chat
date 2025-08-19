@@ -1,3 +1,5 @@
+import { Message } from "@prisma/client";
+
 export type NavigationLink = {
   href: string;
   label: string;
@@ -23,4 +25,26 @@ export type MembersSearchParams = {
   gender?: string;
   minAge?: string;
   maxAge?: string;
+};
+
+export type ConversationAndMessages = {
+  id: string;
+  participantOneId: string;
+  participantTwoId: string;
+  createdAt: Date;
+  updatedAt: Date;
+
+  participantOne: {
+    id: string;
+    username: string;
+    profileImage: string;
+  };
+
+  participantTwo: {
+    id: string;
+    username: string;
+    profileImage: string;
+  };
+
+  messages: Message[];
 };

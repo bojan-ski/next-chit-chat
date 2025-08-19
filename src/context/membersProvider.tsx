@@ -79,7 +79,7 @@ export function MembersProvider({ searchParams, children }: MembersProviderProps
 export function useMembers(): MembersContextProps {
     const context = use(MembersContext);
 
-    if (!context) throw new Error("Context error")
+    if (!context) throw new Error("Context error");
 
     return context;
 }

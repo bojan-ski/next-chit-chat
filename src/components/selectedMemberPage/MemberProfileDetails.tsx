@@ -32,7 +32,7 @@ function MemberProfileDetails({ memberData }: { memberData: Member }): JSX.Eleme
 
             {/* chit chat btn */}
             <div className="flex justify-center">
-                <Link href="#">
+                <Link href={`/members/${memberData.id}/chat`}>
                     <Button
                         variant="outline"
                         className="px-6 py-2 text-[#7B4B3A] border-[#E5C6AC] hover:bg-[#C05C41] hover:text-white hover:border-[#C05C41] capitalize transition-all duration-300 shadow-sm cursor-pointer"
