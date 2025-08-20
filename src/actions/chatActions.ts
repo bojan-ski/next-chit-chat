@@ -2,9 +2,42 @@
 
 import prisma from "@/lib/prisma";
 import { pusherServer } from "@/lib/pusher";
-import { Message } from "@prisma/client";
+import { Conversation, Message } from "@prisma/client";
 import { ConversationAndMessages } from "@/types/types";
 import { getUserIdAction } from "./authActions";
+
+export async function fetchCurrentUserConversationsAction(): Promise<
+  (Conversation & { unreadCount: number })[]
+> {
+  const userId: string = await getUserIdAction();
+
+  // Fetch conversations
+  const conversations = await prisma.conversation.findMany({
+    where: {
+      OR: [
+        { participantOneId: userId },
+        { participantTwoId: userId },
+      ],
+    },
+    include: {
+      participantOne: true,
+      participantTwo: true,
+      messages: {
+        where: {
+          isRead: false,
+          NOT: { senderId: userId }, // only messages received by current user
+        },
+        select: { id: true }, // we only need to count, not full message
+      },
+    },
+  });
+
+  // Map to add unread count
+  return conversations.map((conv) => ({
+    ...conv,
+    unreadCount: conv.messages.length,
+  }));
+}
 
 export async function createOrGetConversationAction(
   otherUserId: string
@@ -14,7 +47,8 @@ export async function createOrGetConversationAction(
     const userId: string = await getUserIdAction();
 
     // check if conversation already exists
-    let conversation: ConversationAndMessages | null = await prisma.conversation.findFirst({
+    let conversation: ConversationAndMessages | null =
+      await prisma.conversation.findFirst({
         where: {
           OR: [
             {
@@ -114,15 +148,15 @@ export async function sendMessageAction(
     const userId: string = await getUserIdAction();
 
     // get form data - message
-    const messageContent = formData.get('message')?.toString().trim() as string;
+    const messageContent = formData.get("message")?.toString().trim() as string;
 
     // check if message exists
-    if(messageContent.length == 0) return;
+    if (messageContent.length == 0) return;
 
     // create message in db
     const message: Message = await prisma.message.create({
       data: {
-        content:messageContent,
+        content: messageContent,
         senderId: userId,
         conversationId,
       },
