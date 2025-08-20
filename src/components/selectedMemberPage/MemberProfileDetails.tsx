@@ -1,8 +1,7 @@
 import { JSX } from 'react';
 import { Member } from '@prisma/client';
-import Link from 'next/link';
 import UserProfileImage from '@/components/UserProfileImage';
-import { Button } from '@/components/ui/button';
+import PageNavLink from './PageNavLink';
 
 function MemberProfileDetails({ memberData }: { memberData: Member }): JSX.Element {
     return (
@@ -31,16 +30,7 @@ function MemberProfileDetails({ memberData }: { memberData: Member }): JSX.Eleme
             </div>
 
             {/* chit chat btn */}
-            <div className="flex justify-center">
-                <Link href={`/members/${memberData.id}/chat`}>
-                    <Button
-                        variant="outline"
-                        className="px-6 py-2 text-[#7B4B3A] border-[#E5C6AC] hover:bg-[#C05C41] hover:text-white hover:border-[#C05C41] capitalize transition-all duration-300 shadow-sm cursor-pointer"
-                    >
-                        Chit Chat
-                    </Button>
-                </Link>
-            </div>
+            <PageNavLink memberId={memberData.id} />
         </section>
 
     )

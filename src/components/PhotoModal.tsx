@@ -55,7 +55,6 @@ function PhotoModal({ photo }: { photo: Photo }): JSX.Element {
                 </div>
 
                 {/* delete photo option */}
-                {/* <DeletePhotoOption photo={photo} /> */}
                 {(userId == photo.memberId || (isAdmin && photo.isApproved == true)) && <DeletePhotoOption photo={photo} />}
             </DialogContent>
         </Dialog>
