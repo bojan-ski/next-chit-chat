@@ -9,7 +9,7 @@ function MemberPhotoGallery(): JSX.Element {
     const { memberData, isLiked } = useSelectedMember();
 
     return (
-        <section className='member-photo-gallery sm:col-span-7 md:col-span-8 lg:col-span-9 border border-[#E5C6AC] rounded-lg p-5 bg-[#FFF9F5]'>
+        <section className='member-photo-gallery md:col-span-7 lg:col-span-8 xl:col-span-9 border border-[#E5C6AC] rounded-lg p-5'>
             {/* like/unlike member option */}
             <div className='mb-5 flex items-center justify-end'>
                 <LikeMemberOption targetMemberId={memberData.id} isLiked={isLiked} />

@@ -5,11 +5,11 @@ import { Member, Photo } from "@prisma/client";
 import { MemberFilters } from "@/types/types";
 import { getUserIdAction } from "./authActions";
 
-export const fetchAllMembersAction = async (
+export async function fetchAllMembersAction(
   filters?: MemberFilters,
   skip?: number,
   take: number = 12
-): Promise<Member[]> => {
+): Promise<Member[]> {
   // get user id
   const userId: string = await getUserIdAction();
 
@@ -58,7 +58,7 @@ export const fetchAllMembersAction = async (
   });
 
   return members;
-};
+}
 
 export async function getSelectedMemberDataAction(
   memberId: string

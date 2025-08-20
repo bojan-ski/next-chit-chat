@@ -13,7 +13,7 @@ async function layout({ params, children }: { params: Promise<{ memberId: string
     const isLiked = await checkIfMemberIsLikedAction(memberId);
 
     return (
-        <div className='selected-member-page max-w-7xl mx-auto my-10 grid sm:grid-cols-12 gap-5 h-[80vh]'>
+        <div className='selected-member-page max-w-7xl mx-auto my-10 grid md:grid-cols-12 gap-5'>
             {!memberData ? (
                 <NoDataMessage message="No profile data available" />
             ) : (

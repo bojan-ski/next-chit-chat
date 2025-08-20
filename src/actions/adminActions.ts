@@ -43,7 +43,7 @@ export async function addNewForbiddenWordAction(
   }
 }
 
-export const fetchForbiddenWordsAction = async (): Promise<ForbiddenWord[]> => {
+export async function fetchForbiddenWordsAction(): Promise<ForbiddenWord[]> {
   const forbiddenWords: ForbiddenWord[] = await prisma.forbiddenWord.findMany({
     orderBy: {
       createdAt: "desc",
@@ -51,11 +51,9 @@ export const fetchForbiddenWordsAction = async (): Promise<ForbiddenWord[]> => {
   });
 
   return forbiddenWords;
-};
+}
 
-export const deleteForbiddenWordAction = async (
-  wordId: string
-): Promise<void> => {
+export async function deleteForbiddenWordAction(wordId: string): Promise<void> {
   try {
     await prisma.forbiddenWord.delete({
       where: {
@@ -67,4 +65,4 @@ export const deleteForbiddenWordAction = async (
   } finally {
     revalidatePath("/forbidden-words");
   }
-};
+}

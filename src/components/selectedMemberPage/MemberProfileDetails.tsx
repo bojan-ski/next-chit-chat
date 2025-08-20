@@ -5,7 +5,7 @@ import PageNavLink from './PageNavLink';
 
 function MemberProfileDetails({ memberData }: { memberData: Member }): JSX.Element {
     return (
-        <section className="member-profile-details sm:col-span-5 md:col-span-4 lg:col-span-3 border border-[#E5C6AC] rounded-lg p-5 bg-[#FFF9F5]">
+        <section className="member-profile-details max-h-[900px] md:col-span-5 lg:col-span-4 xl:col-span-3 border border-[#E5C6AC] rounded-lg p-5 bg-[#FFF9F5]">
 
             {/* profile image */}
             <div className="mb-5 flex justify-center">

@@ -44,7 +44,7 @@ function ChatWindow({ conversation, userId }: ChatWindowProps): JSX.Element {
     }, [messages])
 
     return (
-        <section className='chat-window sm:col-span-7 md:col-span-8 lg:col-span-9 border border-[#E5C6AC] rounded-lg p-5'>
+        <section className='chat-window md:col-span-7 lg:col-span-8 xl:col-span-9 border border-[#E5C6AC] rounded-lg p-5'>
 
             {/* messages */}
             <MessagesList

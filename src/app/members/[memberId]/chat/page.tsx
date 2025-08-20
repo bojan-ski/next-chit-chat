@@ -2,7 +2,7 @@ import { JSX } from 'react';
 import { getUserIdAction } from '@/actions/authActions';
 import { createOrGetConversationAction } from '@/actions/chatActions';
 import { ConversationAndMessages } from '@/types/types';
-import ChatWindow from '@/components/ChatPage/ChatWindow';
+import ChatWindow from '@/components/chatPage/ChatWindow';
 
 async function ChatPage({ params }: { params: Promise<{ memberId: string }> }): Promise<JSX.Element> {
   const { memberId } = await params;

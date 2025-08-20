@@ -20,7 +20,7 @@ function MessagesList({ messages, userId }: MessagesListProps): JSX.Element {
     };
 
     return (
-        <ScrollArea className="p-4">
+        <ScrollArea className="p-4 h-[400px] sm:h-[650px]">
             <div className="space-y-4">
                 {messages.map((message) => {
                     const isMessageOwner: boolean = message.senderId === userId;

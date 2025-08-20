@@ -13,8 +13,5 @@ export function formatDateForInput(
 }
 
 export const formatTime = (date: Date) => {
-  return new Date(date).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  return format(new Date(date), "hh:mm a");
 };

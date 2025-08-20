@@ -11,10 +11,31 @@ import { FormStatus } from "@/types/types";
 import { Member, Photo } from "@prisma/client";
 import { getUserIdAction, isAdminAction } from "./authActions";
 
-export const uploadPhotoAction = async (
+async function checkPhotoCountAction(): Promise<number> {
+  const userId: string = await getUserIdAction();
+
+  return await prisma.photo.count({
+    where: {
+      memberId: userId,
+    },
+  });
+}
+
+export async function uploadPhotoAction(
   initialState: FormStatus,
   formData: FormData
-): Promise<FormStatus> => {
+): Promise<FormStatus> {
+  // check if limit reached
+  const photoCount = await checkPhotoCountAction();
+
+  if (photoCount >= 12) {
+    return {
+      status: "error",
+      message: "You have reached the limit of 12 photos",
+    };
+  }
+
+  // if limit not reached run query
   try {
     // get user id
     const userId: string = await getUserIdAction();
@@ -54,10 +75,9 @@ export const uploadPhotoAction = async (
   } finally {
     revalidatePath("/profile-details");
   }
-};
+}
 
-export async function fetchPhotosByUserId(): Promise<Photo[]> {
-  // get user id
+export async function fetchCurrentUserPhotosAction(): Promise<Photo[]> {
   const userId: string = await getUserIdAction();
 
   const data = await prisma.member.findUnique({
@@ -76,7 +96,7 @@ export async function fetchPhotosByUserId(): Promise<Photo[]> {
   return data?.photoGallery || [];
 }
 
-async function getMemberByPhotoId(
+async function getMemberByPhotoIdAction(
   photoId: string
 ): Promise<Member | undefined> {
   const memberAndPhoto = await prisma.photo.findUnique({
@@ -96,7 +116,7 @@ export async function deletePhotoAction(photo: Photo): Promise<void> {
   const userId: string = await getUserIdAction();
 
   // check if user is owner of the photo or if admin user
-  const member: Member | undefined = await getMemberByPhotoId(photo.id);
+  const member: Member | undefined = await getMemberByPhotoIdAction(photo.id);
   const isAdmin = await isAdminAction();
   if (member?.id !== userId && !isAdmin) {
     throw new Error("Delete photo error");
@@ -129,13 +149,9 @@ export async function fetchAllPhotosAction(status: boolean): Promise<Photo[]> {
 }
 
 export async function approvePhotoAction(photoId: string): Promise<void> {
-  // check if admin user
   const isAdmin: boolean = await isAdminAction();
-  if (!isAdmin) {
-    throw new Error("Unauthorized");
-  }
+  if (!isAdmin) throw new Error("Unauthorized");
 
-  // if all good - run query
   try {
     await prisma.photo.update({
       where: {

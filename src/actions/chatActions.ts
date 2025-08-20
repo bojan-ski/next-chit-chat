@@ -112,12 +112,14 @@ export async function sendMessageAction(
   try {
     // get user id
     const userId: string = await getUserIdAction();
+
+    // get form data - message
     const messageContent = formData.get('message')?.toString().trim() as string;
 
     // check if message exists
     if(messageContent.length == 0) return;
 
-    // create message
+    // create message in db
     const message: Message = await prisma.message.create({
       data: {
         content:messageContent,
@@ -150,10 +152,8 @@ export async function markMessagesAsReadAction(
   conversationId: string
 ): Promise<void> {
   try {
-    // get user id
     const userId: string = await getUserIdAction();
 
-    // mark message/messages as read
     await prisma.message.updateMany({
       where: {
         conversationId,
