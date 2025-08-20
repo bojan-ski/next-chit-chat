@@ -108,7 +108,7 @@ export async function createOrGetConversationAction(
 export async function sendMessageAction(
   conversationId: string,
   formData: FormData
-) {
+): Promise<void> {
   try {
     // get user id
     const userId: string = await getUserIdAction();

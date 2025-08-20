@@ -1,5 +1,3 @@
-'use client'
-
 import { JSX } from "react";
 import { useRouter } from "next/navigation";
 import { toggleLikeMemberAction } from "@/actions/likeActions";

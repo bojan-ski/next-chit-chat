@@ -1,15 +1,16 @@
+'use client'
+
 import { JSX } from "react";
 import Image from "next/image";
-import { auth } from "@clerk/nextjs/server";
 import { Photo } from "@prisma/client";
-import { isAdminAction } from "@/actions/authActions";
+import { useUser } from "@clerk/nextjs";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import DeletePhotoOption from "./profileDetailsPage/DeletePhotoOption";
 
-async function PhotoModal({ photo }: { photo: Photo }): Promise<JSX.Element> {
-    const userId = (await auth()).userId;
-    const isAdmin = await isAdminAction();
+function PhotoModal({ photo }: { photo: Photo }): JSX.Element {
+    const userId = useUser().user?.id;
+    const isAdmin = process.env.ADMIN_USER_ID
 
     return (
         <Dialog>
@@ -54,6 +55,7 @@ async function PhotoModal({ photo }: { photo: Photo }): Promise<JSX.Element> {
                 </div>
 
                 {/* delete photo option */}
+                {/* <DeletePhotoOption photo={photo} /> */}
                 {(userId == photo.memberId || (isAdmin && photo.isApproved == true)) && <DeletePhotoOption photo={photo} />}
             </DialogContent>
         </Dialog>
