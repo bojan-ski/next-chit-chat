@@ -1,8 +1,8 @@
 import { JSX } from 'react';
-import { fetchForbiddenWordsAction } from '@/actions/adminActions';
+import { fetchForbiddenWordsAction } from '@/actions/forbiddenWordAction';
 import { ForbiddenWord } from '@prisma/client';
 import ForbiddenWordCard from './ForbiddenWordCard';
-import NoDataMessage from '../NoDataMessage';
+import NoDataMessage from '../../NoDataMessage';
 
 async function ForbiddenWordsList(): Promise<JSX.Element> {
     const forbiddenWords: ForbiddenWord[] = await fetchForbiddenWordsAction();

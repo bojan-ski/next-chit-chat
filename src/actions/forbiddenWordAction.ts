@@ -5,12 +5,16 @@ import { revalidatePath } from "next/cache";
 import { FormStatus } from "@/types/types";
 import { forbiddenWordSchema } from "@/utils/schemas";
 import { ForbiddenWord } from "@prisma/client";
+import { isAdminAction } from "./authActions";
 
 export async function addNewForbiddenWordAction(
   initialState: FormStatus,
   formData: FormData
 ): Promise<FormStatus> {
   try {
+    const isAdmin: boolean = await isAdminAction();
+    if (!isAdmin) throw new Error("Unauthorized");
+
     const rawData = Object.fromEntries(formData);
     const validatedFields = forbiddenWordSchema.safeParse(rawData);
 
@@ -25,7 +29,7 @@ export async function addNewForbiddenWordAction(
 
     await prisma.forbiddenWord.create({
       data: {
-        word: validatedFields.data?.forbidden_word,
+        word: validatedFields.data?.forbidden_word.toLocaleLowerCase(),
       },
     });
 
@@ -54,6 +58,9 @@ export async function fetchForbiddenWordsAction(): Promise<ForbiddenWord[]> {
 }
 
 export async function deleteForbiddenWordAction(wordId: string): Promise<void> {
+  const isAdmin: boolean = await isAdminAction();
+  if (!isAdmin) throw new Error("Unauthorized");
+
   try {
     await prisma.forbiddenWord.delete({
       where: {
@@ -61,7 +68,7 @@ export async function deleteForbiddenWordAction(wordId: string): Promise<void> {
       },
     });
   } catch (error) {
-    throw error;
+    throw new Error("Failed to add new forbidden word");
   } finally {
     revalidatePath("/forbidden-words");
   }

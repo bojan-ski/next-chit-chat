@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { pusherServer } from "@/lib/pusher";
-import { Conversation, Message } from "@prisma/client";
+import { Conversation, ForbiddenWord, Message } from "@prisma/client";
 import {
   ConversationAndMessages,
   ConversationAndParticipants,
@@ -11,6 +11,7 @@ import {
 } from "@/types/types";
 import { getUserIdAction, isAdminAction } from "./authActions";
 import { newMessageSchema } from "@/utils/schemas";
+import { fetchForbiddenWordsAction } from "./forbiddenWordAction";
 
 export async function fetchCurrentUserConversationsAction(): Promise<
   (Conversation & { unreadCount: number })[]
@@ -140,6 +141,22 @@ export async function createOrGetConversationAction(
   }
 }
 
+async function containsForbiddenWordAction(
+  message: string
+): Promise<{ hasForbidden: boolean; words: string[] }> {
+  const forbiddenWords: ForbiddenWord[] = await fetchForbiddenWordsAction();
+  const lowerCaseMessage: string = message.toLowerCase();
+
+  const words: string[] = forbiddenWords
+    .map((fw) => fw.word.toLowerCase())
+    .filter((word) => lowerCaseMessage.includes(word));
+
+  return {
+    hasForbidden: words.length > 0,
+    words,
+  };
+}
+
 export async function sendMessageAction(
   conversationId: string,
   prevState: FormStatus,
@@ -154,6 +171,18 @@ export async function sendMessageAction(
       return {
         status: "error",
         message: validatedData.error.issues[0]?.message || "Validation failed",
+      };
+    }
+
+    // check if message contains any forbidden words
+    const messageCheck = await containsForbiddenWordAction(
+      validatedData.data.message
+    );
+
+    if (messageCheck.hasForbidden) {
+      return {
+        status: "error",
+        message: `Forbidden words: ${messageCheck.words}`,
       };
     }
 
@@ -215,7 +244,10 @@ export async function markMessagesAsReadAction(
   }
 }
 
-export async function deleteMessageAction(messageId: string, conversationId:string): Promise<void> {
+export async function deleteMessageAction(
+  messageId: string,
+  conversationId: string
+): Promise<void> {
   try {
     // get user id
     const userId: string = await getUserIdAction();
@@ -231,8 +263,7 @@ export async function deleteMessageAction(messageId: string, conversationId:stri
     });
 
     if (!message) throw new Error("Message not found");
-    if (message.senderId !== userId && !isAdmin)
-      throw new Error("Unauthorized");
+    if (message.senderId !== userId && !isAdmin) throw new Error("Unauthorized");
 
     // delete from db
     await prisma.message.delete({
@@ -248,7 +279,7 @@ export async function deleteMessageAction(messageId: string, conversationId:stri
       { messageId }
     );
 
-    // if user is admin revalidate page
+    // if admin revalidate page
     if (isAdmin) revalidatePath(`/all-conversations/${conversationId}`);
   } catch (error) {
     throw new Error("Failed to delete message");

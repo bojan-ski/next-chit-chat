@@ -1,6 +1,6 @@
 import { JSX } from 'react';
-import AddForbiddenWord from '@/components/forbiddenWordsPage/AddForbiddenWord';
-import ForbiddenWordsList from '@/components/forbiddenWordsPage/ForbiddenWordsList';
+import AddForbiddenWord from '@/components/admin/forbiddenWordsPage/AddForbiddenWord';
+import ForbiddenWordsList from '@/components/admin/forbiddenWordsPage/ForbiddenWordsList';
 
 function ForbiddenWordsPage(): JSX.Element {
     return (

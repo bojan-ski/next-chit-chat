@@ -1,7 +1,7 @@
 import { JSX } from 'react'
 import { ForbiddenWord } from '@prisma/client';
-import { deleteForbiddenWordAction } from '@/actions/adminActions';
-import { Card, CardContent } from '../ui/card';
+import { deleteForbiddenWordAction } from '@/actions/forbiddenWordAction';
+import { Card, CardContent } from '../../ui/card';
 import { FaTrashAlt } from "react-icons/fa";
 
 function ForbiddenWordCard({ word }: { word: ForbiddenWord }): JSX.Element {
@@ -12,7 +12,7 @@ function ForbiddenWordCard({ word }: { word: ForbiddenWord }): JSX.Element {
             <CardContent className='flex items-center justify-between'>
                 {word.word}
 
-                <form action={deleteForbiddenWord}>
+                <form action={deleteForbiddenWord} className='flex'>
                     <button type='submit' className='text-red-500 hover:text-red-700 transition cursor-pointer'>
                         <FaTrashAlt size={18} />
                     </button>

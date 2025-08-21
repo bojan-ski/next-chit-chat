@@ -1,9 +1,9 @@
 'use client';
 
 import { JSX } from 'react';
-import { addNewForbiddenWordAction } from '@/actions/adminActions';
-import FormInput from '../FormInput';
-import FormWrapper from '../FormWrapper';
+import { addNewForbiddenWordAction } from '@/actions/forbiddenWordAction';
+import FormInput from '../../FormInput';
+import FormWrapper from '../../FormWrapper';
 
 function AddForbiddenWord(): JSX.Element {
     return (
