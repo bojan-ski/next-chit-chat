@@ -3,14 +3,14 @@ import { Conversation } from "@prisma/client";
 import { getUserIdAction } from "@/actions/authActions";
 import { fetchCurrentUserConversationsAction } from "@/actions/chatActions";
 import NoDataMessage from "@/components/NoDataMessage";
-import ConversationCard from "@/components/ConversationCard";
+import ConversationCard from "@/components/conversationsPage/ConversationCard";
 
 async function ConversationPage(): Promise<JSX.Element> {
   const userId: string = await getUserIdAction();
   const conversations: Conversation[] = await fetchCurrentUserConversationsAction();  
 
   return (
-    <div className='members-page max-w-7xl mx-auto my-10 h-[80vh]'>
+    <div className='members-page max-w-7xl mx-auto my-10'>
       {conversations.length == 0 ? (
         <NoDataMessage message="You have no conversations" />
       ) : (

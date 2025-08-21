@@ -1,0 +1,30 @@
+import React, { JSX } from 'react';
+import { fetchAllConversations } from '@/actions/chatActions';
+import NoDataMessage from '@/components/NoDataMessage';
+import AllConversationCard from '@/components/admin/allConversationsPage/AllConversationCard';
+import { ConversationAndParticipants } from '@/types/types';
+
+async function AllConversationsPage(): Promise<JSX.Element> {
+    const allConversations: ConversationAndParticipants[] = await fetchAllConversations();
+
+    return (
+        <div className='all-conversations-page max-w-7xl mx-auto my-10'>
+            {allConversations.length == 0 ? (
+                <NoDataMessage message="There are no conversations" />
+            ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {allConversations.map(conversation => {
+                        return <AllConversationCard
+                            key={conversation.id}
+                            conversationId={conversation.id}
+                            participantOneUsername={conversation.participantOne.username}
+                            participantTwoUsername={conversation.participantTwo.username}
+                        />
+                    })}
+                </div>
+            )}
+        </div>
+    )
+}
+
+export default AllConversationsPage

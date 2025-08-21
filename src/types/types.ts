@@ -27,7 +27,7 @@ export type MembersSearchParams = {
   maxAge?: string;
 };
 
-export type ConversationAndMessages = {
+export type ConversationAndParticipants = {
   id: string;
   participantOneId: string;
   participantTwoId: string;
@@ -45,6 +45,8 @@ export type ConversationAndMessages = {
     username: string;
     profileImage: string;
   };
+};
 
+export type ConversationAndMessages = ConversationAndParticipants & {
   messages: Message[];
 };

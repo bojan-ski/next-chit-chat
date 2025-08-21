@@ -3,8 +3,12 @@
 import prisma from "@/lib/prisma";
 import { pusherServer } from "@/lib/pusher";
 import { Conversation, Message } from "@prisma/client";
-import { ConversationAndMessages, FormStatus } from "@/types/types";
-import { getUserIdAction } from "./authActions";
+import {
+  ConversationAndMessages,
+  ConversationAndParticipants,
+  FormStatus,
+} from "@/types/types";
+import { getUserIdAction, isAdminAction } from "./authActions";
 import { newMessageSchema } from "@/utils/schemas";
 
 export async function fetchCurrentUserConversationsAction(): Promise<
@@ -241,4 +245,18 @@ export async function deleteMessageAction(messageId: string): Promise<void> {
   } catch (error) {
     throw new Error("Failed to delete message");
   }
+}
+
+export async function fetchAllConversations(): Promise<
+  ConversationAndParticipants[]
+> {
+  const isAdmin: boolean = await isAdminAction();
+  if (!isAdmin) throw new Error("Unauthorized");
+
+  return await prisma.conversation.findMany({
+    include: {
+      participantOne: true,
+      participantTwo: true,
+    },
+  });
 }
