@@ -22,11 +22,13 @@ function FormWrapper({ children, action, formCss, buttonLabel, pendingLabel, enc
     const [state, formAction, pending] = useActionState(action, initialState);
 
     useEffect(() => {
-        if (state.status == 'success') {
+        console.log('useEffect - FormWrapper');
+
+        if (state?.status == 'success') {
             toast.success(state.message);
         }
 
-        if (state.status == 'error') {
+        if (state?.status == 'error') {
             toast.error(state.message);
         }
     }, [state]);

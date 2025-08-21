@@ -3,21 +3,18 @@
 import prisma from "@/lib/prisma";
 import { pusherServer } from "@/lib/pusher";
 import { Conversation, Message } from "@prisma/client";
-import { ConversationAndMessages } from "@/types/types";
+import { ConversationAndMessages, FormStatus } from "@/types/types";
 import { getUserIdAction } from "./authActions";
+import { newMessageSchema } from "@/utils/schemas";
 
 export async function fetchCurrentUserConversationsAction(): Promise<
   (Conversation & { unreadCount: number })[]
 > {
   const userId: string = await getUserIdAction();
 
-  // Fetch conversations
   const conversations = await prisma.conversation.findMany({
     where: {
-      OR: [
-        { participantOneId: userId },
-        { participantTwoId: userId },
-      ],
+      OR: [{ participantOneId: userId }, { participantTwoId: userId }],
     },
     include: {
       participantOne: true,
@@ -25,17 +22,16 @@ export async function fetchCurrentUserConversationsAction(): Promise<
       messages: {
         where: {
           isRead: false,
-          NOT: { senderId: userId }, // only messages received by current user
+          NOT: { senderId: userId },
         },
-        select: { id: true }, // we only need to count, not full message
+        select: { id: true },
       },
     },
   });
 
-  // Map to add unread count
-  return conversations.map((conv) => ({
-    ...conv,
-    unreadCount: conv.messages.length,
+  return conversations.map((conversation) => ({
+    ...conversation,
+    unreadCount: conversation.messages.length,
   }));
 }
 
@@ -141,22 +137,28 @@ export async function createOrGetConversationAction(
 
 export async function sendMessageAction(
   conversationId: string,
+  prevState: FormStatus,
   formData: FormData
-): Promise<void> {
+): Promise<FormStatus | void> {
   try {
+    // get form data - message & validation
+    const rawData = Object.fromEntries(formData.entries());
+    const validatedData = newMessageSchema.safeParse(rawData);
+
+    if (validatedData.error) {
+      return {
+        status: "error",
+        message: validatedData.error.issues[0]?.message || "Validation failed",
+      };
+    }
+
     // get user id
     const userId: string = await getUserIdAction();
-
-    // get form data - message
-    const messageContent = formData.get("message")?.toString().trim() as string;
-
-    // check if message exists
-    if (messageContent.length == 0) return;
 
     // create message in db
     const message: Message = await prisma.message.create({
       data: {
-        content: messageContent,
+        content: validatedData.data.message,
         senderId: userId,
         conversationId,
       },
@@ -178,7 +180,10 @@ export async function sendMessageAction(
       message
     );
   } catch (error) {
-    throw new Error("Failed to send message");
+    return {
+      status: "error",
+      message: "Failed to send message",
+    };
   }
 }
 
@@ -202,5 +207,38 @@ export async function markMessagesAsReadAction(
     });
   } catch (error) {
     throw new Error("Failed to mark messages as read");
+  }
+}
+
+export async function deleteMessageAction(messageId: string): Promise<void> {
+  try {
+    // get user id
+    const userId: string = await getUserIdAction();
+
+    // find message and check if user is message owner
+    const message: Message | null = await prisma.message.findUnique({
+      where: {
+        id: messageId,
+      },
+    });
+
+    if (!message) throw new Error("Message not found");
+    if (message.senderId !== userId) throw new Error("Unauthorized");
+
+    // delete from db
+    await prisma.message.delete({
+      where: {
+        id: messageId,
+      },
+    });
+
+    // trigger pusher API
+    await pusherServer.trigger(
+      `conversation-${message.conversationId}`,
+      "delete-message",
+      { messageId }
+    );
+  } catch (error) {
+    throw new Error("Failed to delete message");
   }
 }

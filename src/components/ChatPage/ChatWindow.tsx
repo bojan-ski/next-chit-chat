@@ -18,18 +18,25 @@ function ChatWindow({ conversation, userId }: ChatWindowProps): JSX.Element {
 
     // on page load subscribe to pusher and mark all unread messages as read
     useEffect(() => {
-        console.log('ChatWindow - useEffect 1');
+        console.log('useEffect 1 - ChatWindow');
 
         // subscribe to the conversation channel
         const channel = pusherClient.subscribe(`conversation-${conversation?.id}`);
 
+        // create message
         channel.bind('new-message', (message: Message) => {
-            setMessages(prev => [...prev, message]);
+            setMessages(prevState => [...prevState, message]);
+        });
+
+        // delete message
+        channel.bind("delete-message", ({ messageId }: { messageId: string }) => {
+            setMessages(prevState => prevState.filter(message => message.id !== messageId));
         });
 
         // mark messages as read when opening chat
         markMessagesAsReadAction(conversation?.id);
 
+        // unsubscribe from the conversation channel
         return () => {
             pusherClient.unsubscribe(`conversation-${conversation?.id}`);
         };
@@ -38,7 +45,7 @@ function ChatWindow({ conversation, userId }: ChatWindowProps): JSX.Element {
 
     // during conversation mark received messages as read
     useEffect(() => {
-        console.log('ChatWindow - useEffect 2');
+        console.log('useEffect 2 - ChatWindow');
 
         markMessagesAsReadAction(conversation?.id);
     }, [messages])

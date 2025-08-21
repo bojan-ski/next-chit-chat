@@ -81,3 +81,14 @@ function validateImageFile() {
       );
     }, "File must be an image");
 }
+
+export const newMessageSchema = z.object({
+  message: z
+    .string()
+    .min(1, {
+      message: "Message must be at least 1 character long",
+    })
+    .max(200, {
+      message: "Max length for message is 200 characters",
+    }),
+});
