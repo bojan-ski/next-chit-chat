@@ -1,15 +1,17 @@
 import { JSX } from 'react';
 import { formatTime } from '@/utils/utils';
-import DeleteMessageOption from './chatPage/DeleteMessageOption';
+import DeleteMessageOption from './DeleteMessageOption';
 
 type MessageCardProps = {
     messageId: string;
+    conversationId:string
     isMessageOwner: boolean,
     messageContent: string,
     messageCreated: Date
+    allowMessageDelete: boolean
 }
 
-function MessageCard({ messageId, isMessageOwner, messageContent, messageCreated }: MessageCardProps): JSX.Element {
+function MessageCard({ messageId, conversationId, isMessageOwner, messageContent, messageCreated, allowMessageDelete }: MessageCardProps): JSX.Element {
     return (
         <div
             className={`flex ${isMessageOwner ? 'justify-end' : 'justify-start'}`}
@@ -29,7 +31,7 @@ function MessageCard({ messageId, isMessageOwner, messageContent, messageCreated
                 </p>
 
                 {/* delete message */}
-                {isMessageOwner && <DeleteMessageOption messageId={messageId} />}
+                {allowMessageDelete && <DeleteMessageOption messageId={messageId} conversationId={conversationId} isMessageOwner={isMessageOwner} />}
             </div>
         </div>
     )

@@ -19,7 +19,7 @@ function MessagesList({ messages, userId }: MessagesListProps): JSX.Element {
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
+    };    
 
     return (
         <ScrollArea className="p-4 h-[400px] sm:h-[650px]">
@@ -31,9 +31,11 @@ function MessagesList({ messages, userId }: MessagesListProps): JSX.Element {
                         <MessageCard
                             key={message.id}
                             messageId={message.id}
+                            conversationId={message.conversationId}
                             isMessageOwner={isMessageOwner}
                             messageContent={message.content}
                             messageCreated={message.createdAt}
+                            allowMessageDelete={isMessageOwner}
                         />
                     );
                 })}

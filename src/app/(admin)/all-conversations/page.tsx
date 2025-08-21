@@ -1,11 +1,11 @@
 import React, { JSX } from 'react';
-import { fetchAllConversations } from '@/actions/chatActions';
+import { fetchAllConversationsAction } from '@/actions/chatActions';
 import NoDataMessage from '@/components/NoDataMessage';
 import AllConversationCard from '@/components/admin/allConversationsPage/AllConversationCard';
 import { ConversationAndParticipants } from '@/types/types';
 
 async function AllConversationsPage(): Promise<JSX.Element> {
-    const allConversations: ConversationAndParticipants[] = await fetchAllConversations();
+    const allConversations: ConversationAndParticipants[] = await fetchAllConversationsAction();
 
     return (
         <div className='all-conversations-page max-w-7xl mx-auto my-10'>
