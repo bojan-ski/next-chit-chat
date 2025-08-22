@@ -10,6 +10,7 @@ import { imageSchema } from "@/utils/schemas";
 import { FormStatus } from "@/types/types";
 import { Member, Photo } from "@prisma/client";
 import { getUserIdAction, isAdminAction } from "./authActions";
+import sharp from "sharp";
 
 async function checkPhotoCountAction(): Promise<number> {
   const userId: string = await getUserIdAction();
@@ -19,6 +20,45 @@ async function checkPhotoCountAction(): Promise<number> {
       memberId: userId,
     },
   });
+}
+
+async function compressPhotoAction(arrayBuffer: ArrayBuffer, file: File) {
+  const buffer = Buffer.from(arrayBuffer);
+
+  const metadata = await sharp(buffer).metadata();
+  let compressedBuffer: Buffer;
+
+  if (metadata.format === "png") {
+    compressedBuffer = await sharp(buffer)
+      .resize({ width: 1920, height: 1920, fit: "inside" })
+      .png({ compressionLevel: 9 })
+      .toBuffer();
+  } else if (metadata.format === "webp") {
+    compressedBuffer = await sharp(buffer)
+      .resize({ width: 1920, height: 1920, fit: "inside" })
+      .webp({ quality: 80 })
+      .toBuffer();
+  } else {
+    compressedBuffer = await sharp(buffer)
+      .resize({ width: 1920, height: 1920, fit: "inside" })
+      .jpeg({ quality: 80 })
+      .toBuffer();
+  }
+
+  const compressedFile = new File(
+    [new Uint8Array(compressedBuffer)],
+    file.name,
+    {
+      type:
+        metadata.format === "png"
+          ? "image/png"
+          : metadata.format === "webp"
+          ? "image/webp"
+          : "image/jpeg",
+    }
+  );
+
+  return compressedFile;
 }
 
 export async function uploadPhotoAction(
@@ -51,10 +91,13 @@ export async function uploadPhotoAction(
       };
     }
 
+    // compress photo
     const file = imageData.data.image as File;
+    const arrayBuffer = await file.arrayBuffer();
+    const compressedPhoto = await compressPhotoAction(arrayBuffer, file);
 
     // upload to supabase
-    const publicUrl: string = await uploadImageToSupabase(file);
+    const publicUrl: string = await uploadImageToSupabase(compressedPhoto);
 
     // upload to db
     await prisma.photo.create({
