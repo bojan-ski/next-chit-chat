@@ -1,5 +1,5 @@
 import { JSX } from 'react';
-import FormSubmitButton from '../FormSubmitButton';
+import FormSubmitButton from '../../FormSubmitButton';
 
 type ChangePhotoStatusOptionProps = {
     action: () => void;

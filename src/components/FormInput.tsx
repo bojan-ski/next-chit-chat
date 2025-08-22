@@ -25,7 +25,7 @@ function FormInput({ name, type, label = false, labelText, value, defaultValue, 
         </Label>
       )}
       <Input
-        className={`border border-[#E5C6AC] w-full ${additionInputClasses}`}
+        className={`border border-[#E5C6AC] focus:ring-transparent w-full ${additionInputClasses}`}
         id={name}
         name={name}
         type={type}

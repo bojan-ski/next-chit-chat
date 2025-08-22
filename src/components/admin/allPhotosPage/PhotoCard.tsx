@@ -1,7 +1,7 @@
 import { JSX } from 'react';
 import { Photo } from '@prisma/client';
 import { approvePhotoAction, deletePhotoAction } from '@/actions/photoActions';
-import PhotoModal from '../PhotoModal';
+import PhotoModal from '../../PhotoModal';
 import ChangePhotoStatusOption from './ChangePhotoStatusOption';
 
 function PhotoCard({ photo }: { photo: Photo }): JSX.Element {
@@ -11,7 +11,10 @@ function PhotoCard({ photo }: { photo: Photo }): JSX.Element {
     return (
         <div className='flex flex-col space-y-2'>
             {/* Photo content */}
-            <PhotoModal photo={photo} />
+            <PhotoModal
+                photo={photo}
+                allowDelete={true}
+            />
 
             {photo.isApproved == false && (
                 <>

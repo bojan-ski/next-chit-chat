@@ -7,10 +7,15 @@ import { useUser } from "@clerk/nextjs";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import DeletePhotoOption from "./profileDetailsPage/DeletePhotoOption";
+import ReportContent from "./ReportContent";
 
-function PhotoModal({ photo }: { photo: Photo }): JSX.Element {
+type PhotoModalProps = {
+    photo: Photo;
+    allowDelete?: boolean
+}
+
+function PhotoModal({ photo, allowDelete = false }: PhotoModalProps): JSX.Element {
     const userId = useUser().user?.id;
-    const isAdmin = process.env.ADMIN_USER_ID
 
     return (
         <Dialog>
@@ -54,8 +59,18 @@ function PhotoModal({ photo }: { photo: Photo }): JSX.Element {
                     />
                 </div>
 
-                {/* delete photo option */}
-                {(userId == photo.memberId || (isAdmin && photo.isApproved == true)) && <DeletePhotoOption photo={photo} />}
+                {/* delete photo */}
+                <div className='absolute top-4.5 left-2'>
+                    {(userId == photo.memberId || allowDelete) && <DeletePhotoOption photo={photo} />}
+
+                    {/* report photo */}
+                    {(userId !== photo.memberId && !allowDelete) && (
+                        <ReportContent
+                            contentType='photo'
+                            contentId={photo.image}
+                            contentOwnerId={photo.memberId} />
+                    )}
+                </div>
             </DialogContent>
         </Dialog>
     )

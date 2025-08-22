@@ -26,7 +26,7 @@ function FormTextarea({ name, label, labelText, value, defaultValue, placeholder
         </Label>
       )}
       <Textarea
-        className={`border border-[#E5C6AC] resize-none w-full ${additionTextareaClasses}`}
+        className={`border border-[#E5C6AC] focus:ring-transparent resize-none w-full ${additionTextareaClasses}`}
         id={name}
         name={name}
         value={value}

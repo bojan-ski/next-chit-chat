@@ -14,7 +14,7 @@ type FormWrapperProps = {
     encType?: string
 }
 
-function FormWrapper({ children, action, formCss, buttonLabel, pendingLabel, encType }: FormWrapperProps): JSX.Element {
+function FormWrapper({ children, action, formCss, buttonLabel, pendingLabel, encType = undefined }: FormWrapperProps): JSX.Element {
     const initialState: FormStatus = {
         status: '',
         message: '',

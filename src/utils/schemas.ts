@@ -86,9 +86,20 @@ export const newMessageSchema = z.object({
   message: z
     .string()
     .min(1, {
-      message: "Message must be at least 1 character long",
+      message: "Must be at least 1 character long",
     })
     .max(200, {
-      message: "Max length for message is 200 characters",
+      message: "Max length is 200 characters",
+    }),
+});
+
+export const newReportSchema = z.object({
+  report: z
+    .string()
+    .min(1, {
+      message: "Must be at least 1 character long",
+    })
+    .max(200, {
+      message: "Max length is 200 characters",
     }),
 });

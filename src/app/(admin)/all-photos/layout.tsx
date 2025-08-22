@@ -1,5 +1,5 @@
 import { JSX } from 'react';
-import AllPhotosNavOptions from '@/components/allPhotosPage/AllPhotosNavOptions';
+import AllPhotosNavOptions from '@/components/admin/allPhotosPage/AllPhotosNavOptions';
 
 function layout({ children }: { children: React.ReactNode }): JSX.Element {
     return (

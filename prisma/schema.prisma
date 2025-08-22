@@ -23,20 +23,27 @@ model ForbiddenWord {
 }
 
 model Member {
-  id               String         @id
-  username         String
-  profileImage     String
-  gender           String
-  dateOfBirth      DateTime
-  city             String
-  state            String
-  description      String
-  photoGallery     Photo[]
-  sourceLikes      Like[]         @relation("source")
-  targetLikes      Like[]         @relation("target")
+  id           String   @id
+  username     String
+  profileImage String
+  gender       String
+  dateOfBirth  DateTime
+  city         String
+  state        String
+  description  String
+
+  photoGallery Photo[]
+
+  sourceLikes Like[] @relation("source")
+  targetLikes Like[] @relation("target")
+
   conversationsOne Conversation[] @relation("participantOneConversations")
   conversationsTwo Conversation[] @relation("participantTwoConversations")
   sentMessages     Message[]
+
+  reported Report[]       @relation("reportedMember")
+  reports  Report[]       @relation("reporter")
+  bans     BannedMember[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -91,6 +98,33 @@ model Message {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  sender       Member       @relation(fields: [senderId], references: [id])
+  sender       Member       @relation(fields: [senderId], references: [id], onDelete: Cascade)
   conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+}
+
+model Report {
+  id             String @id @default(cuid())
+  contentType    String
+  contentId      String
+  contentOwnerId String
+  report         String
+  reporterId     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reportedMember Member @relation("reportedMember", fields: [contentOwnerId], references: [id], onDelete: Cascade)
+  reporter       Member @relation("reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+}
+
+model BannedMember {
+  id             String   @id @default(cuid())
+  bannedMemberId String
+  banReason      String
+  banDate        DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bannedMember Member @relation(fields: [bannedMemberId], references: [id], onDelete: Cascade)
 }

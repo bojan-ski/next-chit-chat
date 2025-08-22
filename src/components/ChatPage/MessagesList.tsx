@@ -32,6 +32,7 @@ function MessagesList({ messages, userId }: MessagesListProps): JSX.Element {
                             key={message.id}
                             messageId={message.id}
                             conversationId={message.conversationId}
+                            senderId={message.senderId}
                             isMessageOwner={isMessageOwner}
                             messageContent={message.content}
                             messageCreated={message.createdAt}

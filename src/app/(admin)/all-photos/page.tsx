@@ -1,7 +1,7 @@
 import { JSX } from 'react'
 import { fetchAllPhotosAction } from '@/actions/photoActions';
 import { Photo } from '@prisma/client';
-import PhotoCard from '@/components/allPhotosPage/PhotoCard';
+import PhotoCard from '@/components/admin/allPhotosPage/PhotoCard';
 
 async function AllPhotosPage(): Promise<JSX.Element> {
   const approvedPhotos: Photo[] | null = await fetchAllPhotosAction(true);
