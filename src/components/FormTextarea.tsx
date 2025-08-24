@@ -11,11 +11,13 @@ type FormTextareaProps = {
   placeholder?: string;
   rows?: number;
   cols?: number;
-  required?: boolean
+  minLength?: number;
+  maxLength?: number;
+  required?: boolean;
   additionTextareaClasses?: string
 };
 
-function FormTextarea({ name, label, labelText, value, defaultValue, placeholder, rows, cols, required, additionTextareaClasses }: FormTextareaProps): JSX.Element {
+function FormTextarea({ name, label, labelText, value, defaultValue, placeholder, rows, cols, minLength, maxLength, required, additionTextareaClasses }: FormTextareaProps): JSX.Element {
   return (
     <div className='mb-5'>
       {label && (
@@ -34,6 +36,8 @@ function FormTextarea({ name, label, labelText, value, defaultValue, placeholder
         placeholder={placeholder}
         rows={rows}
         cols={cols}
+        minLength={minLength}
+        maxLength={maxLength}
         required={required}
       />
     </div>

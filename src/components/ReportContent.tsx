@@ -45,6 +45,8 @@ function ReportContent({ contentType, contentId, contentOwnerId }: ReportContent
                     <FormTextarea
                         name='report'
                         placeholder='Please provide a detailed reason'
+                        minLength={1}
+                        maxLength={200}
                         required={true}
                     />
                 </FormWrapper>

@@ -12,7 +12,7 @@ function AllConversationCard({ conversationId, participantOneUsername, participa
     return (
         <Link href={`/all-conversations/${conversationId}`}>
             <div
-                className="border border-gray-200 bg-white rounded-2xl shadow-sm p-4 hover:shadow-md transition-shadow cursor-pointer"
+                className="rounded-2xl border border-[#E5C6AC] bg-white p-4 shadow-sm hover:shadow-lg hover:border-[#C05C41] transition-all duration-200"
             >
                 {/* participant one */}
                 <ConversationParticipant username={participantOneUsername} />

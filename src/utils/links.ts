@@ -9,6 +9,7 @@ export const memberNavigationLinks: NavigationLink[] = [
 ];
 
 export const adminNavigationLinks: NavigationLink[] = [
+  { href: "/banned", label: "banned" },
   { href: "/forbidden-words", label: "forbidden words" },
   { href: "/all-conversations", label: "all conversations" },
   { href: "/all-photos", label: "all photos" },

@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { FormStatus } from "@/types/types";
+import { FormStatus, ReportWithMembers } from "@/types/types";
 import { newReportSchema } from "@/utils/schemas";
 import { getUserIdAction } from "./authActions";
 
@@ -25,7 +25,7 @@ export async function submitReportAction(
     }
 
     // get user id
-    const userId: string = await getUserIdAction();    
+    const userId: string = await getUserIdAction();
 
     // create report in db
     await prisma.report.create({
@@ -42,10 +42,19 @@ export async function submitReportAction(
       status: "success",
       message: "Report submitted",
     };
-  } catch (error) {    
+  } catch (error) {
     return {
       status: "error",
       message: "Submit report error",
     };
   }
+}
+
+export async function fetchReportedMembersAction(): Promise<ReportWithMembers[]> {
+  return prisma.report.findMany({
+    include: {
+      reportedMember: true,
+      reporter: true,
+    },
+  });
 }

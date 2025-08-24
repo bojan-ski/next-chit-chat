@@ -1,8 +1,8 @@
 import React, { JSX } from 'react';
 import { fetchAllConversationsAction } from '@/actions/chatActions';
+import { ConversationAndParticipants } from '@/types/types';
 import NoDataMessage from '@/components/NoDataMessage';
 import AllConversationCard from '@/components/admin/allConversationsPage/AllConversationCard';
-import { ConversationAndParticipants } from '@/types/types';
 
 async function AllConversationsPage(): Promise<JSX.Element> {
     const allConversations: ConversationAndParticipants[] = await fetchAllConversationsAction();

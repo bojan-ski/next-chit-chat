@@ -8,7 +8,7 @@ function ForbiddenWordCard({ word }: { word: ForbiddenWord }): JSX.Element {
     const deleteForbiddenWord = deleteForbiddenWordAction.bind(null, word.id);
 
     return (
-        <Card className='py-5 border border-[#E5C6AC] hover:shadow-md transition'>
+        <Card className='rounded-2xl border border-[#E5C6AC] bg-white py-5 shadow-sm hover:shadow-lg hover:border-[#C05C41] transition-all duration-200'>
             <CardContent className='flex items-center justify-between'>
                 {word.word}
 

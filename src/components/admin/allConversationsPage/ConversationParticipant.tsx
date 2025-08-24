@@ -14,7 +14,7 @@ function ConversationParticipant({ username, reverse = false }: ConversationPart
             </div>
 
             {/* username */}
-            <p className="font-semibold text-gray-800">{username}</p>
+            <p className="font-semibold text-[#7B4B3A]">{username}</p>
         </div>
     );
 }

@@ -2,13 +2,13 @@ import { JSX } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
-type AllPhotosNavLinkProps = {
+type AdminPagesNavLinkProps = {
     link: string;
     label: string;
     pathname: string;
 }
 
-function AllPhotosNavLink({ link, label, pathname }: AllPhotosNavLinkProps): JSX.Element {
+function AdminPagesNavLink({ link, label, pathname }: AdminPagesNavLinkProps): JSX.Element {
     return (
         <Link href={link}>
             <Button
@@ -21,4 +21,4 @@ function AllPhotosNavLink({ link, label, pathname }: AllPhotosNavLinkProps): JSX
     )
 }
 
-export default AllPhotosNavLink
+export default AdminPagesNavLink
