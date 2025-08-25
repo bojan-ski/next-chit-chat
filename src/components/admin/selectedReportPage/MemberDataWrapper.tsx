@@ -8,7 +8,7 @@ type MemberDataWrapperProps = {
 
 function MemberDataWrapper({ label, wrapperCss, children }: MemberDataWrapperProps): JSX.Element {
     return (
-        <section className='reported-member-data mb-10'>
+        <div className='reported-member-data mb-10'>
             <h2 className="mb-5 text-center lg:text-start font-bold text-3xl text-[#7B4B3A]">
                 {label}
             </h2>
@@ -16,7 +16,7 @@ function MemberDataWrapper({ label, wrapperCss, children }: MemberDataWrapperPro
             <div className={wrapperCss}>
                 {children}
             </div>
-        </section>
+        </div>
     )
 }
 

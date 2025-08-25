@@ -1,11 +1,17 @@
 import { JSX } from 'react';
 import { Member } from '@prisma/client';
 import UserProfileImage from '@/components/UserProfileImage';
-import PageNavLink from './PageNavLink';
+import PageNavLink from './selectedMemberPage/PageNavLink';
 
-function MemberProfileDetails({ memberData }: { memberData: Member }): JSX.Element {
+type MemberProfileDetailsProps = {
+    memberData: Member;
+    sectionCss: string;
+    allowChitChat: boolean
+}
+
+function MemberProfileDetails({ memberData, sectionCss, allowChitChat }: MemberProfileDetailsProps): JSX.Element {
     return (
-        <section className="member-profile-details max-h-[900px] md:col-span-5 lg:col-span-4 xl:col-span-3 border border-[#E5C6AC] rounded-lg p-5 bg-[#FFF9F5]">
+        <section className={sectionCss}>
 
             {/* profile image */}
             <div className="mb-5 flex justify-center">
@@ -30,7 +36,7 @@ function MemberProfileDetails({ memberData }: { memberData: Member }): JSX.Eleme
             </div>
 
             {/* chit chat btn */}
-            <PageNavLink memberId={memberData.id} />
+            {allowChitChat && <PageNavLink memberId={memberData.id} />}            
         </section>
     )
 }

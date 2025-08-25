@@ -2,7 +2,7 @@ import { JSX } from 'react';
 import { fetchReportedContentAction } from '@/actions/reportActions';
 import { notFound } from 'next/navigation';
 import MemberDataWrapper from '@/components/admin/selectedReportPage/MemberDataWrapper';
-import MemberProfile from '@/components/admin/selectedReportPage/MemberProfile';
+import MemberProfileDetails from '@/components/MemberProfileDetails';
 import ReportedContent from '@/components/admin/selectedReportPage/ReportedContent';
 import MemberPreviousBans from '@/components/admin/selectedReportPage/MemberPreviousBans';
 
@@ -16,14 +16,18 @@ async function SelectedReportPage({ params }: { params: Promise<{ reportId: stri
   const { report, reporterBans, reportedMemberBans } = data;
 
   return (
-    <div className="selected-report-page max-w-7xl mx-auto">
+    <section className="selected-report-page max-w-7xl mx-auto">
 
       {/* Reported Member */}
       <MemberDataWrapper
         label='Reported Member'
         wrapperCss="grid lg:grid-cols-3 gap-5"
       >
-        <MemberProfile member={report.reportedMember} />
+        <MemberProfileDetails
+          memberData={report.reportedMember}
+          sectionCss='member-profile-details border border-[#E5C6AC] rounded-lg p-5 bg-[#FFF9F5]'
+          allowChitChat={false}
+        />
         <ReportedContent report={report} />
         <MemberPreviousBans bans={reportedMemberBans} />
       </MemberDataWrapper>
@@ -34,14 +38,18 @@ async function SelectedReportPage({ params }: { params: Promise<{ reportId: stri
         wrapperCss="grid lg:grid-cols-12 gap-5"
       >
         <div className='lg:col-span-4'>
-          <MemberProfile member={report.reporter} />
+          <MemberProfileDetails
+            memberData={report.reporter}
+            sectionCss='member-profile-details border border-[#E5C6AC] rounded-lg p-5 bg-[#FFF9F5]'
+            allowChitChat={false}
+          />
         </div>
 
         <div className='lg:col-span-8'>
           <MemberPreviousBans bans={reporterBans} />
         </div>
       </MemberDataWrapper>
-    </div>
+    </section>
   );
 }
 

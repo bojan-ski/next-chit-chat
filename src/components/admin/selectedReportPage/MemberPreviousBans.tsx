@@ -9,7 +9,7 @@ type MemberPreviousBansProps = {
 
 function MemberPreviousBans({ bans }: MemberPreviousBansProps): JSX.Element {
   return (
-    <div className="previous-bans border min-h-full max-h-[600px] overflow-scroll border-[#E5C6AC] rounded-lg p-5">
+    <section className="previous-bans border min-h-full max-h-[600px] overflow-scroll border-[#E5C6AC] rounded-lg p-5">
       {bans.length === 0 ? (
         <NoDataMessage message="User has not been banned" />
       ) : (
@@ -24,7 +24,7 @@ function MemberPreviousBans({ bans }: MemberPreviousBansProps): JSX.Element {
           </div>
         ))
       )}
-    </div>
+    </section>
   );
 }
 
