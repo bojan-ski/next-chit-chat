@@ -32,7 +32,6 @@ function MemberProfileDetails({ memberData }: { memberData: Member }): JSX.Eleme
             {/* chit chat btn */}
             <PageNavLink memberId={memberData.id} />
         </section>
-
     )
 }
 

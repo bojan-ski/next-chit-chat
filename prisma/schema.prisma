@@ -55,6 +55,8 @@ model Photo {
   image      String
   isApproved Boolean @default(false)
 
+  report Report[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -95,6 +97,8 @@ model Message {
   conversationId String
   isRead         Boolean @default(false)
 
+  report Report[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -103,9 +107,10 @@ model Message {
 }
 
 model Report {
-  id             String @id @default(cuid())
+  id             String  @id @default(cuid())
   contentType    String
-  contentId      String
+  photoId        String?
+  messageId      String?
   contentOwnerId String
   report         String
   reporterId     String
@@ -113,8 +118,10 @@ model Report {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  reportedMember Member @relation("reportedMember", fields: [contentOwnerId], references: [id], onDelete: Cascade)
-  reporter       Member @relation("reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedMember Member   @relation("reportedMember", fields: [contentOwnerId], references: [id], onDelete: Cascade)
+  reporter       Member   @relation("reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  photo          Photo?   @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  message        Message? @relation(fields: [messageId], references: [id], onDelete: Cascade)
 }
 
 model BannedMember {

@@ -15,12 +15,13 @@ import { MdOutlineReport } from "react-icons/md";
 
 type ReportContentProps = {
     contentType: string
-    contentId: string;
+    messageId?: string;
+    photoId?: string;
     contentOwnerId: string;
 }
 
-function ReportContent({ contentType, contentId, contentOwnerId }: ReportContentProps): JSX.Element {
-    const submitReport: (prevState: FormStatus, formData: FormData) => Promise<FormStatus | void> = submitReportAction.bind(null, contentType, contentId, contentOwnerId);
+function ReportContent({ contentType, messageId, photoId, contentOwnerId }: ReportContentProps): JSX.Element {
+    const submitReport: (prevState: FormStatus, formData: FormData) => Promise<FormStatus | void> = submitReportAction.bind(null, contentType, messageId ?? null, photoId ?? null, contentOwnerId);
 
     return (
         <Dialog>

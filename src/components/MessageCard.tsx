@@ -45,8 +45,9 @@ function MessageCard({ messageId, conversationId, senderId = '', isMessageOwner,
                 {(!allowMessageDelete && !isMessageOwner) && (
                     <ReportContent
                         contentType='message'
-                        contentId={messageId}
-                        contentOwnerId={senderId} />
+                        messageId={messageId}
+                        contentOwnerId={senderId}
+                    />
                 )}
             </div>
         </div>

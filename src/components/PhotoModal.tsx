@@ -11,17 +11,18 @@ import ReportContent from "./ReportContent";
 
 type PhotoModalProps = {
     photo: Photo;
-    allowDelete?: boolean
+    height?: string;
+    allowDelete?: boolean;
 }
 
-function PhotoModal({ photo, allowDelete = false }: PhotoModalProps): JSX.Element {
+function PhotoModal({ photo, height = 'h-60', allowDelete = false }: PhotoModalProps): JSX.Element {
     const userId = useUser().user?.id;
 
     return (
         <Dialog>
             {/* photo small display */}
             <DialogTrigger asChild>
-                <div className="relative w-full h-60 hover:scale-105 transition duration-700 cursor-pointer">
+                <div className={`relative w-full ${height} hover:scale-105 transition duration-700 cursor-pointer`}>
                     <Image
                         src={photo.image}
                         alt="user_image"
@@ -67,8 +68,9 @@ function PhotoModal({ photo, allowDelete = false }: PhotoModalProps): JSX.Elemen
                     {(userId !== photo.memberId && !allowDelete) && (
                         <ReportContent
                             contentType='photo'
-                            contentId={photo.image}
-                            contentOwnerId={photo.memberId} />
+                            photoId={photo.id}
+                            contentOwnerId={photo.memberId}
+                        />
                     )}
                 </div>
             </DialogContent>
