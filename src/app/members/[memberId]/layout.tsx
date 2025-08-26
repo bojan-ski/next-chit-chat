@@ -22,7 +22,7 @@ async function layout({ params, children }: { params: Promise<{ memberId: string
                     <MemberProfileDetails
                         memberData={memberData}
                         sectionCss='member-profile-details max-h-[900px] md:col-span-5 lg:col-span-4 xl:col-span-3 border border-[#E5C6AC] rounded-lg p-5 bg-[#FFF9F5]'
-                        allowChitChat={true}
+                        allowPageNavLink={true}
                     />
 
                     {children}

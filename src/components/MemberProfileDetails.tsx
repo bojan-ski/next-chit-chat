@@ -6,10 +6,10 @@ import PageNavLink from './selectedMemberPage/PageNavLink';
 type MemberProfileDetailsProps = {
     memberData: Member;
     sectionCss: string;
-    allowChitChat: boolean
+    allowPageNavLink: boolean
 }
 
-function MemberProfileDetails({ memberData, sectionCss, allowChitChat }: MemberProfileDetailsProps): JSX.Element {
+function MemberProfileDetails({ memberData, sectionCss, allowPageNavLink }: MemberProfileDetailsProps): JSX.Element {
     return (
         <section className={sectionCss}>
 
@@ -36,7 +36,7 @@ function MemberProfileDetails({ memberData, sectionCss, allowChitChat }: MemberP
             </div>
 
             {/* chit chat btn */}
-            {allowChitChat && <PageNavLink memberId={memberData.id} />}            
+            {allowPageNavLink && <PageNavLink memberId={memberData.id} />}            
         </section>
     )
 }

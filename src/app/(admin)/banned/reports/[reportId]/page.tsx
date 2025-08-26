@@ -22,11 +22,12 @@ async function SelectedReportPage({ params }: { params: Promise<{ reportId: stri
       <MemberDataWrapper
         label='Reported Member'
         wrapperCss="grid lg:grid-cols-3 gap-5"
+        report={report}
       >
         <MemberProfileDetails
           memberData={report.reportedMember}
           sectionCss='member-profile-details border border-[#E5C6AC] rounded-lg p-5 bg-[#FFF9F5]'
-          allowChitChat={false}
+          allowPageNavLink={false}
         />
         <ReportedContent report={report} />
         <MemberPreviousBans bans={reportedMemberBans} />
@@ -36,12 +37,13 @@ async function SelectedReportPage({ params }: { params: Promise<{ reportId: stri
       <MemberDataWrapper
         label='Reporter'
         wrapperCss="grid lg:grid-cols-12 gap-5"
+        report={report}
       >
         <div className='lg:col-span-4'>
           <MemberProfileDetails
             memberData={report.reporter}
             sectionCss='member-profile-details border border-[#E5C6AC] rounded-lg p-5 bg-[#FFF9F5]'
-            allowChitChat={false}
+            allowPageNavLink={false}
           />
         </div>
 

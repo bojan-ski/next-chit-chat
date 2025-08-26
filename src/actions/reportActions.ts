@@ -4,7 +4,11 @@ import prisma from "@/lib/prisma";
 import { FormStatus, ReportWithMembers } from "@/types/types";
 import { newReportSchema } from "@/utils/schemas";
 import { getUserIdAction, isAdminAction } from "./authActions";
-import { BannedMember } from "@prisma/client";
+import { BannedMember, Message, Photo } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { deletePhotoAction } from "./photoActions";
+import { deleteMessageAction } from "./chatActions";
 
 export async function submitReportAction(
   contentType: string,
@@ -101,4 +105,84 @@ export async function fetchReportedContentAction(reportId: string) {
   ]);
 
   return { report, reporterBans, reportedMemberBans };
+}
+
+export async function rejectReportAction(
+  reportId: string,
+  prevState: FormStatus
+): Promise<FormStatus> {
+  try {
+    const isAdmin = await isAdminAction();
+    if (!isAdmin) throw new Error("Unauthorized");
+
+    await prisma.report.delete({
+      where: {
+        id: reportId,
+      },
+    });
+
+    revalidatePath("/banned/reports");
+  } catch (error) {
+    return {
+      status: "error",
+      message: "Reject report error",
+    };
+  }
+
+  redirect("/banned/reports");
+}
+
+export async function bannedMemberAction(
+  reportId: string,
+  reportedMemberId: string,
+  contentType: "photo" | "message",
+  contentData: Photo | Message,
+  banReason: string,
+  prevState: FormStatus
+): Promise<FormStatus> {
+  try {
+    const isAdmin = await isAdminAction();
+    if (!isAdmin) throw new Error("Unauthorized");
+
+    // ban reported member
+    const currentDate = new Date();
+    const banMemberDate = new Date(
+      currentDate.setMonth(currentDate.getMonth() + 1)
+    );
+
+    await prisma.bannedMember.create({
+      data: {
+        bannedMemberId: reportedMemberId,
+        banReason,
+        banDate: banMemberDate,
+      },
+    });
+
+    // delete report
+    await prisma.report.delete({
+      where: {
+        id: reportId,
+      },
+    });
+
+    // delete reported content - photo || message
+    if (contentType === "photo") {
+      await deletePhotoAction(contentData as Photo);
+    } else {
+      const message = contentData as Message;
+
+      await deleteMessageAction(message.id, message.conversationId);
+    }
+
+    // revalidate page
+    revalidatePath("/banned/reports");
+  } catch (error) {
+    return {
+      status: "error",
+      message: "Ban member error",
+    };
+  }
+
+  // redirect user
+  redirect("/banned/reports");
 }

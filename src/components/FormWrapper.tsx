@@ -1,12 +1,12 @@
 'use client';
 
-import { JSX, useActionState, useEffect } from "react";
+import { JSX, ReactNode, useActionState, useEffect } from "react";
 import { FormStatus } from "@/types/types";
 import { Button } from "./ui/button";
 import toast from "react-hot-toast";
 
 type FormWrapperProps = {
-    children: React.ReactNode,
+    children?: ReactNode,
     action: any,
     formCss?: string,
     buttonLabel: string,
