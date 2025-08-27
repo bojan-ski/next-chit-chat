@@ -1,7 +1,11 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { FormStatus, ReportWithMembers } from "@/types/types";
+import {
+  BannedMemberWithDetails,
+  FormStatus,
+  ReportWithMembers,
+} from "@/types/types";
 import { newReportSchema } from "@/utils/schemas";
 import { getUserIdAction, isAdminAction } from "./authActions";
 import { BannedMember, Message, Photo } from "@prisma/client";
@@ -185,4 +189,22 @@ export async function bannedMemberAction(
 
   // redirect user
   redirect("/banned/reports");
+}
+
+export async function fetchBannedMembersAction(): Promise<BannedMemberWithDetails[]> {
+  const bannedMembers = await prisma.member.findMany({
+    where: {
+      bans: { 
+        some: {}
+       },
+    },
+    include: {
+      bans: true,
+    },
+  });
+
+  return bannedMembers.map((member) => ({
+    member,
+    bans: member.bans,
+  }));
 }

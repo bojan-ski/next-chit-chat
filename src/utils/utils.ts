@@ -15,3 +15,11 @@ export function formatDateForInput(
 export const formatTime = (date: Date) => {
   return format(new Date(date), "hh:mm a");
 };
+
+export function formatDate(
+  date: Date | string | null | undefined
+): string {
+  if (!date) return "";
+
+  return format(new Date(date), "dd.MM.yyyy");
+}

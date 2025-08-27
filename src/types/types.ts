@@ -1,4 +1,4 @@
-import { Member, Message, Report } from "@prisma/client";
+import { BannedMember, Member, Message, Report } from "@prisma/client";
 
 export type NavigationLink = {
   href: string;
@@ -54,4 +54,9 @@ export type ConversationAndMessages = ConversationAndParticipants & {
 export type ReportWithMembers = Report & {
   reportedMember: Member;
   reporter: Member;
+};
+
+export type BannedMemberWithDetails = {
+  member: Member;
+  bans: BannedMember[];
 };

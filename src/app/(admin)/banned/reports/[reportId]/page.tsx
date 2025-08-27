@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import MemberDataWrapper from '@/components/admin/selectedReportPage/MemberDataWrapper';
 import MemberProfileDetails from '@/components/MemberProfileDetails';
 import ReportedContent from '@/components/admin/selectedReportPage/ReportedContent';
-import MemberPreviousBans from '@/components/admin/selectedReportPage/MemberPreviousBans';
+import MemberPreviousBans from '@/components/admin/MemberPreviousBans';
 
 async function SelectedReportPage({ params }: { params: Promise<{ reportId: string }> }): Promise<JSX.Element> {
   const { reportId } = await params;

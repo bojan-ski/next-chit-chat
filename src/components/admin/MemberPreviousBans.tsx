@@ -1,6 +1,6 @@
 import { JSX } from 'react';
 import { BannedMember } from '@prisma/client';
-import { formatTime } from '@/utils/utils';
+import { formatDate } from '@/utils/utils';
 import NoDataMessage from '@/components/NoDataMessage';
 
 type MemberPreviousBansProps = {
@@ -9,7 +9,7 @@ type MemberPreviousBansProps = {
 
 function MemberPreviousBans({ bans }: MemberPreviousBansProps): JSX.Element {
   return (
-    <section className="previous-bans border min-h-full max-h-[600px] overflow-scroll border-[#E5C6AC] rounded-lg p-5">
+    <section className="previous-bans border min-h-full max-h-[600px] overflow-y-scroll border-[#E5C6AC] rounded-lg p-5">
       {bans.length === 0 ? (
         <NoDataMessage message="User has not been banned" />
       ) : (
@@ -19,7 +19,7 @@ function MemberPreviousBans({ bans }: MemberPreviousBansProps): JSX.Element {
               {ban.banReason}
             </p>
             <p className="text-xs text-[#A67C65]">
-              {formatTime(ban.banDate)}
+              {formatDate(ban.banDate)}
             </p>
           </div>
         ))
