@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Merriweather, Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { IsBannedProvider } from "@/context/isBannedProvider";
 import Header from "@/components/appLayout/Header";
 import Footer from "@/components/appLayout/Footer";
 import { Toaster } from "react-hot-toast";
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
   description: "Warm and inviting chit chat application",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -35,9 +36,13 @@ export default function RootLayout({
         <body className={`${merriweather.variable} ${inter.variable} antialiased`}>
           <Header />
 
-          <main>
-            {children}
-          </main>
+          <IsBannedProvider>
+
+            <main>
+              {children}
+            </main>
+
+          </IsBannedProvider>
 
           <Footer />
 
