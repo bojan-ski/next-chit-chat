@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { IsBannedProvider } from "@/context/isBannedProvider";
 import Header from "@/components/appLayout/Header";
 import Footer from "@/components/appLayout/Footer";
+import BanMessage from "@/components/BanMessage";
 import { Toaster } from "react-hot-toast";
 
 const merriweather = Merriweather({
@@ -31,25 +32,27 @@ export default async function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <IsBannedProvider>
 
-        <body className={`${merriweather.variable} ${inter.variable} antialiased`}>
-          <Header />
+        <html lang="en">
 
-          <IsBannedProvider>
+          <body className={`${merriweather.variable} ${inter.variable} antialiased`}>
+            <Header />
+
+            <BanMessage />
 
             <main>
               {children}
             </main>
 
-          </IsBannedProvider>
+            <Footer />
 
-          <Footer />
+            <Toaster />
+          </body>
 
-          <Toaster />
-        </body>
+        </html>
 
-      </html>
+      </IsBannedProvider>
     </ClerkProvider>
   );
 }

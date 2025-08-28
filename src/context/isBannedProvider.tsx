@@ -79,8 +79,8 @@ export function IsBannedProvider({ children }: IsBannedProviderProps): JSX.Eleme
     );
 }
 
-export function useIsBanned() {
-    const context = use(IsBannedContext);
+export function useIsBanned(): IsBannedContextProps {
+    const context: IsBannedContextProps | null = use(IsBannedContext);
 
     if (!context) throw new Error("IsBannedContext error");
 
