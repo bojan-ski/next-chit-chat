@@ -9,12 +9,10 @@ import {
 import { imageSchema } from "@/utils/schemas";
 import { FormStatus } from "@/types/types";
 import { Member, Photo } from "@prisma/client";
-import { getUserIdAction, isAdminAction } from "./authActions";
+import { getUserClerkIdAction, isAdminAction } from "./authActions";
 import sharp from "sharp";
 
-async function checkPhotoCountAction(): Promise<number> {
-  const userId: string = await getUserIdAction();
-
+async function checkPhotoCountAction(userId: string): Promise<number> {
   return await prisma.photo.count({
     where: {
       memberId: userId,
@@ -22,39 +20,60 @@ async function checkPhotoCountAction(): Promise<number> {
   });
 }
 
+// async function compressPhotoAction(arrayBuffer: ArrayBuffer, file: File) {
+//   const buffer = Buffer.from(arrayBuffer);
+
+//   const metadata = await sharp(buffer).metadata();
+//   let compressedBuffer: Buffer;
+
+//   if (metadata.format === "png") {
+//     compressedBuffer = await sharp(buffer)
+//       .resize({ width: 1920, height: 1920, fit: "inside" })
+//       .png({ compressionLevel: 9 })
+//       .toBuffer();
+//   } else if (metadata.format === "webp") {
+//     compressedBuffer = await sharp(buffer)
+//       .resize({ width: 1920, height: 1920, fit: "inside" })
+//       .webp({ quality: 80 })
+//       .toBuffer();
+//   } else {
+//     compressedBuffer = await sharp(buffer)
+//       .resize({ width: 1920, height: 1920, fit: "inside" })
+//       .jpeg({ quality: 80 })
+//       .toBuffer();
+//   }
+
+//   const compressedFile = new File(
+//     [new Uint8Array(compressedBuffer)],
+//     file.name,
+//     {
+//       type:
+//         metadata.format === "png"
+//           ? "image/png"
+//           : metadata.format === "webp"
+//           ? "image/webp"
+//           : "image/jpeg",
+//     }
+//   );
+
+//   return compressedFile;
+// }
+
 async function compressPhotoAction(arrayBuffer: ArrayBuffer, file: File) {
   const buffer = Buffer.from(arrayBuffer);
 
-  const metadata = await sharp(buffer).metadata();
-  let compressedBuffer: Buffer;
+  // Compress + convert to WebP
+  const compressedBuffer = await sharp(buffer)
+    .resize({ width: 1920, height: 1920, fit: "inside" })
+    .webp({ quality: 80 })
+    .toBuffer();
 
-  if (metadata.format === "png") {
-    compressedBuffer = await sharp(buffer)
-      .resize({ width: 1920, height: 1920, fit: "inside" })
-      .png({ compressionLevel: 9 })
-      .toBuffer();
-  } else if (metadata.format === "webp") {
-    compressedBuffer = await sharp(buffer)
-      .resize({ width: 1920, height: 1920, fit: "inside" })
-      .webp({ quality: 80 })
-      .toBuffer();
-  } else {
-    compressedBuffer = await sharp(buffer)
-      .resize({ width: 1920, height: 1920, fit: "inside" })
-      .jpeg({ quality: 80 })
-      .toBuffer();
-  }
-
+  // Always return WebP file
   const compressedFile = new File(
     [new Uint8Array(compressedBuffer)],
-    file.name,
+    file.name.replace(/\.[^.]+$/, ".webp"),
     {
-      type:
-        metadata.format === "png"
-          ? "image/png"
-          : metadata.format === "webp"
-          ? "image/webp"
-          : "image/jpeg",
+      type: "image/webp",
     }
   );
 
@@ -65,8 +84,11 @@ export async function uploadPhotoAction(
   initialState: FormStatus,
   formData: FormData
 ): Promise<FormStatus> {
+  // get user id
+  const userId: string = await getUserClerkIdAction();
+
   // check if limit reached
-  const photoCount = await checkPhotoCountAction();
+  const photoCount: number = await checkPhotoCountAction(userId);
 
   if (photoCount >= 12) {
     return {
@@ -77,9 +99,6 @@ export async function uploadPhotoAction(
 
   // if limit not reached run query
   try {
-    // get user id
-    const userId: string = await getUserIdAction();
-
     // extract form data & validate
     const rawData = formData.get("image");
     const imageData = imageSchema.safeParse({ image: rawData });
@@ -92,9 +111,9 @@ export async function uploadPhotoAction(
     }
 
     // compress photo
-    const file = imageData.data.image as File;
-    const arrayBuffer = await file.arrayBuffer();
-    const compressedPhoto = await compressPhotoAction(arrayBuffer, file);
+    const file: File = imageData.data.image as File;
+    const arrayBuffer: ArrayBuffer = await file.arrayBuffer();
+    const compressedPhoto: File = await compressPhotoAction(arrayBuffer, file);
 
     // upload to supabase
     const publicUrl: string = await uploadImageToSupabase(compressedPhoto);
@@ -106,6 +125,7 @@ export async function uploadPhotoAction(
         image: publicUrl,
       },
     });
+
     return {
       status: "success",
       message: "Image uploaded successfully",
@@ -121,28 +141,19 @@ export async function uploadPhotoAction(
 }
 
 export async function fetchCurrentUserPhotosAction(): Promise<Photo[]> {
-  const userId: string = await getUserIdAction();
+  const userId: string = await getUserClerkIdAction();
 
-  const data = await prisma.member.findUnique({
+  return prisma.photo.findMany({
     where: {
-      id: userId,
-    },
-    select: {
-      photoGallery: {
-        where: {
-          memberId: userId,
-        },
-      },
+      memberId: userId,
     },
   });
-
-  return data?.photoGallery || [];
 }
 
 async function getMemberByPhotoIdAction(
   photoId: string
 ): Promise<Member | undefined> {
-  const memberAndPhoto = await prisma.photo.findUnique({
+  const data = await prisma.photo.findUnique({
     where: {
       id: photoId,
     },
@@ -151,19 +162,20 @@ async function getMemberByPhotoIdAction(
     },
   });
 
-  return memberAndPhoto?.member;
+  return data?.member;
 }
 
-export async function deletePhotoAction(photo: Photo): Promise<void> {
+export async function deletePhotoAction(
+  photo: Photo,
+): Promise<FormStatus> {
   // get user id
-  const userId: string = await getUserIdAction();
+  const userId: string = await getUserClerkIdAction();
 
   // check if user is owner of the photo or if admin user
   const member: Member | undefined = await getMemberByPhotoIdAction(photo.id);
   const isAdmin = await isAdminAction();
-  if (member?.id !== userId && !isAdmin) {
-    throw new Error("Delete photo error");
-  }
+
+  if (member?.id !== userId && !isAdmin) throw new Error("Unauthorized");
 
   // if all good - run query
   try {
@@ -175,9 +187,17 @@ export async function deletePhotoAction(photo: Photo): Promise<void> {
     });
 
     // delete from supabase
-    await deleteImageFromSupabase(photo.image);
+    await deleteImageFromSupabase(photo.image);    
+
+    return {
+      status: "success",
+      message: "Photo deleted",
+    };
   } catch (error) {
-    throw error;
+    return {
+      status: "error",
+      message: "Delete photo error",
+    };
   } finally {
     revalidatePath("/profile-details");
   }

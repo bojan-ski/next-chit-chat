@@ -13,8 +13,8 @@ export const memberProfileSchema = z.object({
     .min(2, {
       message: "Username must be at least 2 characters long.",
     })
-    .max(40, {
-      message: "Max length for username is 40 characters",
+    .max(30, {
+      message: "Max length for username is 30 characters",
     }),
   gender: z.enum(["male", "female"], {
     message: "Gender must be either male or female",
@@ -41,24 +41,24 @@ export const memberProfileSchema = z.object({
     .min(2, {
       message: "City must be at least 2 characters long.",
     })
-    .max(40, {
-      message: "Max length for city is 40 characters",
+    .max(30, {
+      message: "Max length for city is 30 characters",
     }),
   state: z
     .string()
     .min(2, {
       message: "State must be at least 2 characters long.",
     })
-    .max(40, {
-      message: "Max length for state is 40 characters",
+    .max(30, {
+      message: "Max length for state is 30 characters",
     }),
   description: z
     .string()
     .min(2, {
       message: "Description must be at least 2 characters long.",
     })
-    .max(500, {
-      message: "Max length for description is 500 characters",
+    .max(400, {
+      message: "Max length for description is 400 characters",
     }),
 });
 

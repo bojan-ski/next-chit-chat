@@ -1,7 +1,13 @@
 import { JSX } from 'react';
 import { LuUser } from 'react-icons/lu';
 
-function UserProfileImage({ profileImage, imgCss, iconCss }: { profileImage: string | undefined, imgCss: string, iconCss: string }): JSX.Element {
+type UserProfileImageProps = {
+    profileImage: string | undefined
+    imgCss?: string
+    iconCss?: string
+}
+
+function UserProfileImage({ profileImage, imgCss, iconCss }: UserProfileImageProps): JSX.Element {
     return (
         <>
             {profileImage ? (

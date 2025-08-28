@@ -43,7 +43,7 @@ function PhotoModal({ photo, height = 'h-60', allowDelete = false }: PhotoModalP
             </DialogTrigger>
 
             {/* photo full display */}
-            <DialogContent className="max-w-4xl overflow-hidden bg-[#E5C6AC] p-7 text-[#C05C41]">
+            <DialogContent className="max-w-4xl overflow-hidden bg-black p-8 text-[#C05C41]" aria-describedby={undefined}>
                 <VisuallyHidden>
                     <DialogTitle>
                         User uploaded photo
@@ -56,7 +56,7 @@ function PhotoModal({ photo, height = 'h-60', allowDelete = false }: PhotoModalP
                         alt="full_image"
                         fill
                         className="object-contain"
-                        sizes="100vw"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
                     />
                 </div>
 

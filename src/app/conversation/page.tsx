@@ -1,12 +1,12 @@
 import { JSX } from "react";
 import { Conversation } from "@prisma/client";
-import { getUserIdAction } from "@/actions/authActions";
+import { getUserClerkIdAction } from "@/actions/authActions";
 import { fetchCurrentUserConversationsAction } from "@/actions/chatActions";
 import NoDataMessage from "@/components/NoDataMessage";
 import ConversationCard from "@/components/conversationsPage/ConversationCard";
 
 async function ConversationPage(): Promise<JSX.Element> {
-  const userId: string = await getUserIdAction();
+  const userId: string = await getUserClerkIdAction();
   const conversations: Conversation[] = await fetchCurrentUserConversationsAction();  
 
   return (

@@ -1,21 +1,21 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { BannedMember, Message, Photo } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { deletePhotoAction } from "./photoActions";
+import { deleteMessageAction } from "./chatActions";
+import { getUserClerkIdAction, isAdminAction } from "./authActions";
 import {
   BannedMemberWithDetails,
   FormStatus,
   ReportWithMembers,
 } from "@/types/types";
 import { newReportSchema } from "@/utils/schemas";
-import { getUserIdAction, isAdminAction } from "./authActions";
-import { BannedMember, Message, Photo } from "@prisma/client";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { deletePhotoAction } from "./photoActions";
-import { deleteMessageAction } from "./chatActions";
 
 export async function submitReportAction(
-  contentType: string,
+  contentType: 'message' | 'photo',
   messageId: string | null,
   photoId: string | null,
   contentOwnerId: string,
@@ -35,7 +35,7 @@ export async function submitReportAction(
     }
 
     // get user id
-    const userId: string = await getUserIdAction();
+    const userId: string = await getUserClerkIdAction();
 
     // create report in db
     await prisma.report.create({
@@ -54,8 +54,6 @@ export async function submitReportAction(
       message: "Report submitted",
     };
   } catch (error) {
-    console.log(error);
-
     return {
       status: "error",
       message: "Submit report error",

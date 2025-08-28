@@ -1,40 +1,38 @@
 'use client'
 
-import { JSX, startTransition, useActionState, useEffect } from 'react';
+import { JSX, ReactNode, useTransition } from 'react';
 import { FormStatus } from '@/types/types';
 import toast from 'react-hot-toast';
 
 type WithConfirmOptionProps = {
     action: (prevState: FormStatus) => Promise<FormStatus>;
-    buttonLabel: string;
-    pendingLabel: string;
-    buttonCss?: string
+    children?: ReactNode;
+    buttonCss?: string;
+    buttonLabel?: string;
+    pendingLabel?: string;
 };
 
-function WithConfirmOption({ action, buttonLabel, pendingLabel, buttonCss }: WithConfirmOptionProps): JSX.Element {
-    const initialState: FormStatus = {
-        status: '',
-        message: '',
-    }
-    const [state, formAction, pending] = useActionState(action, initialState);
+function WithConfirmOption({ action, children, buttonCss, buttonLabel, pendingLabel }: WithConfirmOptionProps): JSX.Element {
+    const [pending, startTransition] = useTransition();
 
     const handleSubmit = () => {
         if (window.confirm('Are you sure you want to proceed?')) {
-            startTransition(formAction);
+            startTransition(async () => {
+                const result: FormStatus = await action(
+                    {
+                        status: '',
+                        message: ''
+                    }
+                );
+
+                if (result.status === 'success') {
+                    toast.success(result.message);
+                } else if (result.status === 'error') {
+                    toast.error(result.message);
+                }
+            });
         }
     };
-
-    useEffect(() => {
-        console.log('useEffect - WithConfirmOption');
-
-        if (state?.status == 'success') {
-            toast.success(state.message);
-        }
-
-        if (state?.status == 'error') {
-            toast.error(state.message);
-        }
-    }, [state]);
 
     return (
         <button
@@ -42,7 +40,11 @@ function WithConfirmOption({ action, buttonLabel, pendingLabel, buttonCss }: Wit
             onClick={handleSubmit}
             disabled={pending}
             className={buttonCss}>
+
+            {children}
+
             {pending ? pendingLabel : buttonLabel}
+
         </button>
     )
 }

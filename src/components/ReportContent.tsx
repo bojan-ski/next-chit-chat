@@ -14,7 +14,7 @@ import FormWrapper from './FormWrapper';
 import { MdOutlineReport } from "react-icons/md";
 
 type ReportContentProps = {
-    contentType: string
+    contentType: 'message' | 'photo';
     messageId?: string;
     photoId?: string;
     contentOwnerId: string;
@@ -26,7 +26,7 @@ function ReportContent({ contentType, messageId, photoId, contentOwnerId }: Repo
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button className='cursor-pointer border-0 hover:text-red-900'>
+                <Button className='cursor-pointer hover:text-red-900'>
                     <MdOutlineReport />
                 </Button>
             </DialogTrigger>

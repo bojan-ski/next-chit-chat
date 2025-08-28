@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { Member, Photo } from "@prisma/client";
 import { MemberFilters } from "@/types/types";
-import { getUserIdAction } from "./authActions";
+import { getUserClerkIdAction } from "./authActions";
 
 export async function fetchAllMembersAction(
   filters?: MemberFilters,
@@ -11,7 +11,7 @@ export async function fetchAllMembersAction(
   take: number = 12
 ): Promise<Member[]> {
   // get user id
-  const userId: string = await getUserIdAction();
+  const userId: string = await getUserClerkIdAction();
 
   // prisma parameters
   let prismaWhereParams: any = {

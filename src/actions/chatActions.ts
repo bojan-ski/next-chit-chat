@@ -9,14 +9,14 @@ import {
   ConversationAndParticipants,
   FormStatus,
 } from "@/types/types";
-import { getUserIdAction, isAdminAction } from "./authActions";
+import { getUserClerkIdAction, isAdminAction } from "./authActions";
 import { newMessageSchema } from "@/utils/schemas";
 import { fetchForbiddenWordsAction } from "./forbiddenWordAction";
 
 export async function fetchCurrentUserConversationsAction(): Promise<
   (Conversation & { unreadCount: number })[]
 > {
-  const userId: string = await getUserIdAction();
+  const userId: string = await getUserClerkIdAction();
 
   const conversations = await prisma.conversation.findMany({
     where: {
@@ -46,7 +46,7 @@ export async function createOrGetConversationAction(
 ): Promise<ConversationAndMessages> {
   try {
     // get user id
-    const userId: string = await getUserIdAction();
+    const userId: string = await getUserClerkIdAction();
 
     // check if conversation already exists
     let conversation: ConversationAndMessages | null =
@@ -187,7 +187,7 @@ export async function sendMessageAction(
     }
 
     // get user id
-    const userId: string = await getUserIdAction();
+    const userId: string = await getUserClerkIdAction();
 
     // create message in db
     const message: Message = await prisma.message.create({
@@ -225,7 +225,7 @@ export async function markMessagesAsReadAction(
   conversationId: string
 ): Promise<void> {
   try {
-    const userId: string = await getUserIdAction();
+    const userId: string = await getUserClerkIdAction();
 
     await prisma.message.updateMany({
       where: {
@@ -250,7 +250,7 @@ export async function deleteMessageAction(
 ): Promise<void> {
   try {
     // get user id
-    const userId: string = await getUserIdAction();
+    const userId: string = await getUserClerkIdAction();
 
     // check if admin
     const isAdmin: boolean = await isAdminAction();

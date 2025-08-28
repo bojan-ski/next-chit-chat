@@ -2,9 +2,9 @@ import { JSX } from 'react';
 import { User } from '@clerk/nextjs/server';
 import UserProfileImage from '../UserProfileImage';
 
-async function ProfileImage({ user }: { user: User | null }): Promise<JSX.Element> {
-    const profileImage: string | undefined = user?.imageUrl;
-    const userEmailAddress: string | undefined = user?.emailAddresses[0].emailAddress;
+async function ClerkAccountData({ user }: { user: User }): Promise<JSX.Element> {
+    const profileImage: string = user?.imageUrl;
+    const userEmailAddress: string = user?.emailAddresses[0]?.emailAddress;
 
     return (
         <div className="mb-5">
@@ -19,11 +19,11 @@ async function ProfileImage({ user }: { user: User | null }): Promise<JSX.Elemen
                     Email address:
                 </span>
                 <span>
-                    {userEmailAddress && (user?.emailAddresses[0].emailAddress)}
+                    {userEmailAddress && (user?.emailAddresses[0]?.emailAddress)}
                 </span>
             </p>
         </div>
     )
 }
 
-export default ProfileImage
+export default ClerkAccountData

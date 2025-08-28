@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { getUserIdAction } from "./authActions";
+import { getUserClerkIdAction } from "./authActions";
 import { Member } from "@prisma/client";
 
 export async function toggleLikeMemberAction(
@@ -9,7 +9,7 @@ export async function toggleLikeMemberAction(
   isLiked: boolean
 ): Promise<void> {
   try {
-    const userId: string = await getUserIdAction();
+    const userId: string = await getUserClerkIdAction();
 
     if (isLiked) {
       await prisma.like.delete({
@@ -36,7 +36,7 @@ export async function toggleLikeMemberAction(
 export async function checkIfMemberIsLikedAction(
   targetMemberId: string
 ): Promise<boolean> {
-  const userId: string = await getUserIdAction();
+  const userId: string = await getUserClerkIdAction();
 
   const isLiked = await prisma.like.findFirst({
     where: {
@@ -49,7 +49,7 @@ export async function checkIfMemberIsLikedAction(
 }
 
 export async function fetchSourceLikesAction(): Promise<Member[]> {
-  const userId: string = await getUserIdAction();
+  const userId: string = await getUserClerkIdAction();
 
   const sourceLikes = await prisma.like.findMany({
     where: {
@@ -64,7 +64,7 @@ export async function fetchSourceLikesAction(): Promise<Member[]> {
 }
 
 export async function fetchTargetLikesAction(): Promise<Member[]> {
-  const userId: string = await getUserIdAction();
+  const userId: string = await getUserClerkIdAction();
 
   const targetLikes = await prisma.like.findMany({
     where: {
@@ -79,7 +79,7 @@ export async function fetchTargetLikesAction(): Promise<Member[]> {
 }
 
 export async function fetchMutualLikesAction(): Promise<Member[]> {
-  const userId = await getUserIdAction();
+  const userId = await getUserClerkIdAction();
 
   const mutualLikes = await prisma.member.findMany({
     where: {

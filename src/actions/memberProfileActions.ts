@@ -6,7 +6,7 @@ import prisma from "@/lib/prisma";
 import { Member } from "@prisma/client";
 import { memberProfileSchema } from "@/utils/schemas";
 import { FormStatus } from "@/types/types";
-import { getUserDataAction, getUserIdAction } from "./authActions";
+import { getUserClerkDataAction, getUserClerkIdAction } from "./authActions";
 
 export async function checkIfMemberExistsAction({
   userId,
@@ -24,8 +24,8 @@ export async function setProfileDataAction(
   initialState: FormStatus,
   formData: FormData
 ): Promise<FormStatus> {
-  // get user data
-  const user: User = await getUserDataAction();
+  // get user clerk data
+  const user: User = await getUserClerkDataAction();
 
   // if all good - run query
   try {
@@ -41,16 +41,16 @@ export async function setProfileDataAction(
         status: "error",
         message: firstError,
       };
-    }
+    }    
 
     // extract form data & user/clerk data
     const { username, gender, dateOfBirth, city, state, description } =
       validatedFields.data;
-    const userId = user?.id;
-    const profileImage = user?.imageUrl;
+    const userId: string = user?.id;
+    const profileImage: string = user?.imageUrl;
 
-    // check if user is member
-    const existingMember = await checkIfMemberExistsAction({ userId });
+    // check if user/member exists
+    const existingMember: Member | null = await checkIfMemberExistsAction({ userId });
 
     if (existingMember) {
       // update existing member - profile data
@@ -99,7 +99,7 @@ export async function setProfileDataAction(
 }
 
 export const fetchProfileDataAction = async (): Promise<Member | null> => {
-  const userId: string = await getUserIdAction();
+  const userId: string = await getUserClerkIdAction();
 
   return prisma.member.findFirst({
     where: {

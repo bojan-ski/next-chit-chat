@@ -1,6 +1,6 @@
-import { JSX } from 'react'
-import { Label } from './ui/label'
-import { Input } from './ui/input'
+import { JSX } from 'react';
+import { Label } from './ui/label';
+import { Input } from './ui/input';
 
 type FormImageInputProps = {
     name: string;
