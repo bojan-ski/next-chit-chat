@@ -1,43 +1,15 @@
-import { Dispatch, JSX, SetStateAction, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { Dispatch, JSX, SetStateAction } from 'react';
 import GenderSelectOption from './GenderSelectOption';
 import AgeRangeOption from './AgeRangeOption';
 
 type FiltersProps = {
-    setOffset: Dispatch<SetStateAction<number>>
-    loadMembers: (reset?: boolean) => Promise<void>
+    gender: string[];
+    ageRange: number[];
+    setAgeRange: Dispatch<SetStateAction<number[]>>;
+    handleFilterChange: (updatedGender: string[], updatedAgeRange: number[]) => void;
 }
 
-function Filters({ setOffset, loadMembers }: FiltersProps): JSX.Element {
-    const router = useRouter();
-    const searchParams = useSearchParams();
-
-    const [gender, setGender] = useState<string[]>(
-        searchParams.get('gender')?.split(',') || ['male', 'female']
-    );
-    const [ageRange, setAgeRange] = useState<number[]>([
-        parseInt(searchParams.get('minAge') || '18'),
-        parseInt(searchParams.get('maxAge') || '80')
-    ]);
-
-    const handleFilterChange = (updatedGender: string[], updatedAgeRange: number[]) => {
-        setOffset(0);
-        loadMembers(true);
-        setGender(updatedGender);
-        setAgeRange(updatedAgeRange);
-
-        const params = new URLSearchParams();
-
-        if (!(updatedGender.includes('male') && updatedGender.includes('female'))) {
-            params.set('gender', updatedGender.join(','));
-        }
-
-        params.set('minAge', updatedAgeRange[0].toString());
-        params.set('maxAge', updatedAgeRange[1].toString());
-
-        router.push(`/members?${params.toString()}`);
-    };
-
+function Filters({ gender, ageRange, setAgeRange, handleFilterChange }: FiltersProps): JSX.Element {
     return (
         <div className="bg-[#FFF9F5] p-6 rounded-xl shadow-md border border-[#E5C6AC] mb-5">
             <div className="grid grid-cols-1 md:grid-cols-2">

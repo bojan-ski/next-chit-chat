@@ -2,7 +2,6 @@ import { JSX } from 'react';
 import { Photo } from '@prisma/client';
 import { deletePhotoAction } from '@/actions/photoActions';
 import { FaTrashAlt } from 'react-icons/fa';
-import FormSubmitButton from '../FormSubmitButton';
 import WithConfirmOption from '../WithConfirmOption';
 
 function DeletePhotoOption({ photo }: { photo: Photo }): JSX.Element {

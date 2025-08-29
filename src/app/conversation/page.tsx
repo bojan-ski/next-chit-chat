@@ -7,7 +7,7 @@ import ConversationCard from "@/components/conversationsPage/ConversationCard";
 
 async function ConversationPage(): Promise<JSX.Element> {
   const userId: string = await getUserClerkIdAction();
-  const conversations: Conversation[] = await fetchCurrentUserConversationsAction();  
+  const conversations: Conversation[] = await fetchCurrentUserConversationsAction();
 
   return (
     <div className='members-page max-w-7xl mx-auto my-10'>
@@ -15,18 +15,18 @@ async function ConversationPage(): Promise<JSX.Element> {
         <NoDataMessage message="You have no conversations" />
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {conversations.map(conversation => {
-              const otherUserId = conversation?.participantOneId == userId ? conversation?.participantTwoId : conversation?.participantOneId;
-              const otherUserName = conversation?.participantOneId == userId ? conversation?.participantTwo.username : conversation?.participantOne.username;
-              const numOfUnreadMessages = conversation.unreadCount;
+          {conversations.map(conversation => {
+            const otherUserId = conversation?.participantOneId == userId ? conversation?.participantTwoId : conversation?.participantOneId;
+            const otherUserName = conversation?.participantOneId == userId ? conversation?.participantTwo.username : conversation?.participantOne.username;
+            const numOfUnreadMessages = conversation.unreadCount;
 
-              return <ConversationCard
-                key={conversation?.id}
-                otherUserId={otherUserId}
-                otherUserName={otherUserName}
-                numOfUnreadMessages={numOfUnreadMessages}
-              />
-            })}
+            return <ConversationCard
+              key={conversation?.id}
+              otherUserId={otherUserId}
+              otherUserName={otherUserName}
+              numOfUnreadMessages={numOfUnreadMessages}
+            />
+          })}
         </div>
       )}
     </div>

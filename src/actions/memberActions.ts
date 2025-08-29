@@ -11,7 +11,7 @@ export async function fetchAllMembersAction(
   take: number = 12
 ): Promise<Member[]> {
   // get user id
-  const userId: string = await getUserClerkIdAction();
+  const userId: string = await getUserClerkIdAction();  
 
   // prisma parameters
   let prismaWhereParams: any = {

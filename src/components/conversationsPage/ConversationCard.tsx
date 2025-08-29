@@ -3,14 +3,12 @@ import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 
 type ConversationCardProps = {
-  conversationId: string;
   otherUserId: string;
   otherUserName: string;
   numOfUnreadMessages: number;
 };
 
 function ConversationCard({
-  conversationId,
   otherUserId,
   otherUserName,
   numOfUnreadMessages,
@@ -18,7 +16,6 @@ function ConversationCard({
   return (
     <Link href={`/members/${otherUserId}/chat`}>
       <div
-        key={conversationId}
         className="flex items-center justify-between border border-gray-200 bg-white rounded-2xl shadow-sm p-4 hover:shadow-md transition-shadow cursor-pointer"
       >
         {/* left - username */}
@@ -28,7 +25,9 @@ function ConversationCard({
           </div>
 
           <div>
-            <p className="font-semibold text-gray-800 text-lg">{otherUserName}</p>
+            <p className="font-semibold text-gray-800 text-lg">
+              {otherUserName}
+            </p>
             <p className="text-sm text-gray-500 flex items-center gap-1">
               <MessageCircle className="w-4 h-4 text-gray-400" />
               Chat available

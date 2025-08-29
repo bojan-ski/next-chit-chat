@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, use } from "react";
+import { createContext, ReactNode, use } from "react";
 import { Member, Photo } from "@prisma/client";
 
 type SelectedMemberContextProps = {
@@ -13,7 +13,7 @@ export const SelectedMemberContext = createContext<SelectedMemberContextProps | 
 type SelectedMemberProviderProps = {
     memberData: (Member & { photoGallery: Photo[] });
     isLiked: boolean
-    children: React.ReactNode
+    children: ReactNode
 }
 
 export function SelectedMemberProvider({ memberData, isLiked, children }: SelectedMemberProviderProps) {
