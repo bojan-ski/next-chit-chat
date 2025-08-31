@@ -2,7 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { getUserClerkIdAction } from "./authActions";
-import { Member } from "@prisma/client";
+import { Like, Member } from "@prisma/client";
 
 export async function toggleLikeMemberAction(
   targetMemberId: string,
@@ -28,8 +28,8 @@ export async function toggleLikeMemberAction(
         },
       });
     }
-  } catch (error) {    
-    throw new Error("There was an error with Like toggle feature")
+  } catch (error) {
+    throw new Error("There was an error with Like toggle feature");
   }
 }
 
@@ -38,7 +38,7 @@ export async function checkIfMemberIsLikedAction(
 ): Promise<boolean> {
   const userId: string = await getUserClerkIdAction();
 
-  const isLiked = await prisma.like.findFirst({
+  const isLiked: Like | null = await prisma.like.findFirst({
     where: {
       sourceMemberId: userId,
       targetMemberId,

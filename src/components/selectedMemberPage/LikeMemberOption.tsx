@@ -11,13 +11,14 @@ type LikeMemberOptionProps = {
 function LikeMemberOption({ targetMemberId, isLiked }: LikeMemberOptionProps): JSX.Element {
     const router = useRouter();
 
-    async function toggleLike() {
+    const handleToggleLike = async (): Promise<void> => {
         await toggleLikeMemberAction(targetMemberId, isLiked);
+
         router.refresh();
     }
 
     return (
-        <div onClick={toggleLike} className="relative hover:opacity-80 transition cursor-pointer">
+        <div onClick={handleToggleLike} className="relative hover:opacity-80 transition cursor-pointer">
             <AiOutlineHeart size={40} className="fill-white absolute -top-[2px] -right-[2px]" />
             <AiFillHeart size={36} className={isLiked ? 'fill-rose-500' : 'fill-neutral-500/70'} />
         </div>

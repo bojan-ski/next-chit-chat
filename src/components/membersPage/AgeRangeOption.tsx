@@ -1,5 +1,4 @@
-import { Dispatch, JSX, SetStateAction } from 'react';
-import { Label } from '../ui/label';
+import { Dispatch, JSX, SetStateAction, useRef } from 'react';
 import { Slider } from '@/components/ui/slider';
 
 type AgeRangeOptionProps = {
@@ -10,29 +9,34 @@ type AgeRangeOptionProps = {
 }
 
 function AgeRangeOption({ ageRange, setAgeRange, gender, handleFilterChange, }: AgeRangeOptionProps): JSX.Element {
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
     const handleChange = (value: number[]) => {
         setAgeRange(value);
-        handleFilterChange(gender, value);
+
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        timeoutRef.current = setTimeout(() => {
+            handleFilterChange(gender, value);
+        }, 500);
     };
 
     return (
         <div className='set-age-range-option'>
-            <Label className="justify-center text-[#7B4B3A]">
-                Age Range: {ageRange[0]} - {ageRange[1]} years
-            </Label>
-
-            <div className="my-5">
+            <div className="mb-3">
                 <Slider
                     value={ageRange}
                     onValueChange={handleChange}
                     max={80}
                     min={18}
                     step={1}
-                    className="bg-[#7B4B3A] h-1 text-[#7B4B3A]"
+                    className="bg-[#C05C41] h-1 text-[#C05C41] rounded-2xl"
                 />
             </div>
-            
-            <div className="flex justify-between text-xs text-[#A67C65]">
+
+            <div className="flex justify-between text-xs text-[#C05C41] font-bold">
                 <span>18</span>
                 <span>80</span>
             </div>

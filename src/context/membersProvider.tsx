@@ -99,7 +99,7 @@ export function MembersProvider({ children }: MembersProviderProps) {
         loadMembers(false, newOffset, filters);
 
         const params = new URLSearchParams(searchParams.toString());
-        
+
         params.set("offset", newOffset.toString());
         router.push(`/members?${params.toString()}`);
     }
@@ -131,7 +131,7 @@ export function MembersProvider({ children }: MembersProviderProps) {
 export function useMembers(): MembersContextProps {
     const context = use(MembersContext);
 
-    if (!context) throw new Error("Context error");
+    if (!context) throw new Error("MembersContext error");
 
     return context;
 }

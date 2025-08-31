@@ -1,7 +1,7 @@
-import { JSX } from 'react';
+import { JSX, ReactNode } from 'react';
 import { MembersProvider } from '@/context/membersProvider';
 
-async function layout({ children }: { children: React.ReactNode }): Promise<JSX.Element> {
+async function layout({ children }: { children: ReactNode }): Promise<JSX.Element> {
     return (
         <MembersProvider>
             {children}

@@ -12,8 +12,8 @@ export const SelectedMemberContext = createContext<SelectedMemberContextProps | 
 
 type SelectedMemberProviderProps = {
     memberData: (Member & { photoGallery: Photo[] });
-    isLiked: boolean
-    children: ReactNode
+    isLiked: boolean;
+    children: ReactNode;
 }
 
 export function SelectedMemberProvider({ memberData, isLiked, children }: SelectedMemberProviderProps) {
