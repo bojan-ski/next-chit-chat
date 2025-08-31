@@ -6,6 +6,7 @@ import ChatWindow from '@/components/chatPage/ChatWindow';
 
 async function ChatPage({ params }: { params: Promise<{ memberId: string }> }): Promise<JSX.Element> {
   const { memberId } = await params;
+  
   const userId: string = await getUserClerkIdAction();
   const conversation: ConversationAndMessages = await createOrGetConversationAction(memberId);
 

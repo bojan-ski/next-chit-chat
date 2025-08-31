@@ -25,9 +25,9 @@ function WithConfirmOption({ action, children, buttonCss, buttonLabel, pendingLa
                     }
                 );
 
-                if (result.status === 'success') {
+                if (result?.status === 'success') {
                     toast.success(result.message);
-                } else if (result.status === 'error') {
+                } else if (result?.status === 'error') {
                     toast.error(result.message);
                 }
             });

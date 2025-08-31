@@ -247,7 +247,7 @@ export async function markMessagesAsReadAction(
 export async function deleteMessageAction(
   messageId: string,
   conversationId: string
-): Promise<void> {
+): Promise<FormStatus> {
   try {
     // get user id
     const userId: string = await getUserClerkIdAction();
@@ -262,8 +262,19 @@ export async function deleteMessageAction(
       },
     });
 
-    if (!message) throw new Error("Message not found");
-    if (message.senderId !== userId && !isAdmin) throw new Error("Unauthorized");
+    if (!message) {
+      return {
+        status: "error",
+        message: "Message not found",
+      };
+    }
+
+    if (message.senderId !== userId && !isAdmin) {
+      return {
+        status: "error",
+        message: "Unauthorized",
+      };
+    }
 
     // delete from db
     await prisma.message.delete({
@@ -281,8 +292,16 @@ export async function deleteMessageAction(
 
     // if admin revalidate page
     if (isAdmin) revalidatePath(`/all-conversations/${conversationId}`);
+
+    return {
+      status: "success",
+      message: "Message deleted",
+    };
   } catch (error) {
-    throw new Error("Failed to delete message");
+    return {
+      status: "error",
+      message: "Delete message error",
+    };
   }
 }
 

@@ -31,7 +31,7 @@ function ReportContent({ contentType, messageId, photoId, contentOwnerId }: Repo
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-[425px] bg-white border-0">
+            <DialogContent className="sm:max-w-[425px] bg-white border-0" aria-describedby={undefined}>
                 <DialogHeader>
                     <DialogTitle className='text-center text-[#7B4B3A]'>
                         Report Content

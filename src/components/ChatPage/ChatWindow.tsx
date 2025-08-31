@@ -16,7 +16,7 @@ type ChatWindowProps = {
 function ChatWindow({ conversation, userId }: ChatWindowProps): JSX.Element {
     const [messages, setMessages] = useState<Message[]>(conversation?.messages);
 
-    // on page load subscribe to pusher and mark all unread messages as read
+    // on page load subscribe to pusher API and mark all unread messages as read
     useEffect(() => {
         console.log('useEffect 1 - ChatWindow');
 
