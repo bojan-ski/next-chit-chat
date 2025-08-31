@@ -1,10 +1,10 @@
 import { JSX } from 'react';
-import { fetchTargetLikesAction } from '@/actions/likeActions';
+import { fetchSourceLikesAction } from '@/actions/likeActions';
 import { Member } from '@prisma/client';
 import MembersListContainer from '@/components/MembersListContainer';
 
 async function LikeMePage(): Promise<JSX.Element> {
-    const likeMeList: Member[] = await fetchTargetLikesAction();
+    const likeMeList: Member[] = await fetchSourceLikesAction();
 
     return (
         <MembersListContainer

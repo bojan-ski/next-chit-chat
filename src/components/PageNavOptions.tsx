@@ -9,7 +9,7 @@ function PageNavOptions({ pageLinks }: { pageLinks: PageNavigationLink[] }): JSX
     const pathname: string = usePathname();
 
     return (
-        <section className='mb-5 space-x-3'>
+        <section className='mb-5 pb-5 border-b border-[#E5C6AC] space-x-3'>
             {pageLinks.map(pageLink => {
                 return <PageNavLink
                     key={pageLink.link}

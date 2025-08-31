@@ -48,7 +48,7 @@ export async function checkIfMemberIsLikedAction(
   return isLiked ? true : false;
 }
 
-export async function fetchSourceLikesAction(): Promise<Member[]> {
+export async function fetchTargetLikesAction(): Promise<Member[]> {
   const userId: string = await getUserClerkIdAction();
 
   const sourceLikes = await prisma.like.findMany({
@@ -63,7 +63,7 @@ export async function fetchSourceLikesAction(): Promise<Member[]> {
   return sourceLikes.map(({ targetMember }) => targetMember);
 }
 
-export async function fetchTargetLikesAction(): Promise<Member[]> {
+export async function fetchSourceLikesAction(): Promise<Member[]> {
   const userId: string = await getUserClerkIdAction();
 
   const targetLikes = await prisma.like.findMany({
@@ -79,20 +79,26 @@ export async function fetchTargetLikesAction(): Promise<Member[]> {
 }
 
 export async function fetchMutualLikesAction(): Promise<Member[]> {
-  const userId = await getUserClerkIdAction();
+  const userId: string = await getUserClerkIdAction();
 
-  const mutualLikes = await prisma.member.findMany({
+  const mutualLikes: Member[] = await prisma.member.findMany({
     where: {
       id: {
         in: (
           await prisma.like.findMany({
-            where: { sourceMemberId: userId },
-            select: { targetMemberId: true },
+            where: {
+              sourceMemberId: userId,
+            },
+            select: {
+              targetMemberId: true,
+            },
           })
         ).map((like) => like.targetMemberId),
       },
       sourceLikes: {
-        some: { targetMemberId: userId },
+        some: {
+          targetMemberId: userId,
+        },
       },
     },
   });

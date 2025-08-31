@@ -1,9 +1,10 @@
-import React from 'react'
+import { JSX } from 'react';
+import LoadingContainer from '@/components/LoadingContainer';
 
-function loading() {
-  return (
-    <div>Loading...</div>
-  )
+function loading(): JSX.Element {
+  return <div className='global-loading mt-56'>
+    <LoadingContainer />
+  </div>
 }
 
 export default loading

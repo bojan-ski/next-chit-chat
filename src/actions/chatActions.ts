@@ -20,7 +20,14 @@ export async function fetchCurrentUserConversationsAction(): Promise<
 
   const conversations = await prisma.conversation.findMany({
     where: {
-      OR: [{ participantOneId: userId }, { participantTwoId: userId }],
+      OR: [
+        {
+          participantOneId: userId,
+        },
+        {
+          participantTwoId: userId,
+        },
+      ],
     },
     include: {
       participantOne: true,
@@ -28,9 +35,13 @@ export async function fetchCurrentUserConversationsAction(): Promise<
       messages: {
         where: {
           isRead: false,
-          NOT: { senderId: userId },
+          NOT: {
+            senderId: userId,
+          },
         },
-        select: { id: true },
+        select: {
+          id: true,
+        },
       },
     },
   });
