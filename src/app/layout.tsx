@@ -3,10 +3,11 @@ import { Merriweather, Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { IsBannedProvider } from "@/context/isBannedProvider";
+import { Toaster } from "react-hot-toast";
 import Header from "@/components/appLayout/Header";
 import Footer from "@/components/appLayout/Footer";
 import BanMessage from "@/components/BanMessage";
-import { Toaster } from "react-hot-toast";
+import UnreadMessageToast from "@/components/UnreadMessageToast";
 
 const merriweather = Merriweather({
   variable: "--font-merriweather",
@@ -39,7 +40,11 @@ export default async function RootLayout({
           <body className={`${merriweather.variable} ${inter.variable} antialiased`}>
             <Header />
 
+            {/* if member is banned message component */}
             <BanMessage />
+
+            {/* if member has unread messages notification component */}
+            <UnreadMessageToast />
 
             <main>
               {children}

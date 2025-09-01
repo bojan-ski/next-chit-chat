@@ -1,18 +1,13 @@
 import { JSX } from "react";
 import Link from "next/link";
-import { NavigationLink } from "@/types/types";
+import { NavigationLink, NavigationLinks } from "@/types/types";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { LuAlignLeft } from "react-icons/lu";
 
-type MobileLinksProps = {
-    navigationLinks: NavigationLink[];
-    pathname: string
-}
-
-function MobileNavLinks({ navigationLinks, pathname }: MobileLinksProps): JSX.Element {
+function MobileNavLinks({ navigationLinks, pathname, unreadMessages }: NavigationLinks): JSX.Element {
     return (
-        <div className="block md:hidden">
+        <div className="block lg:hidden">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button
@@ -26,14 +21,14 @@ function MobileNavLinks({ navigationLinks, pathname }: MobileLinksProps): JSX.El
                 <DropdownMenuContent
                     className="bg-white border border-[#E5C6AC] shadow-xl mt-2 w-44"
                 >
-                    {navigationLinks.map(({ href, label }) => (
+                    {navigationLinks.map(({ href, label }: NavigationLink) => (
                         <DropdownMenuItem
                             key={href}
                             className="hover:bg-[#F6E7DA] focus:bg-[#F6E7DA] px-3 py-2 transition-colors"
                         >
                             <Link
                                 href={href}
-                                className={`block w-full font-medium transition capitalize ${pathname == href ? 'text-[#C05C41] hover:text-[#7B4B3A]' : 'text-[#7B4B3A] hover:text-[#C05C41]'}`}
+                                className={`block w-full font-medium transition capitalize ${pathname == href ? 'text-[#C05C41] hover:text-[#7B4B3A]' : 'text-[#7B4B3A] hover:text-[#C05C41]'} ${(unreadMessages && label == 'conversation') && 'text-red-500'}`}
                             >
                                 {label}
                             </Link>

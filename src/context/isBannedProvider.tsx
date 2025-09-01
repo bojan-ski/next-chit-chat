@@ -3,7 +3,9 @@
 import { createContext, JSX, ReactNode, use, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-type IsBannedContextProps = {}
+type IsBannedContextProps = {
+    unreadMessages: boolean
+}
 
 export const IsBannedContext = createContext<IsBannedContextProps | null>(null);
 
@@ -34,45 +36,53 @@ export function IsBannedProvider({ children }: IsBannedProviderProps): JSX.Eleme
     const pathname = usePathname();
     const router = useRouter();
 
+    const [unreadMessages, setUnreadMessages] = useState<boolean>(false)
+
     const checkBanStatus = async () => {
         const banDate: string | null = getCookie("banDate");
 
         if (banDate) {
-            const banActive: boolean = new Date(banDate) >= new Date();            
+            const banActive: boolean = new Date(banDate) >= new Date();
 
             if (!banActive) {
                 clearCookie();
                 await checkIfBanned();
-            } 
+            }
         } else {
             await checkIfBanned();
         }
     };
 
     const checkIfBanned = async () => {
-        try {
-            const response: Response = await fetch('/api/check-ban');
-            const data: any = await response.json();
+        const response: Response = await fetch('/api/check-ban');
+        const data: any = await response.json();
 
-            if (data?.bannedMember?.banDate) {
-                setCookie("banDate", data?.bannedMember?.banDate);
+        if (data?.bannedMember?.banDate) {
+            setCookie("banDate", data?.bannedMember?.banDate);
 
-                router.push('/');
-            }
-        } catch (error) {
-            console.error(error);
+            router.push('/');
         }
+    }
+
+    const checkIfUnreadMessages = async () => {
+        const response: Response = await fetch('/api/check-unread-messages');
+        const data: any = await response.json();
+
+        setUnreadMessages(data?.hasUnreadMessages ? data?.hasUnreadMessages : false);
     }
 
     useEffect(() => {
         console.log('useEffect - IsBannedProvider');
 
         checkBanStatus();
+        checkIfUnreadMessages();
     }, [pathname]);
 
     return (
         <IsBannedContext.Provider
-            value={{}}
+            value={{
+                unreadMessages
+            }}
         >
             {children}
         </IsBannedContext.Provider>

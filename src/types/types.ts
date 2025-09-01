@@ -5,6 +5,12 @@ export type NavigationLink = {
   label: string;
 };
 
+export type NavigationLinks = {
+  navigationLinks: NavigationLink[];
+  pathname: string;
+  unreadMessages: boolean;
+};
+
 export type FormStatus = {
   status: "error" | "success" | "";
   message: string;

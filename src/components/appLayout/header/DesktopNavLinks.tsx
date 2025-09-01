@@ -1,23 +1,18 @@
 import { JSX } from "react";
 import Link from "next/link";
-import { NavigationLink } from "@/types/types";
+import { NavigationLink, NavigationLinks } from "@/types/types";
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
 
-type NavLinksProps = {
-    navigationLinks: NavigationLink[];
-    pathname: string
-}
-
-function DesktopNavLinks({ navigationLinks, pathname }: NavLinksProps): JSX.Element {
+function DesktopNavLinks({ navigationLinks, pathname, unreadMessages }: NavigationLinks): JSX.Element {
     return (
-        <NavigationMenu className="hidden md:flex space-x-8">
+        <NavigationMenu className="hidden lg:flex space-x-8">
             <NavigationMenuList>
                 {navigationLinks.map(({ href, label }: NavigationLink) => (
                     <NavigationMenuItem key={href} >
                         <NavigationMenuLink asChild className="text-lg">
                             <Link
                                 href={href}
-                                className={`font-medium transition capitalize ${pathname == href ? 'text-[#C05C41] hover:text-[#7B4B3A]' : 'text-[#7B4B3A] hover:text-[#C05C41]'}`}
+                                className={`font-medium transition capitalize ${pathname == href ? 'text-[#C05C41] hover:text-[#7B4B3A]' : 'text-[#7B4B3A] hover:text-[#C05C41]'} ${(unreadMessages && label == 'conversation') && 'text-red-500'}`}
                             >
                                 {label}
                             </Link>
