@@ -38,6 +38,7 @@ function AgeRangeOption({ ageRange, setAgeRange, gender, handleFilterChange, }: 
 
             <div className="flex justify-between text-xs text-[#C05C41] font-bold">
                 <span>18</span>
+                <span>{ageRange[1]}</span>
                 <span>80</span>
             </div>
         </div>

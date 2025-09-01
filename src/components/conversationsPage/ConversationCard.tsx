@@ -20,15 +20,15 @@ function ConversationCard({
       >
         {/* left - username */}
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-200 to-orange-400 flex items-center justify-center text-white font-bold text-lg">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-200 to-orange-400 flex items-center justify-center text-white font-bold text-lg">
             {otherUserName.charAt(0).toUpperCase()}
           </div>
 
           <div>
-            <p className="font-semibold text-gray-800 text-lg">
+            <p className="font-semibold text-gray-800">
               {otherUserName}
             </p>
-            <p className="text-sm text-gray-500 flex items-center gap-1">
+            <p className="text-xs text-gray-500 flex items-center gap-1">
               <MessageCircle className="w-4 h-4 text-gray-400" />
               Chat available
             </p>

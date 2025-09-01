@@ -12,7 +12,7 @@ function MobileNavLinks({ navigationLinks, pathname, unreadMessages }: Navigatio
                 <DropdownMenuTrigger asChild>
                     <Button
                         variant="outline"
-                        className="border-[#7B4B3A] text-[#7B4B3A] hover:bg-[#E5C6AC] px-3 py-2 cursor-pointer"
+                        className="border border-[#7B4B3A] text-[#7B4B3A] hover:bg-[#E5C6AC] px-3 py-2 cursor-pointer"
                     >
                         <LuAlignLeft className="w-6 h-6" />
                     </Button>

@@ -24,13 +24,13 @@ function MemberProfileDetails({ memberData, sectionCss, allowPageNavLink }: Memb
 
             {/* member info */}
             <div className="mb-5 text-center">
-                <p className="text-2xl font-bold text-[#7B4B3A] mb-2">
+                <p className="text-2xl font-bold text-[#7B4B3A] mb-1">
                     {memberData.username}
                 </p>
-                <p className="text-sm text-[#A67C65] mb-4">
+                <p className="text-[#A67C65] mb-3">
                     {memberData.city}, {memberData.state}
                 </p>
-                <p className="text-base text-[#5C4033] leading-relaxed">
+                <p className="text-sm text-[#5C4033] leading-relaxed">
                     {memberData.description}
                 </p>
             </div>

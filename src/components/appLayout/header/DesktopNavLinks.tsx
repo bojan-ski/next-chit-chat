@@ -12,7 +12,7 @@ function DesktopNavLinks({ navigationLinks, pathname, unreadMessages }: Navigati
                         <NavigationMenuLink asChild className="text-lg">
                             <Link
                                 href={href}
-                                className={`font-medium transition capitalize ${pathname == href ? 'text-[#C05C41] hover:text-[#7B4B3A]' : 'text-[#7B4B3A] hover:text-[#C05C41]'} ${(unreadMessages && label == 'conversation') && 'text-red-500'}`}
+                                className={`font-semibold capitalize ${pathname == href ? 'text-[#C05C41] hover:text-[#7B4B3A]' : 'text-[#7B4B3A] hover:text-[#C05C41]'} ${(unreadMessages && label == 'conversation') && 'text-red-500'}`}
                             >
                                 {label}
                             </Link>

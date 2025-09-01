@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Merriweather, Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GlobalProvider } from "@/context/globalProvider";
@@ -9,16 +9,10 @@ import Footer from "@/components/appLayout/Footer";
 import BanMessage from "@/components/BanMessage";
 import UnreadMessageToast from "@/components/UnreadMessageToast";
 
-const merriweather = Merriweather({
-  variable: "--font-merriweather",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -37,7 +31,7 @@ export default async function RootLayout({
 
         <html lang="en">
 
-          <body className={`${merriweather.variable} ${inter.variable} antialiased`}>
+          <body className={`${poppins.variable} antialiased`}>
             <Header />
 
             {/* if member is banned message component */}
