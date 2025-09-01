@@ -57,7 +57,9 @@ export async function fetchForbiddenWordsAction(): Promise<ForbiddenWord[]> {
   return forbiddenWords;
 }
 
-export async function deleteForbiddenWordAction(wordId: string): Promise<void> {
+export async function deleteForbiddenWordAction(
+  wordId: string
+): Promise<FormStatus> {
   const isAdmin: boolean = await isAdminAction();
   if (!isAdmin) throw new Error("Unauthorized");
 
@@ -67,8 +69,16 @@ export async function deleteForbiddenWordAction(wordId: string): Promise<void> {
         id: wordId,
       },
     });
+
+    return {
+      status: "success",
+      message: "Forbidden word deleted",
+    };
   } catch (error) {
-    throw new Error("Failed to add new forbidden word");
+    return {
+      status: "error",
+      message: "There was an error deleting the forbidden word",
+    };
   } finally {
     revalidatePath("/forbidden-words");
   }

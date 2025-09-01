@@ -5,7 +5,7 @@ type ConversationParticipantProps = {
     reverse?: boolean;
 };
 
-function ConversationParticipant({ username, reverse = false }: ConversationParticipantProps): JSX.Element {
+function ConversationParticipant({ username, reverse }: ConversationParticipantProps): JSX.Element {
     return (
         <div className={`flex items-center gap-2 ${reverse ? "flex-row-reverse" : ""}`}>
             {/* avatar */}

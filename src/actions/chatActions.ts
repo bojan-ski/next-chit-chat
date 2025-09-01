@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { pusherServer } from "@/lib/pusher";
-import { Conversation, ForbiddenWord, Message } from "@prisma/client";
+import { Conversation, ForbiddenWord, Member, Message } from "@prisma/client";
 import {
   ConversationAndMessages,
   ConversationAndParticipants,
@@ -332,7 +332,7 @@ export async function fetchAllConversationsAction(): Promise<
 
 export async function fetchMessagesBasedOnConversationIdAction(
   conversationId: string
-) {
+): Promise<({ sender: Member } & Message)[]> {
   const isAdmin: boolean = await isAdminAction();
   if (!isAdmin) throw new Error("Unauthorized");
 

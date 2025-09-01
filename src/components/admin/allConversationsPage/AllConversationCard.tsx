@@ -18,7 +18,7 @@ function AllConversationCard({ conversationId, participantOneUsername, participa
                 <ConversationParticipant username={participantOneUsername} />
 
                 {/* participant two */}
-                <ConversationParticipant username={participantTwoUsername} reverse />
+                <ConversationParticipant username={participantTwoUsername} reverse={true} />
             </div>
         </Link>
     )

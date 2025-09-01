@@ -11,9 +11,7 @@ async function ForbiddenWordsList(): Promise<JSX.Element> {
 
     return (
         <section className='forbidden-words-list grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10'>
-            {forbiddenWords?.map(word => {
-                return <ForbiddenWordCard key={word.id} word={word} />
-            })}
+            {forbiddenWords?.map(word => <ForbiddenWordCard key={word.id} word={word} />)}
         </section>
     )
 }

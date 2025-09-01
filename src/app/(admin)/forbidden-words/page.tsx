@@ -4,7 +4,7 @@ import ForbiddenWordsList from '@/components/admin/forbiddenWordsPage/ForbiddenW
 
 function ForbiddenWordsPage(): JSX.Element {
     return (
-        <div className='forbidden-words-page max-w-7xl mx-auto mt-10'>
+        <div className='forbidden-words-page max-w-7xl mx-auto my-10'>
 
             <AddForbiddenWord />
 

@@ -1,6 +1,7 @@
 import { JSX } from 'react'
 import { ForbiddenWord } from '@prisma/client';
 import { deleteForbiddenWordAction } from '@/actions/forbiddenWordAction';
+import WithConfirmOption from '@/components/WithConfirmOption';
 import { Card, CardContent } from '../../ui/card';
 import { FaTrashAlt } from "react-icons/fa";
 
@@ -12,11 +13,12 @@ function ForbiddenWordCard({ word }: { word: ForbiddenWord }): JSX.Element {
             <CardContent className='flex items-center justify-between'>
                 {word.word}
 
-                <form action={deleteForbiddenWord} className='flex'>
-                    <button type='submit' className='text-red-500 hover:text-red-700 transition cursor-pointer'>
-                        <FaTrashAlt size={18} />
-                    </button>
-                </form>
+                <WithConfirmOption
+                    action={deleteForbiddenWord}
+                    buttonCss='text-red-500 hover:text-red-700 transition cursor-pointer'
+                >
+                    <FaTrashAlt size={18} />
+                </WithConfirmOption>
             </CardContent>
         </Card>
     )
