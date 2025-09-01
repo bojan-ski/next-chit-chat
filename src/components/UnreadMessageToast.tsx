@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect } from "react";
-import { useIsBanned } from "@/context/isBannedProvider";
+import { useGlobalContext } from "@/context/globalProvider";
 import toast from "react-hot-toast";
 
 function UnreadMessageToast(): null {
-    const { unreadMessages } = useIsBanned();
+    const { unreadMessages } = useGlobalContext();
 
     useEffect(() => {
         console.log('useEffect - UnreadMessageToast');

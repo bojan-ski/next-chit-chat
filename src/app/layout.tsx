@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Merriweather, Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { IsBannedProvider } from "@/context/isBannedProvider";
+import { GlobalProvider } from "@/context/globalProvider";
 import { Toaster } from "react-hot-toast";
 import Header from "@/components/appLayout/Header";
 import Footer from "@/components/appLayout/Footer";
@@ -33,7 +33,7 @@ export default async function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <IsBannedProvider>
+      <GlobalProvider>
 
         <html lang="en">
 
@@ -57,7 +57,7 @@ export default async function RootLayout({
 
         </html>
 
-      </IsBannedProvider>
+      </GlobalProvider>
     </ClerkProvider>
   );
 }
