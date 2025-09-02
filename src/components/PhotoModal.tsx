@@ -60,8 +60,8 @@ function PhotoModal({ photo, height = 'h-60', allowDelete = false }: PhotoModalP
                     />
                 </div>
 
-                {/* delete photo */}
                 <div className='absolute top-4.5 left-2'>
+                    {/* delete photo */}
                     {(userId == photo.memberId || allowDelete) && <DeletePhotoOption photo={photo} />}
 
                     {/* report photo */}

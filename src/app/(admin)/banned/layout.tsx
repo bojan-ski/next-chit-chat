@@ -1,14 +1,19 @@
-import { JSX } from 'react';
-import ReportsNavOptions from '@/components/admin/reportsPage/ReportsNavOptions';
+import { JSX, ReactNode } from 'react';
+import PageNavOptions from '@/components/PageNavOptions';
 
-function Layout({ children }: { children: React.ReactNode }): JSX.Element {
+function Layout({ children }: { children: ReactNode }): JSX.Element {
+    const pageLinks = [
+        { link: '/banned', label: "Banned members" },
+        { link: '/banned/reports', label: "Pending reports" },
+    ];
+
     return (
         <div className='max-w-7xl mx-auto mt-10'>
-            {/* nav links */}
-            <ReportsNavOptions />
 
-            {/* selected content */}
+            <PageNavOptions pageLinks={pageLinks} />
+
             {children}
+
         </div>
     )
 }

@@ -165,9 +165,7 @@ async function getMemberByPhotoIdAction(
   return data?.member;
 }
 
-export async function deletePhotoAction(
-  photo: Photo,
-): Promise<FormStatus> {
+export async function deletePhotoAction(photo: Photo): Promise<FormStatus> {
   // get user id
   const userId: string = await getUserClerkIdAction();
 
@@ -187,7 +185,7 @@ export async function deletePhotoAction(
     });
 
     // delete from supabase
-    await deleteImageFromSupabase(photo.image);    
+    await deleteImageFromSupabase(photo.image);
 
     return {
       status: "success",
@@ -204,6 +202,9 @@ export async function deletePhotoAction(
 }
 
 export async function fetchAllPhotosAction(status: boolean): Promise<Photo[]> {
+  const isAdmin: boolean = await isAdminAction();
+  if (!isAdmin) throw new Error("Unauthorized");
+
   return await prisma.photo.findMany({
     where: {
       isApproved: status,
@@ -211,7 +212,7 @@ export async function fetchAllPhotosAction(status: boolean): Promise<Photo[]> {
   });
 }
 
-export async function approvePhotoAction(photoId: string): Promise<void> {
+export async function approvePhotoAction(photoId: string): Promise<FormStatus> {
   const isAdmin: boolean = await isAdminAction();
   if (!isAdmin) throw new Error("Unauthorized");
 
@@ -224,8 +225,16 @@ export async function approvePhotoAction(photoId: string): Promise<void> {
         isApproved: true,
       },
     });
+
+    return {
+      status: "success",
+      message: "Photo approved",
+    };
   } catch (error) {
-    throw error;
+    return {
+      status: "error",
+      message: "Approve photo error",
+    };
   } finally {
     revalidatePath("/all-photos");
   }
