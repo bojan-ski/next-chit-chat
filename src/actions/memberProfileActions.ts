@@ -41,7 +41,7 @@ export async function setProfileDataAction(
         status: "error",
         message: firstError,
       };
-    }    
+    }
 
     // extract form data & user/clerk data
     const { username, gender, dateOfBirth, city, state, description } =
@@ -50,7 +50,9 @@ export async function setProfileDataAction(
     const profileImage: string = user?.imageUrl;
 
     // check if user/member exists
-    const existingMember: Member | null = await checkIfMemberExistsAction({ userId });
+    const existingMember: Member | null = await checkIfMemberExistsAction({
+      userId,
+    });
 
     if (existingMember) {
       // update existing member - profile data

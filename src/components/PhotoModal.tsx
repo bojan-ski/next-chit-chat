@@ -20,7 +20,7 @@ function PhotoModal({ photo, height = 'h-60', allowDelete = false }: PhotoModalP
 
     return (
         <Dialog>
-            {/* photo small display */}
+            {/* photo - small display */}
             <DialogTrigger asChild>
                 <div className={`relative w-full ${height} hover:scale-105 transition duration-700 cursor-pointer`}>
                     <Image
@@ -42,7 +42,7 @@ function PhotoModal({ photo, height = 'h-60', allowDelete = false }: PhotoModalP
                 </div>
             </DialogTrigger>
 
-            {/* photo full display */}
+            {/* photo - full display */}
             <DialogContent className="max-w-4xl bg-black p-8 text-[#C05C41]" aria-describedby={undefined}>
                 <VisuallyHidden>
                     <DialogTitle>

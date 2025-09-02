@@ -1,12 +1,13 @@
 import { JSX } from 'react';
 import { Photo } from '@prisma/client';
+import { FormStatus } from '@/types/types';
 import { approvePhotoAction, deletePhotoAction } from '@/actions/photoActions';
 import PhotoModal from '../../PhotoModal';
 import WithConfirmOption from '@/components/WithConfirmOption';
 
 function PhotoCard({ photo }: { photo: Photo }): JSX.Element {
-    const approvePhoto = approvePhotoAction.bind(null, photo.id);
-    const rejectPhoto = deletePhotoAction.bind(null, photo);
+    const approvePhoto: () => Promise<FormStatus> = approvePhotoAction.bind(null, photo.id);
+    const rejectPhoto: () => Promise<FormStatus> = deletePhotoAction.bind(null, photo);
 
     return (
         <div className='flex flex-col space-y-2'>

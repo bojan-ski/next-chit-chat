@@ -280,12 +280,8 @@ export async function deleteMessageAction(
       };
     }
 
-    if (message.senderId !== userId && !isAdmin) {
-      return {
-        status: "error",
-        message: "Unauthorized",
-      };
-    }
+    if (message.senderId !== userId && !isAdmin)
+      throw new Error("Unauthorized");
 
     // delete from db
     await prisma.message.delete({

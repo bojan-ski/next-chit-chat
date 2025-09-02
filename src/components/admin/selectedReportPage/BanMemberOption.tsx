@@ -1,5 +1,5 @@
 import { JSX } from 'react';
-import { bannedMemberAction } from '@/actions/reportActions';
+import { banReportedMemberAction } from '@/actions/reportActions';
 import { Message, Photo } from '@prisma/client';
 import { FormStatus } from '@/types/types';
 import WithConfirmOption from '@/components/WithConfirmOption';
@@ -13,7 +13,7 @@ type BanMemberOptionProps = {
 }
 
 function BanMemberOption({ reportId, reportedMemberId, contentType, contentData, banReason }: BanMemberOptionProps): JSX.Element {
-    const banReportedMember: (prevState: FormStatus) => Promise<FormStatus> = bannedMemberAction.bind(null, reportId, reportedMemberId, contentType, contentData, banReason);
+    const banReportedMember: (prevState: FormStatus) => Promise<FormStatus> = banReportedMemberAction.bind(null, reportId, reportedMemberId, contentType, contentData, banReason);
 
     return (
         <WithConfirmOption

@@ -1,4 +1,4 @@
-import React, { JSX } from 'react';
+import { JSX } from 'react';
 import { fetchAllConversationsAction } from '@/actions/chatActions';
 import { ConversationAndParticipants } from '@/types/types';
 import NoDataMessage from '@/components/NoDataMessage';

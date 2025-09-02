@@ -3,7 +3,7 @@ import MemberPhotoGallery from '@/components/selectedMemberPage/MemberPhotoGalle
 
 function SelectedMemberPage(): JSX.Element {
   return (
-    <MemberPhotoGallery/>
+    <MemberPhotoGallery />
   )
 }
 

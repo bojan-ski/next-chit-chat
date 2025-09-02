@@ -7,6 +7,7 @@ function MemberCard({ member }: { member: Member }): JSX.Element {
     return (
         <Link
             href={`/members/${member.id}`}
+            className='cursor-pointer'
         >
             <MemberCardProfileDetails member={member} />
         </Link>

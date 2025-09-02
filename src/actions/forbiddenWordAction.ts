@@ -11,10 +11,10 @@ export async function addNewForbiddenWordAction(
   initialState: FormStatus,
   formData: FormData
 ): Promise<FormStatus> {
-  try {
-    const isAdmin: boolean = await isAdminAction();
-    if (!isAdmin) throw new Error("Unauthorized");
+  const isAdmin: boolean = await isAdminAction();
+  if (!isAdmin) throw new Error("Unauthorized");
 
+  try {
     const rawData = Object.fromEntries(formData);
     const validatedFields = forbiddenWordSchema.safeParse(rawData);
 

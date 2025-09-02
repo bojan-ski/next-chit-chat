@@ -15,7 +15,7 @@ import {
 import { newReportSchema } from "@/utils/schemas";
 
 export async function submitReportAction(
-  contentType: 'message' | 'photo',
+  contentType: "message" | "photo",
   messageId: string | null,
   photoId: string | null,
   contentOwnerId: string,
@@ -75,7 +75,9 @@ export async function fetchReportedMembersAction(): Promise<
   });
 }
 
-async function fetchMemberBansAction(userId: string): Promise<BannedMember[]> {
+async function fetchMemberPreviousBansAction(
+  userId: string
+): Promise<BannedMember[]> {
   return prisma.bannedMember.findMany({
     where: {
       bannedMemberId: userId,
@@ -102,8 +104,8 @@ export async function fetchReportedContentAction(reportId: string) {
   if (!report) return null;
 
   const [reportedMemberBans, reporterBans] = await Promise.all([
-    fetchMemberBansAction(report.contentOwnerId),
-    fetchMemberBansAction(report.reporterId),
+    fetchMemberPreviousBansAction(report.contentOwnerId),
+    fetchMemberPreviousBansAction(report.reporterId),
   ]);
 
   return { report, reporterBans, reportedMemberBans };
@@ -113,10 +115,10 @@ export async function rejectReportAction(
   reportId: string,
   prevState: FormStatus
 ): Promise<FormStatus> {
-  try {
-    const isAdmin = await isAdminAction();
-    if (!isAdmin) throw new Error("Unauthorized");
+  const isAdmin = await isAdminAction();
+  if (!isAdmin) throw new Error("Unauthorized");
 
+  try {
     await prisma.report.delete({
       where: {
         id: reportId,
@@ -134,7 +136,7 @@ export async function rejectReportAction(
   redirect("/banned/reports");
 }
 
-export async function bannedMemberAction(
+export async function banReportedMemberAction(
   reportId: string,
   reportedMemberId: string,
   contentType: "photo" | "message",
@@ -142,10 +144,10 @@ export async function bannedMemberAction(
   banReason: string,
   prevState: FormStatus
 ): Promise<FormStatus> {
-  try {
-    const isAdmin = await isAdminAction();
-    if (!isAdmin) throw new Error("Unauthorized");
+  const isAdmin = await isAdminAction();
+  if (!isAdmin) throw new Error("Unauthorized");
 
+  try {
     // ban reported member
     const currentDate = new Date();
     const banMemberDate = new Date(
@@ -189,12 +191,17 @@ export async function bannedMemberAction(
   redirect("/banned/reports");
 }
 
-export async function fetchBannedMembersAction(): Promise<BannedMemberWithDetails[]> {
+export async function fetchBannedMembersAction(): Promise<
+  BannedMemberWithDetails[]
+> {
+  const isAdmin = await isAdminAction();
+  if (!isAdmin) throw new Error("Unauthorized");
+
   const bannedMembers = await prisma.member.findMany({
     where: {
-      bans: { 
-        some: {}
-       },
+      bans: {
+        some: {},
+      },
     },
     include: {
       bans: true,

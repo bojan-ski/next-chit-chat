@@ -1,5 +1,6 @@
 import { JSX } from 'react';
 import { deleteMessageAction } from '@/actions/chatActions';
+import { FormStatus } from '@/types/types';
 import { FaTrashAlt } from 'react-icons/fa';
 import WithConfirmOption from './WithConfirmOption';
 
@@ -10,7 +11,7 @@ type DeleteMessageOptionProps = {
 }
 
 function DeleteMessageOption({ messageId, conversationId, isMessageOwner }: DeleteMessageOptionProps): JSX.Element {
-    const deleteMessage = deleteMessageAction.bind(null, messageId, conversationId);
+    const deleteMessage: () => Promise<FormStatus> = deleteMessageAction.bind(null, messageId, conversationId);
 
     return (
         <div className={`flex items-center ${!isMessageOwner ? 'justify-start' : 'justify-end'}`}>

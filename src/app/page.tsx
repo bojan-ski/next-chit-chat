@@ -1,9 +1,21 @@
 import { JSX } from "react";
+import HeroSection from "@/components/homePage/HeroSection";
+import FeaturesSection from "@/components/homePage/FeaturesSection";
+import HowItWorksSection from "@/components/homePage/HowItWorksSection";
 
-function HomePages(): JSX.Element {
+function HomePage(): JSX.Element {
   return (
-    <div>HomePages</div>
-  )
+    <div className="w-full">
+      {/* hero section */}
+      <HeroSection />
+
+      {/* features section */}
+      <FeaturesSection />
+
+      {/* How It Works Section */}
+      <HowItWorksSection />
+    </div>
+  );
 }
 
-export default HomePages
+export default HomePage

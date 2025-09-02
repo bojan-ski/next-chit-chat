@@ -9,10 +9,12 @@ function BannedMemberCard({ bannedMember }: { bannedMember: BannedMemberWithDeta
     return (
         <Dialog>
 
-            <DialogTrigger asChild>
-                <MemberCardProfileDetails member={bannedMember.member} />
+            {/* banned member profile details - small display */}
+            <DialogTrigger asChild className='cursor-pointer'>
+                <MemberCardProfileDetails member={bannedMember.member}/>
             </DialogTrigger>
 
+            {/* banned member previous banes - full display */}
             <DialogContent className="max-w-4xl bg-white p-8 text-[#C05C41]">
                 <VisuallyHidden>
                     <DialogTitle>

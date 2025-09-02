@@ -3,14 +3,10 @@ import { BannedMember } from '@prisma/client';
 import { formatDate } from '@/utils/utils';
 import NoDataMessage from '@/components/NoDataMessage';
 
-type MemberPreviousBansProps = {
-  bans: BannedMember[];
-};
-
-function MemberPreviousBans({ bans }: MemberPreviousBansProps): JSX.Element {
+function MemberPreviousBans({ bans }: { bans: BannedMember[] }): JSX.Element {
   return (
     <section className="previous-bans border min-h-full max-h-[600px] overflow-y-scroll border-[#E5C6AC] rounded-lg p-5">
-      {bans.length === 0 ? (
+      {bans.length == 0 ? (
         <NoDataMessage message="User has not been banned" />
       ) : (
         bans.map((ban) => (

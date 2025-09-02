@@ -8,7 +8,7 @@ import { FaMale, FaFemale } from "react-icons/fa";
 function MemberCardProfileDetails({ member }: { member: Member }): JSX.Element {
     return (
         <div
-            className="relative w-full h-60 group rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer"
+            className="relative w-full h-60 group rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
         >
             {/* profile image */}
             <Image
