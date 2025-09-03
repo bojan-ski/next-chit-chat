@@ -32,6 +32,8 @@ model Member {
   state        String
   description  String
 
+  memberPreferences MemberPreferences[]
+
   photoGallery Photo[]
 
   sourceLikes Like[] @relation("source")
@@ -61,6 +63,26 @@ model Photo {
   updatedAt DateTime @updatedAt
 
   member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+}
+
+model MemberPreferences {
+  id              String   @id @default(cuid())
+  memberId        String   @unique
+  isSmoker        Boolean?  @default(false)
+  isVegan         Boolean?  @default(false)
+  hasPets         Boolean?  @default(false)
+  drinksAlcohol   Boolean?  @default(false)
+  doesExercise    Boolean?  @default(false)
+  preferredGender String?
+  minAge          Int?
+  maxAge          Int?
+  preferredCities String[]
+  preferredStates String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  member Member @relation(fields: [memberId], references: [id])
 }
 
 model Like {

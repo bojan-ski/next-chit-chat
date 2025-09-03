@@ -1,7 +1,7 @@
 import { NavigationLink } from "../types/types";
 
 export const memberNavigationLinks: NavigationLink[] = [
-  { href: "/suggestions", label: "suggestions" },
+  { href: "/matches", label: "matches" },
   { href: "/members", label: "members" },
   { href: "/likes", label: "likes" },
   { href: "/conversation", label: "conversation" },

@@ -10,7 +10,7 @@ function MembersPage(): JSX.Element {
   const { members, hasMore, loading, handleLoadMoreMembers, gender, ageRange, setAgeRange, handleFilterChange } = useMembers();
 
   return (
-    <div className='members-page max-w-7xl mx-auto my-10 h-[80vh]'>
+    <div className='members-page max-w-7xl mx-auto my-10'>
 
       <Filters
         gender={gender}

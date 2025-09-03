@@ -27,7 +27,7 @@ export async function setProfileDataAction(
   // get user clerk data
   const user: User = await getUserClerkDataAction();
 
-  // if all good - run query
+  // run query
   try {
     // validate form data
     const rawData = Object.fromEntries(formData);
@@ -43,48 +43,26 @@ export async function setProfileDataAction(
       };
     }
 
-    // extract form data & user/clerk data
-    const { username, gender, dateOfBirth, city, state, description } =
-      validatedFields.data;
+
+    // update/set member profile data
+    const data = validatedFields.data;
     const userId: string = user?.id;
     const profileImage: string = user?.imageUrl;
 
-    // check if user/member exists
-    const existingMember: Member | null = await checkIfMemberExistsAction({
-      userId,
+    await prisma.member.upsert({
+      where: {
+        id: userId,
+      },
+      update: {
+        profileImage,
+        ...data,
+      },
+      create: {
+        id: userId,
+        profileImage,
+        ...data,
+      },
     });
-
-    if (existingMember) {
-      // update existing member - profile data
-      await prisma.member.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          username,
-          profileImage,
-          gender,
-          dateOfBirth,
-          city,
-          state,
-          description,
-        },
-      });
-    } else {
-      // create member - profile data
-      await prisma.member.create({
-        data: {
-          id: userId,
-          username,
-          profileImage,
-          gender,
-          dateOfBirth,
-          city,
-          state,
-          description,
-        },
-      });
-    }
 
     return {
       status: "success",
