@@ -8,11 +8,9 @@ import { memberProfileSchema } from "@/utils/schemas";
 import { FormStatus } from "@/types/types";
 import { getUserClerkDataAction, getUserClerkIdAction } from "./authActions";
 
-export async function checkIfMemberExistsAction({
-  userId,
-}: {
-  userId: string;
-}): Promise<Member | null> {
+export async function checkIfMemberExistsAction(
+  userId: string
+): Promise<Member | null> {
   return prisma.member.findFirst({
     where: {
       id: userId,
@@ -42,7 +40,6 @@ export async function setProfileDataAction(
         message: firstError,
       };
     }
-
 
     // update/set member profile data
     const data = validatedFields.data;
