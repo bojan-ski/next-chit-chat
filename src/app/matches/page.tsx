@@ -1,16 +1,17 @@
 import { JSX } from "react";
 import SetPreferences from "@/components/matchesPage/SetPreferences";
+import MatchesList from "@/components/matchesPage/MatchesList";
 
-export default function PreferencesFormClient(): JSX.Element {
+async function MatchesPage(): Promise<JSX.Element> {
     return (
-        <div className='max-w-7xl mx-auto mt-10'>
+        <div className='matches-page max-w-7xl mx-auto mt-10'>
 
             <SetPreferences />
 
-            <section className="mb-10">
-
-            </section>
+            <MatchesList />
 
         </div >
-    );
+    )
 }
+
+export default MatchesPage

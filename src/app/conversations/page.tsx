@@ -5,12 +5,12 @@ import { fetchCurrentUserConversationsAction } from "@/actions/chatActions";
 import NoDataMessage from "@/components/NoDataMessage";
 import ConversationCard from "@/components/conversationsPage/ConversationCard";
 
-async function ConversationPage(): Promise<JSX.Element> {
+async function ConversationsPage(): Promise<JSX.Element> {
   const userId: string = await getUserClerkIdAction();
   const conversations: Conversation[] = await fetchCurrentUserConversationsAction();
 
   return (
-    <div className='members-page max-w-7xl mx-auto my-10'>
+    <div className='conversations-page max-w-7xl mx-auto my-10'>
       {conversations.length == 0 ? (
         <NoDataMessage message="You have no conversations" />
       ) : (
@@ -33,4 +33,4 @@ async function ConversationPage(): Promise<JSX.Element> {
   )
 }
 
-export default ConversationPage
+export default ConversationsPage

@@ -4,7 +4,7 @@ export const memberNavigationLinks: NavigationLink[] = [
   { href: "/matches", label: "matches" },
   { href: "/members", label: "members" },
   { href: "/likes", label: "likes" },
-  { href: "/conversation", label: "conversation" },
+  { href: "/conversations", label: "conversations" },
   { href: "/profile-details", label: "profile details" },
 ];
 
