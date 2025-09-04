@@ -10,11 +10,12 @@ type FormSliderProps = {
     labelText?: string;
     min: number;
     max: number;
-    step?: number
+    step?: number;
+    defaultValue?: number[];
 }
 
-function FormSlider({ name, label, labelText, min, max, step = 1 }: FormSliderProps): JSX.Element {
-    const [ageRange, setAgeRange] = useState<number[]>([min, max]);
+function FormSlider({ name, label, labelText, min, max, step = 1, defaultValue }: FormSliderProps): JSX.Element {
+    const [ageRange, setAgeRange] = useState<number[]>(defaultValue ?? [min, max]);
 
     return (
         <div className="mb-5">

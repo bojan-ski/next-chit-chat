@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { getUserClerkIdAction } from "./authActions";
 import { preferencesSchema } from "@/utils/schemas";
 import { FormStatus } from "@/types/types";
+import { MemberPreferences } from "@prisma/client";
 
 export async function saveMemberPreferencesAction(
   initialState: FormStatus,
@@ -80,3 +81,14 @@ export async function saveMemberPreferencesAction(
     revalidatePath("/matches");
   }
 }
+
+export const fetchPreferencesAction =
+  async (): Promise<MemberPreferences | null> => {
+    const userId: string = await getUserClerkIdAction();
+
+    return prisma.memberPreferences.findFirst({
+      where: {
+        memberId: userId,
+      },
+    });
+  };
