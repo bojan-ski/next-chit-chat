@@ -1,7 +1,7 @@
 import { JSX, RefObject, useEffect, useRef } from 'react';
 import { Message } from '@prisma/client';
-import { ScrollArea } from '../ui/scroll-area';
-import MessageCard from '../MessageCard';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import MessageCard from '@/components/MessageCard';
 
 type MessagesListProps = {
     messages: Message[],

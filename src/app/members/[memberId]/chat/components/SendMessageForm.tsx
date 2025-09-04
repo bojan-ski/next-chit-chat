@@ -1,8 +1,8 @@
 import { JSX } from 'react';
 import { sendMessageAction } from '@/actions/chatActions';
 import { FormStatus } from '@/types/types';
-import FormWrapper from '../FormWrapper';
-import { Input } from '../ui/input';
+import FormWrapper from '@/components/FormWrapper';
+import { Input } from '@/components/ui/input';
 
 function SendMessageForm({ conversationId }: { conversationId: string }): JSX.Element {
     const sendMessage: (prevState: FormStatus, formData: FormData) => Promise<FormStatus | void> = sendMessageAction.bind(null, conversationId);
