@@ -2,7 +2,6 @@ import { JSX } from 'react';
 import { getUserClerkIdAction } from '@/actions/authActions';
 import { createOrGetConversationAction } from '@/actions/chatActions';
 import { ConversationAndMessages } from '@/types/types';
-import ChitChatWindow from '@/components/chatPage/ChitChatWindow';
 
 async function ChatPage({ params }: { params: Promise<{ memberId: string }> }): Promise<JSX.Element> {
   const { memberId } = await params;
@@ -11,10 +10,7 @@ async function ChatPage({ params }: { params: Promise<{ memberId: string }> }): 
   const conversation: ConversationAndMessages = await createOrGetConversationAction(memberId);
 
   return (
-    <ChitChatWindow
-      conversation={conversation}
-      userId={userId}
-    />
+    <></>
   )
 }
 
