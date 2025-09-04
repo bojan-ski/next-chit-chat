@@ -9,7 +9,7 @@ import UserIcon from "./header/UserIcon";
 
 export default async function Header(): Promise<JSX.Element> {
   const { userId } = await auth();
-  const isAdmin = userId == process.env.ADMIN_USER_ID;
+  const isAdmin: boolean = userId == process.env.ADMIN_USER_ID;
 
   return (
     <header className="sticky top-0 z-50 bg-[#FDF6F0] border-b border-[#E5C6AC] shadow-sm">

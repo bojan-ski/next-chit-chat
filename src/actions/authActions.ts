@@ -12,7 +12,7 @@ export async function getUserClerkIdAction(): Promise<string> {
 }
 
 export async function getUserClerkDataAction(): Promise<User> {
-  const user = await currentUser();
+  const user: User | null = await currentUser();
 
   if (!user) redirect("/");
 

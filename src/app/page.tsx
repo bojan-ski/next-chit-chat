@@ -6,6 +6,7 @@ import HowItWorksSection from "@/components/homePage/HowItWorksSection";
 function HomePage(): JSX.Element {
   return (
     <div className="w-full">
+
       {/* hero section */}
       <HeroSection />
 
@@ -14,6 +15,7 @@ function HomePage(): JSX.Element {
 
       {/* How It Works Section */}
       <HowItWorksSection />
+
     </div>
   );
 }

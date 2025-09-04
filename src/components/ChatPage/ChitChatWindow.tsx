@@ -8,17 +8,17 @@ import { markMessagesAsReadAction } from '@/actions/chatActions';
 import MessagesList from './MessagesList';
 import SendMessageForm from './SendMessageForm';
 
-type ChatWindowProps = {
+type ChitChatWindowProps = {
     conversation: ConversationAndMessages,
     userId: string
 }
 
-function ChatWindow({ conversation, userId }: ChatWindowProps): JSX.Element {
+function ChitChatWindow({ conversation, userId }: ChitChatWindowProps): JSX.Element {
     const [messages, setMessages] = useState<Message[]>(conversation?.messages);
 
     // on page load subscribe to pusher API and mark all unread messages as read
     useEffect(() => {
-        console.log('useEffect 1 - ChatWindow');
+        console.log('useEffect 1 - ChitChatWindow');
 
         // subscribe to the conversation channel
         const channel = pusherClient.subscribe(`conversation-${conversation?.id}`);
@@ -45,7 +45,7 @@ function ChatWindow({ conversation, userId }: ChatWindowProps): JSX.Element {
 
     // during conversation mark received messages as read
     useEffect(() => {
-        console.log('useEffect 2 - ChatWindow');
+        console.log('useEffect 2 - ChitChatWindow');
 
         markMessagesAsReadAction(conversation?.id);
     }, [messages])
@@ -65,4 +65,4 @@ function ChatWindow({ conversation, userId }: ChatWindowProps): JSX.Element {
     )
 }
 
-export default ChatWindow
+export default ChitChatWindow

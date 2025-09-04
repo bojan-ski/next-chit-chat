@@ -5,12 +5,13 @@ import { usePathname } from "next/navigation";
 import { useGlobalContext } from "@/context/globalProvider";
 import { memberNavigationLinks } from "@/utils/links";
 import { adminNavigationLinks } from "@/utils/links";
+import { NavigationLink } from "@/types/types";
 import DesktopNavLinks from "./DesktopNavLinks";
 import MobileNavLinks from "./MobileNavLinks";
 
 function NavigationLinks({ isAdmin }: { isAdmin: boolean }): JSX.Element {
     const pathname = usePathname();
-    const navigationLinks = isAdmin ? adminNavigationLinks : memberNavigationLinks;
+    const navigationLinks: NavigationLink[] = isAdmin ? adminNavigationLinks : memberNavigationLinks;
 
     const { unreadMessages } = useGlobalContext();
 

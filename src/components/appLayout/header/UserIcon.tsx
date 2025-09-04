@@ -1,10 +1,10 @@
 import { JSX } from 'react';
 import Link from 'next/link';
-import { currentUser } from '@clerk/nextjs/server';
+import { currentUser, User } from '@clerk/nextjs/server';
 import UserProfileImage from '@/components/UserProfileImage';
 
 async function UserIcon(): Promise<JSX.Element> {
-    const user = await currentUser();
+    const user: User | null = await currentUser();
     const profileImage = user?.imageUrl;
 
     return (

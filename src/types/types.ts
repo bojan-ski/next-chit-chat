@@ -28,7 +28,7 @@ export type PageNavigationLink = {
 };
 
 export type MemberFilters = {
-  gender?: "male" | "female" | "all";
+  gender?: "male" | "female";
   minAge?: number;
   maxAge?: number;
 };

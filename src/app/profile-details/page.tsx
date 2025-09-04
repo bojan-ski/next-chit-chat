@@ -1,4 +1,4 @@
-import { JSX, use } from 'react';
+import { JSX } from 'react';
 import { currentUser, User } from "@clerk/nextjs/server";
 import ProfileData from '@/components/profileDetailsPage/ProfileData';
 import NoDataMessage from '@/components/NoDataMessage';
