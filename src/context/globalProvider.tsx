@@ -2,6 +2,7 @@
 
 import { createContext, JSX, ReactNode, use, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 type GlobalContextProps = {
     unreadMessages: boolean
@@ -33,8 +34,9 @@ type GlobalProviderProps = {
 }
 
 export function GlobalProvider({ children }: GlobalProviderProps): JSX.Element {
+    const user = useUser();
     const pathname = usePathname();
-    const router = useRouter();
+    const router = useRouter();    
 
     const [unreadMessages, setUnreadMessages] = useState<boolean>(false)
 
@@ -74,8 +76,10 @@ export function GlobalProvider({ children }: GlobalProviderProps): JSX.Element {
     useEffect(() => {
         console.log('useEffect - IsBannedProvider');
 
-        checkBanStatus();
-        checkIfUnreadMessages();
+        if(user?.isSignedIn){            
+            checkBanStatus();
+            checkIfUnreadMessages();
+        };
     }, [pathname]);
 
     return (

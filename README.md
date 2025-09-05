@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💬 Chit Chat App
 
-## Getting Started
+The **Chit Chat App** is a warm and inviting social chatting platform designed to help people connect, communicate, and share in a secure and user-friendly way.  
+It focuses on **real-time conversations**, **privacy**, and **community-building**, with a simple, modern, and approachable design.
 
-First, run the development server:
+---
 
+## ✨ Features
+
+### 👤 Member User
+- 🔐 Clerk authentication & profile setup
+- 📸 Upload images with optimized image processing using **Sharp.js**
+- 🔎 Filter application members
+- 💬 **Private Conversations** – 1-on-1 chats between members
+- 🔔 Unread message toast notifications
+- 🚨 Report member (message and/or photo)
+- 📜 Scroll/continue personal conversation
+- ❤️ Like / bookmark members, with:
+  - View **who liked me**
+  - View **mutual likes**
+- ⚙️ Preferences setting for better matching with other members - matching algorithm
+
+---
+
+### 🛡️ Admin User
+- 🔐 Clerk authentication
+- 📝 Resolve reported content
+- ⛔ Ban members
+- 📂 Monitor previous bans
+- 🚫 Manage forbidden words (chat filter)
+- 👀 Monitor all conversations with delete message option
+- 🖼️ Manage uploaded photos with **approval system**
+
+---
+
+## 🛠️ Technology Stack
+
+- **Framework**: [Next.js 15+](https://nextjs.org/)  
+- **UI Library**: [React 19+](https://react.dev/)  
+- **Authentication**: [Clerk 6+](https://clerk.dev/)  
+- **ORM & Database**: [Prisma 6+](https://www.prisma.io/) + [Supabase](https://supabase.com/)  
+- **Real-Time**: [Pusher API](https://pusher.com/)  
+- **Validation**: [Zod](https://zod.dev/)  
+- **Notifications**: [React Hot Toast](https://react-hot-toast.com/)  
+- **Image Handling**: [Sharp.js](https://sharp.pixelplumbing.com/) (resize & compression)  
+- **UI Components**: [Shadcn](https://ui.shadcn.com/)  
+- **Icons**: [React Icons](https://react-icons.github.io/react-icons/)  
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/bojan-ski/next-chit-chat
+cd chit-chat-app
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Create Accounts
+[Clerk 6+](https://clerk.dev/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+[Supabase](https://supabase.com/) 
 
-## Learn More
+[Pusher API](https://pusher.com/)
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Environment Setup - .env
+# Database
+SUPABASE_PASSWORD=
+DATABASE_URL=
+DIRECT_URL=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Supabase Storage
+SUPABASE_BUCKET_NAME=
+SUPABASE_URL=
+SUPABASE_KEY=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Clerk
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
 
-## Deploy on Vercel
+# Pusher
+PUSHER_APP_ID=
+NEXT_PUBLIC_PUSHER_KEY=
+PUSHER_SECRET=
+NEXT_PUBLIC_PUSHER_CLUSTER=
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 5. Run the Development Server
+```bash
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 👨‍💻 Author
+Developed with ❤️ by BPdevelopment (bojan-ski)

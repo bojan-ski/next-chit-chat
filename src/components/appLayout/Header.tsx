@@ -1,5 +1,4 @@
 import { JSX } from "react";
-import { SignedIn, SignedOut } from '@clerk/nextjs';
 import { auth } from "@clerk/nextjs/server";
 import Logo from "./header/Logo";
 import NavigationLinks from "./header/NavigationLinks";
@@ -17,24 +16,23 @@ export default async function Header(): Promise<JSX.Element> {
         {/* logo */}
         <Logo />
 
-        <SignedIn>
-          {/* navigation links */}
-          <NavigationLinks isAdmin={isAdmin} />
+        {userId ? (
+          <>
+            {/* navigation links */}
+            <NavigationLinks isAdmin={isAdmin} />
 
+            <div className="flex space-x-5 items-center">
+              {/* user icon - profile option */}
+              <UserIcon />
 
-          <div className="flex space-x-5 items-center">
-            {/* user icon - profile option */}
-            <UserIcon />
-
-            {/* sign out option */}
-            <SignOutOption />
-          </div>
-        </SignedIn>
-
-        <SignedOut>
-          {/* auth options */}
+              {/* sign out option */}
+              <SignOutOption />
+            </div>
+          </>
+        ) : (
           <AuthOptions />
-        </SignedOut>
+        )}
+
       </div>
     </header>
   );
