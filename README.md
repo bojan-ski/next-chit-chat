@@ -69,6 +69,7 @@ npm install
 [Pusher API](https://pusher.com/)
 
 ### 4. Environment Setup - .env
+```env
 # Database
 SUPABASE_PASSWORD=
 DATABASE_URL=
@@ -88,6 +89,7 @@ PUSHER_APP_ID=
 NEXT_PUBLIC_PUSHER_KEY=
 PUSHER_SECRET=
 NEXT_PUBLIC_PUSHER_CLUSTER=
+```
 
 ### 5. Run the Development Server
 ```bash
