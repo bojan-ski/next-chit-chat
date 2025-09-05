@@ -1,5 +1,3 @@
-'use client'
-
 import { JSX } from "react";
 import { usePathname } from "next/navigation";
 import { useGlobalContext } from "@/context/globalProvider";

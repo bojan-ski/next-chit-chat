@@ -1,11 +1,11 @@
 import { JSX } from 'react';
 import Link from 'next/link';
-import { currentUser, User } from '@clerk/nextjs/server';
 import UserProfileImage from '@/components/UserProfileImage';
+import { useUser } from '@clerk/nextjs';
 
-async function UserIcon(): Promise<JSX.Element> {
-    const user: User | null = await currentUser();
-    const profileImage = user?.imageUrl;
+function UserIcon(): JSX.Element {
+    const user = useUser();
+    const profileImage = user?.user?.imageUrl ?? '';
 
     return (
         <Link href={'/user-profile'}>
