@@ -10,7 +10,7 @@ function ImageUploadTooltip(): JSX.Element {
           <Info className="w-5 h-5 text-[#C05C41] cursor-pointer hover:text-[#E5C6AC]" />
         </TooltipTrigger>
         <TooltipContent side="right" className="text-white bg-black text-sm px-3 py-1 rounded-md">
-          Max image size 10MB
+          Max photo size 4MB, limit 12 photos
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

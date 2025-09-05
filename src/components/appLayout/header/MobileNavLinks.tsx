@@ -28,7 +28,7 @@ function MobileNavLinks({ navigationLinks, pathname, unreadMessages }: Navigatio
                         >
                             <Link
                                 href={href}
-                                className={`block w-full font-medium transition capitalize ${pathname == href ? 'text-[#C05C41] hover:text-[#7B4B3A]' : 'text-[#7B4B3A] hover:text-[#C05C41]'} ${(unreadMessages && label == 'conversation') && 'text-red-500'}`}
+                                className={`block w-full font-medium transition capitalize ${pathname == href ? 'text-[#C05C41] hover:text-[#7B4B3A]' : 'text-[#7B4B3A] hover:text-[#C05C41]'} ${(unreadMessages && label == 'conversations') && 'text-red-500'}`}
                             >
                                 {label}
                             </Link>

@@ -47,14 +47,14 @@ export const imageSchema = z.object({
 });
 
 function validateImageFile() {
-  const maxUploadSize = 10 * 1024 * 1024;
+  const maxUploadSize = 4 * 1024 * 1024;
   const acceptedFileTypes = ["image/"];
 
   return z
     .instanceof(File)
     .refine((file) => {
       return !file || file.size <= maxUploadSize;
-    }, "File size must be less than 10MB")
+    }, "File size must be less than 4MB")
     .refine((file) => {
       return (
         !file || acceptedFileTypes.some((type) => file.type.startsWith(type))

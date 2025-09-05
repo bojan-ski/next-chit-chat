@@ -8,7 +8,7 @@ function layout({ children }: { children: ReactNode }): JSX.Element {
     ];
 
     return (
-        <div className='max-w-7xl mx-auto mt-10'>
+        <div className='max-w-7xl mx-auto my-10'>
 
             <PageNavOptions pageLinks={pageLinks} />
 
